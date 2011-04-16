@@ -26,6 +26,15 @@ ISR(BADISR_vect)
 int main(void)
 {
   USART::init();
+  DDRB|=0xFF;
+
+  while(1)
+  {
+    for(int i=0; i<2; ++i)
+      for(int j=0; j<4; ++j)
+        _delay_ms(250);
+    PORTB^=0xFF;
+  }
 
   // TODO
   return 0;
