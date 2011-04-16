@@ -9,6 +9,7 @@ export LD :=$(CC)
 
 # tools settings
 export MCU_TYPE:=attiny2313
+export MCU_PROG:=t2313
 
 # extra flags, if needed
 export CFLAGS  +=-mmcu=$(MCU_TYPE)
