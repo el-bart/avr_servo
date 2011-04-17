@@ -12,6 +12,7 @@
 #include "Queue.hpp"
 #include "USART.hpp"
 #include "Timer0.hpp"
+#include "Timer1.hpp"
 #include "PowerSave.hpp"
 #include "uassert.hpp"
 
@@ -31,7 +32,23 @@ int main(void)
   USART::init();    // prepare USART to work
   DDRB|=0xFF;       // PB operates as output
   Timer0 t0;        // configure T0
+  Timer1 t1;        // configure T1
   sei();            // allow interrupts globally
+
+#if 1
+  while(1)
+  {
+    t0.clearInterruptFlag();
+    t1.start();
+    PORTB=0xFF;
+    const uint16_t s=8000+4000+4000;
+    while( t1.get()<s );
+    PORTB=0x00;
+    t1.stop();
+    while( !t0.interruptCame() )
+      PowerSave::idle();
+  }
+#endif
 
 #if 0
   while(1)
