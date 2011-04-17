@@ -32,7 +32,7 @@ public:
    */
   uint16_t &operator[](const uint8_t s)
   {
-    uassert( pos < sizeof(pos_)/sizeof(pos_[0]) );
+    uassert( s < sizeof(pos_)/sizeof(pos_[0]) );
     return pos_[s];
   }
 

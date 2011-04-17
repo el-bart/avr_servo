@@ -14,10 +14,6 @@
 class TimeTable
 {
 public:
-  /** \brief create default time table.
-   */
-  TimeTable(void);
-
   const uint16_t operator[](const uint8_t pos) const
   {
     uassert(pos<8);
@@ -31,7 +27,7 @@ public:
   }
 
 private:
-  // TODO
+  uint8_t tab_[8];
 }; // class TimeTable
 
 #endif
