@@ -29,8 +29,8 @@ ISR(BADISR_vect)
 //
 int main(void)
 {
-  USART::init();    // prepare USART to work
   DDRB|=0xFF;       // PB operates as output
+  USART::init();    // prepare USART to work
   Timer0 t0;        // configure T0
   Timer1 t1;        // configure T1
   sei();            // allow interrupts globally
