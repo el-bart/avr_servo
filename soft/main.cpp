@@ -14,6 +14,7 @@
 #include "Timer0.hpp"
 #include "Timer1.hpp"
 #include "PowerSave.hpp"
+#include "ChronoTable.hpp"
 #include "uassert.hpp"
 
 
@@ -30,9 +31,10 @@ ISR(BADISR_vect)
 int main(void)
 {
   DDRB|=0xFF;       // PB operates as output
-  USART::init();    // prepare USART to work
-  Timer0 t0;        // configure T0
-  Timer1 t1;        // configure T1
+  //USART::init();    // prepare USART to work
+  Timer0      t0;   // configure T0
+  Timer1      t1;   // configure T1
+  ChronoTable ct;   // table of computed positions to use
   sei();            // allow interrupts globally
 
 #if 1

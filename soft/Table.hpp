@@ -15,6 +15,9 @@ template<typename T, uint8_t N>
 class Table
 {
 public:
+  /** \brief value held inside. */
+  typedef T value_type;
+
   /** \brief access operator - const version.
    *  \param s servo's number to get entry for.
    *  \return servo's entry.
