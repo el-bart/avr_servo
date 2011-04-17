@@ -14,8 +14,8 @@
 
 namespace
 {
-uint8_t g_initCount=0;
-bool    g_int=false;
+uint8_t       g_initCount=0;
+volatile bool g_int=false;
 } // unnamed namespace
 
 

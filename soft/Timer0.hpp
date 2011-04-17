@@ -7,13 +7,24 @@
 
 #include "Noncopyable.hpp"
 
+/** \brief timer T0 used for accurate impulses generation.
+ */
 class Timer0: private Noncopyable
 {
 public:
+  /** \brief initialize timer.
+   */
   Timer0(void);
+  /** \brief deinitialize timer.
+   */
   ~Timer0(void);
 
+  /** \brief clear flag signalling interruption.
+   */
   void clearInterruptFlag(void);
+  /** \brief checks if interruption flag has been set.
+   *  \return true, if interruption has arrived, false otherwise.
+   */
   bool interruptCame(void) const;
 }; // class Timer0
 
