@@ -9,7 +9,6 @@
 //#include <util/delay.h>     // <avr/delay.h> once
 #include <avr/sleep.h>
 
-#include "Queue.hpp"
 #include "USART.hpp"
 #include "Timer0.hpp"
 #include "Timer1.hpp"

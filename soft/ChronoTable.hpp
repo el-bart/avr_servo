@@ -7,7 +7,6 @@
 
 #include "config.hpp"
 #include <inttypes.h>
-#include "PositionsTable.hpp"
 #include "Table.hpp"
 
 class ChronoTable
@@ -21,22 +20,22 @@ public:
 
   ChronoTable(void);
 
-  PositionsTable &currentPos(void)
+  Table<int16_t, 8> &currentPos(void)
   {
     return cur_;
   }
 
   void compute(void);
 
-  const Entry operator[](const uint8_t p) const
+  const Entry get(const uint8_t p) const
   {
-    return e_[p];
+    return e_.get(p);
   }
 
 private:
   // input data
-  PositionsTable  cur_;     // current positions
-  Table<Entry, 8> e_;       // processed entries
+  Table<int16_t, 8> cur_;   // current positions
+  Table<Entry, 8>   e_;     // processed entries
 }; // class ChronoTable
 
 #endif

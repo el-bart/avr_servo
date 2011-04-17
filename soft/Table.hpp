@@ -22,7 +22,7 @@ public:
    *  \param s servo's number to get entry for.
    *  \return servo's entry.
    */
-  const T operator[](const uint8_t s) const
+  const T get(const uint8_t s) const
   {
     uassert(s<N);
     return t_[s];
@@ -30,12 +30,13 @@ public:
 
   /** \brief access operator - non-const version.
    *  \param s servo's number to get entry for.
+   *  \param v new value.
    *  \return servo's entry.
    */
-  uint16_t &operator[](const uint8_t s)
+  void set(const uint8_t s, const uint16_t v)
   {
     uassert(s<N);
-    return t_[s];
+    t_[s]=v;
   }
 
 private:
