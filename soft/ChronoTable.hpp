@@ -9,7 +9,6 @@
 #include <inttypes.h>
 #include "PositionsTable.hpp"
 #include "Table.hpp"
-#include "TableEEPROM.hpp"
 
 class ChronoTable
 {
@@ -22,19 +21,9 @@ public:
 
   ChronoTable(void);
 
-  void writeToEEPROM(void);
-
-  TableEEPROM &min(void)
+  PositionsTable &currentPos(void)
   {
-    return min_;
-  }
-  TableEEPROM &max(void)
-  {
-    return max_;
-  }
-  TableEEPROM &startPositions(void)
-  {
-    return start_;
+    return cur_;
   }
 
   void compute(void);
@@ -45,12 +34,7 @@ public:
   }
 
 private:
-  bool readFromEEPROM(void);
-
   // input data
-  TableEEPROM     min_;     // minimum positions
-  TableEEPROM     max_;     // maximum positions
-  TableEEPROM     start_;   // start-up positions
   PositionsTable  cur_;     // current positions
   Table<Entry, 8> e_;       // processed entries
 }; // class ChronoTable
