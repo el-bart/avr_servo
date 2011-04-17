@@ -4,6 +4,7 @@
  */
 #include "config.hpp"
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "ChronoTable.hpp"
 
 ChronoTable::ChronoTable(void)
@@ -44,28 +45,32 @@ inline void bubbleSort(uint8_t (&idxs)[8], const Table<uint16_t, 8> &c)
 
 void ChronoTable::compute(void)
 {
+  cli();                                // disable interrupts for a moment of copying
+  const Table<uint16_t, 8> cur=cur_;    // make local copy (original may change in interrupts)
+  sei();                                // interrupts are welcome now
   uint8_t idxs[8]={0,1,2,3,4,5,6,7};    // sorted indexes
-  bubbleSort(idxs, cur_);               // find proper order of elements
+  bubbleSort(idxs, cur);                // find proper order of elements
 
   uint8_t idxOut=0;
   for(uint8_t i=0; i<8; ++i)
   {
+    // make default mask for this element
     uint8_t mask=0xFF;
     mask&=~_BV(idxs[i]);
     // try packing multiple entries into one, if possible
-    while( i<8 && cur_.get(idxs[i])==cur_.get(idxs[i+1]) )
+    while( i<8-1 && cur.get(idxs[i])==cur.get(idxs[i+1]) )
     {
       ++i;
       mask&=~_BV(idxs[i]);
     }
     // save this entry
-    const Entry tmp={ cur_.get(idxs[i]), mask };
+    const Entry tmp={ cur.get(idxs[i]), mask };
     e_.set(idxOut, tmp);
     ++idxOut;
   }
 
   // fill up missing elements with zeros
-  const Entry zero={0, 0};
+  const Entry zero={0, 0x00};
   for(uint8_t i=idxOut; i<8; ++i)
     e_.set(i, zero);
 }
