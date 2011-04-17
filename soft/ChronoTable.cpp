@@ -51,12 +51,12 @@ void ChronoTable::compute(void)
   for(uint8_t i=0; i<8; ++i)
   {
     uint8_t mask=0xFF;
-    mask&=~_BV(i);
+    mask&=~_BV(idxs[i]);
     // try packing multiple entries into one, if possible
     while( i<8 && cur_.get(idxs[i])==cur_.get(idxs[i+1]) )
     {
       ++i;
-      mask&=~_BV(i);
+      mask&=~_BV(idxs[i]);
     }
     // save this entry
     const Entry tmp={ cur_.get(idxs[i]), mask };
