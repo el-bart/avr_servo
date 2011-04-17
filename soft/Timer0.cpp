@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
 
 #include "Timer0.hpp"
 #include "uassert.hpp"
@@ -19,8 +18,7 @@ volatile bool g_int=false;
 } // unnamed namespace
 
 
-// timer 0 interrupt
-//ISR(TIMER0_OVF_vect)
+// timer T0 compare with OCR0A interrupt
 ISR(TIMER0_COMPA_vect)
 {
   g_int=true;
