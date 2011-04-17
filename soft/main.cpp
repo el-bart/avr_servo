@@ -6,7 +6,6 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include <util/delay.h>     // <avr/delay.h> once
 #include <avr/sleep.h>
 
 #include "USART.hpp"
@@ -31,14 +30,11 @@ int main(void)
 {
   DDRB|=0xFF;       // PB operates as output
   ChronoTable ct;   // table of computed positions to use
-  // TODO: enable usart
-  //USART::init(ct);  // prepare USART to work
-  Timer0      t0;   // configure T0
+  USART::init(ct);  // prepare USART to work
   Timer1      t1;   // configure T1
+  Timer0      t0;   // configure T0
   sei();            // allow interrupts globally
 
-#if 1
-  uint16_t tmp=8000;              
   while(1)
   {
     // initial preparations
@@ -61,48 +57,9 @@ int main(void)
       PowerSave::idle();
     // compute new servo positions table
     ct.compute();
-
-    // TODO
-    tmp+=1000;                             
-    ct.currentPos().set(3, tmp);        
   }
-#endif
 
-#if 0
-  while(1)
-  {
-    PORTB=0xFF;
-    _delay_ms(2);
-    PORTB=0x00;
-    _delay_ms(18);
-  }
-#endif
-
-#if 0
-  while(1)
-  {
-    t0.clearInterruptFlag();
-    PORTB=0xFF;
-    _delay_ms(2);
-    PORTB=0x00;
-    while( !t0.interruptCame() )
-      PowerSave::idle();
-  }
-#endif
-
-#if 0
-  while(1)
-  {
-    for(int i=0; i<2; ++i)
-      for(int j=0; j<4; ++j)
-        _delay_ms(250);
-    PORTB^=0xFF;
-  }
-#endif
-
-  // TODO
-
-  while(1);
+  // code never reaches here
   return 0;
 } // main()
 
