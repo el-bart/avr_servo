@@ -6,7 +6,6 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/sleep.h>
 
 #include "USART.hpp"
 #include "Timer0.hpp"
