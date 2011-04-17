@@ -15,7 +15,7 @@ public:
   /** \brief initialize timer.
    */
   Timer0(void);
-  /** \brief deinitialize timer.
+  /** \brief deinitilize object (timer is still running though).
    */
   ~Timer0(void);
 
