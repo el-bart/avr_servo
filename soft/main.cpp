@@ -30,24 +30,41 @@ ISR(BADISR_vect)
 int main(void)
 {
   DDRB|=0xFF;       // PB operates as output
-  //USART::init();    // prepare USART to work
+  ChronoTable ct;   // table of computed positions to use
+  // TODO: enable usart
+  //USART::init(ct);  // prepare USART to work
   Timer0      t0;   // configure T0
   Timer1      t1;   // configure T1
-  ChronoTable ct;   // table of computed positions to use
   sei();            // allow interrupts globally
 
 #if 1
+  uint16_t tmp=8000;              
   while(1)
   {
+    // initial preparations
     t0.clearInterruptFlag();
     t1.start();
+    // start cycle
     PORTB=0xFF;
-    const uint16_t s=8000+4000+4000;
-    while( t1.get()<s );
+    // end cycles high-cycles for servos in proper order
+    for(uint8_t i=0; i<8; ++i)
+    {
+      const ChronoTable::Entry e=ct.get(i); // get copy for faster access
+      while( t1.get()<e.time_ );            // wait until to be triggered
+      PORTB&=e.mask_;                       // apply mask, as requested
+    }
+    // end high-value
     PORTB=0x00;
     t1.stop();
+    // now wait until the end of the period
     while( !t0.interruptCame() )
       PowerSave::idle();
+    // compute new servo positions table
+    ct.compute();
+
+    // TODO
+    tmp+=1000;                             
+    ct.currentPos().set(3, tmp);        
   }
 #endif
 

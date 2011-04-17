@@ -33,7 +33,7 @@ public:
    *  \param v new value.
    *  \return servo's entry.
    */
-  void set(const uint8_t s, const uint16_t v)
+  void set(const uint8_t s, const T v)
   {
     uassert(s<N);
     t_[s]=v;

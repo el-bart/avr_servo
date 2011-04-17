@@ -20,7 +20,7 @@ public:
 
   ChronoTable(void);
 
-  Table<int16_t, 8> &currentPos(void)
+  Table<uint16_t, 8> &currentPos(void)
   {
     return cur_;
   }
@@ -34,7 +34,7 @@ public:
 
 private:
   // input data
-  Table<int16_t, 8> cur_;   // current positions
+  Table<uint16_t, 8> cur_;  // current positions
   Table<Entry, 8>   e_;     // processed entries
 }; // class ChronoTable
 
