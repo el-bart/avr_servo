@@ -6,6 +6,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "USART.hpp"
 #include "Timer0.hpp"
@@ -33,6 +34,33 @@ int main(void)
   Timer1      t1;   // configure T1
   Timer0      t0;   // configure T0
   sei();            // allow interrupts globally
+
+#if 0
+  while(true)
+  {
+    for(char c='a'; c<='z'; ++c)
+    {
+      USART::send(c);
+      _delay_ms(100);
+    }
+    USART::send('\n');
+    _delay_ms(100);
+  }
+#endif
+
+#if 0
+  cli();
+  while(true)
+  {
+    for(char c='a'; c<='z'; ++c)
+    {
+      UDR=c;
+      _delay_ms(100);
+    }
+    UDR='\n';
+    _delay_ms(100);
+  }
+#endif
 
   while(1)
   {

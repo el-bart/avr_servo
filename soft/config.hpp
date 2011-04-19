@@ -15,7 +15,8 @@
 // USART speed (bps)
 //#define USART_BAUD (19200L)
 // TODO: check if it is fine speed
-#define USART_BAUD (57600L)
+//#define USART_BAUD (57600L)
+#define USART_BAUD (38400L)
 
 // max queue size
 #define QUEUE_MAX_SIZE 8
