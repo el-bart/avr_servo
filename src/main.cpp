@@ -22,6 +22,7 @@ ISR(BADISR_vect)
   uassert(!"unhandled interrupt");
 }
 
+volatile int bytes_=0;      
 
 //
 // MAIN
@@ -29,11 +30,67 @@ ISR(BADISR_vect)
 int main(void)
 {
   DDRB|=0xFF;       // PB operates as output
-  ChronoTable ct;   // table of computed positions to use
-  USART::init(ct);  // prepare USART to work
-  Timer1      t1;   // configure T1
-  Timer0      t0;   // configure T0
-  sei();            // allow interrupts globally
+  //ChronoTable ct;   // table of computed positions to use
+  //USART::init(ct);  // prepare USART to work
+  //Timer1      t1;   // configure T1
+  //Timer0      t0;   // configure T0
+  //sei();            // allow interrupts globally
+
+#if 1
+#define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
+
+  // clock divider register (computed from baud rate and oscilator frequency)
+  UBRRH=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>8) & 0x00FF );
+  UBRRL=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>0) & 0x00FF );
+
+  // enable transciever
+  UCSRB|= _BV(RXEN);    // RX enable
+  UCSRB|= _BV(TXEN);    // TX enable
+
+  // configure proper pins as in (RX) and out (TX)
+  DDRD &=~_BV(PD0);     // RX as in
+  PORTD|= _BV(PD0);     // RX high with pull-up
+  DDRD |= _BV(PD1);     // TX as out
+
+  while(true)
+  {
+    // read
+    while( !(UCSRA&(1<<RXC)) );
+    const uint8_t c=UDR;
+    UCSRA&=~(1<<RXC);
+    // send
+    UDR='x';
+    while( !(UCSRA&(1<<UDRE)) );
+  }
+#endif
+
+#if 0
+  while(true)
+  {
+    USART::send('0'+bytes_);
+    _delay_ms(250);
+    USART::send(' ');
+    _delay_ms(250);
+  }
+#endif
+
+#if 0
+  while(true)
+  {
+    const uint8_t b=USART::recv();
+    /*
+    USART::send('\n');
+    USART::send(b-1);
+    USART::send(b+1);
+    USART::send('\n');
+    */
+    //USART::send('0'+bytes_);
+    USART::send(b);
+    _delay_ms(250);
+    //USART::send(' ');
+    _delay_ms(250);
+  }
+#endif
 
 #if 0
   while(true)
@@ -62,6 +119,7 @@ int main(void)
   }
 #endif
 
+#if 0
   while(1)
   {
     // initial preparations
@@ -85,6 +143,7 @@ int main(void)
     // compute new servo positions table
     ct.compute();
   }
+#endif
 
   // code never reaches here
   return 0;

@@ -21,6 +21,8 @@ struct USART
    *  \param b byte to send.
    */
   static void send(uint8_t b);
+
+  static uint8_t recv(void);
 }; // struct USART
 
 #endif
