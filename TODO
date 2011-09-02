@@ -1,3 +1,3 @@
-1 write software for hardware (2x256B RAM, int from timer every 1ms, RS232 in free time (interrupt does buffering only)).
-2 prepare prototype.
-3
+* port software to the atmega8 (from flash and ram).
+* write software for hardware (2x256B RAM, int from timer every 1ms, RS232 in free time (interrupt does buffering only)).
+* prepare prototype.
