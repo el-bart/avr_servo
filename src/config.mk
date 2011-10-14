@@ -1,9 +1,6 @@
 # name of the application
 export PROGRAM_NAME:=avr_servo
 
-# default
-TC:=avr
-
 #
 # AVR
 #

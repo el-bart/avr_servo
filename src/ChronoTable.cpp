@@ -3,8 +3,8 @@
  *
  */
 #include "config.hpp"
-#include <avr/io.h>
-#include <avr/interrupt.h>
+#include "Hardware/io.hpp"
+#include "Hardware/interrupt.hpp"
 #include "ChronoTable.hpp"
 
 ChronoTable::ChronoTable(void)

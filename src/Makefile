@@ -6,7 +6,10 @@
 # on http://www.baszerr.org, prjs -> build_process.
 #
 
-ifeq (,$(filter %/gen/$(TARGET),$(basename $(CURDIR))))
+# default
+TC:=avr
+
+ifeq (,$(filter %/gen/$(TC)/$(TARGET),$(basename $(CURDIR))))
 #
 # main part, run in sources dir
 #
@@ -18,7 +21,7 @@ endif
 
 define run-in-gen
 	@echo
-	@echo "##### build $@"
+	@echo "##### build $@ / $(TC)"
 	mkdir -p "$(GENDIR)/$@" \
 	          `find . -type d | grep -v './\.' | \
 	          grep -v '^\./gen/' | grep -v '^\./gen$$' | \
@@ -32,7 +35,7 @@ endef
 # use user-provided configuration
 include config.mk
 
-GENDIR:=$(CURDIR)/gen
+GENDIR:=$(CURDIR)/gen/$(TC)/
 SRCDIR:=$(CURDIR)
 VPATH+=$(SRCDIR)
 export GENDIR SRCDIR VPATH
@@ -103,9 +106,9 @@ test:
 .PHONY: flash_mcu
 flash_mcu:
 	@[ -n "$(PROFILE)" ] || { echo "profile MUST be set" ; exit 1 ; }
-	@[ -f "gen/$(PROFILE)/$(BIN_FILE)" ] || { echo "file to flash must exist" ; exit 2 ; }
+	@[ -f "$(GENDIR)/$(PROFILE)/$(BIN_FILE)" ] || { echo "file to flash must exist" ; exit 2 ; }
 	# flash program
-	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U flash:w:gen/$(PROFILE)/$(BIN_FILE)
+	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U flash:w:$(GENDIR)/$(PROFILE)/$(BIN_FILE)
 	# setup fuse bits to enable external oscilator
 	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U lfuse:w:255:m
 

@@ -6,7 +6,8 @@
 #define INCLUDE_TIMER1_HPP_FILE
 
 #include "config.hpp"
-#include <avr/io.h>
+#include "Hardware/io.hpp"
+#include "Hardware/Timer1.hpp"
 #include "Noncopyable.hpp"
 
 /** \brief timer1 wrapper.
@@ -40,7 +41,7 @@ public:
    */
   uint16_t get(void) const
   {
-    return TCNT1;
+    return Hardware::Timer1::getValue();
   }
 }; // class Timer1
 
