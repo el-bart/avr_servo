@@ -115,7 +115,7 @@ void parseInQueue(void)
 
 static inline void sendDataImpl(void)
 {
-  uassert( UCSRA & _BV(UDRE) );
+  //uassert( UCSRA & _BV(UDRE) );
   Hardware::USART::send( g_outQueue.pop() );
 }
 
