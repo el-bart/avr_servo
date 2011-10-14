@@ -40,7 +40,7 @@ endif # TC
 #
 
 # extra flags, if needed
-TMP:=-I$(CURDIR)/hardware/$(TC)
+TMP:=-I$(CURDIR)/backend/$(TC)
 export CFLAGS  +=$(TMP)
 export CXXFLAGS+=$(TMP)
 export LDFLAGS +=

@@ -24,8 +24,8 @@ Timer1::Timer1(void)
   TCCR1B&=~_BV(WGM12);  // ...
   TCCR1A&=~_BV(WGM11);  // ...
   TCCR1A&=~_BV(WGM10);  // ...
-  TCCR1C&=~_BV(FOC1A);  // disable force output compare
-  TCCR1C&=~_BV(FOC1B);  // disable force output compare
+  //TCCR1C&=~_BV(FOC1A);  // disable force output compare
+  //TCCR1C&=~_BV(FOC1B);  // disable force output compare
   // keep stopped by default
   stop();
   // mark initialized element

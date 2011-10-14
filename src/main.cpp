@@ -9,7 +9,7 @@
 #include <util/delay.h>
 
 #include "USART.hpp"
-#include "Timer0.hpp"
+//#include "Timer0.hpp"
 #include "Timer1.hpp"
 #include "PowerSave.hpp"
 #include "ChronoTable.hpp"
@@ -59,7 +59,7 @@ int main(void)
     const uint8_t c=UDR;
     UCSRA&=~(1<<RXC);
     // send
-    UDR='x';
+    UDR=c+1;
     while( !(UCSRA&(1<<UDRE)) );
   }
 #endif

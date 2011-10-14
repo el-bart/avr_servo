@@ -125,7 +125,7 @@ static inline void sendDataImpl(void)
 extern volatile int bytes_;              
 
 // USART RX completed interrupt
-ISR(USART_RX_vect)
+ISR(USART_RXC_vect)
 {
   const uint8_t c=UDR;          // read form hardware ASAP
 
@@ -142,7 +142,7 @@ g_inQueue.push(c);
 }
 
 // USART TX completed interrupt
-ISR(USART_TX_vect)
+ISR(USART_TXC_vect)
 {
   if( g_outQueue.size()>0 )     // if have something to send
     sendDataImpl();
