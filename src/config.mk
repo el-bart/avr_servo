@@ -1,6 +1,13 @@
 # name of the application
 export PROGRAM_NAME:=avr_servo
 
+# default
+TC:=avr
+
+#
+# AVR
+#
+ifeq ($(TC),avr)
 # toolchain
 export CC :=avr-gcc
 export CXX:=avr-g++
@@ -15,3 +22,25 @@ export MCU_PROG:=m8
 export CFLAGS  +=-mmcu=$(MCU_TYPE)
 export CXXFLAGS+=-mmcu=$(MCU_TYPE)
 export LDFLAGS +=-mmcu=$(MCU_TYPE)
+endif
+
+#
+# GCC
+#
+ifeq ($(TC),gcc)
+# toolchain
+export CC :=gcc
+export CXX:=g++
+export OBJCOPY:=objcopy
+export LD :=$(CC)
+endif # TC
+
+#
+# common
+#
+
+# extra flags, if needed
+TMP:=-I$(CURDIR)/hardware/$(TC)
+export CFLAGS  +=$(TMP)
+export CXXFLAGS+=$(TMP)
+export LDFLAGS +=
