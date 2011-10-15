@@ -119,7 +119,7 @@ static inline void sendDataImpl(void)
   Hardware::USART::send( g_outQueue.pop() );
 }
 
-extern volatile int bytes_;              
+volatile int bytes_;              
 
 // USART RX completed interrupt
 ISR(USART_RXC_vect)

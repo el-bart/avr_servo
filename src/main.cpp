@@ -22,8 +22,6 @@ ISR(BADISR_vect)
   uassert(!"unhandled interrupt");
 }
 
-volatile int bytes_=0;      
-
 //
 // MAIN
 //
