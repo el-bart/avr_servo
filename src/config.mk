@@ -9,7 +9,7 @@ ifeq ($(TC),avr)
 export CC :=avr-gcc
 export CXX:=avr-g++
 export OBJCOPY:=avr-objcopy
-export LD :=$(CC)
+export LD :=$(CXX)
 
 # tools settings
 export MCU_TYPE:=atmega8
@@ -29,7 +29,7 @@ ifeq ($(TC),gcc)
 export CC :=gcc
 export CXX:=g++
 export OBJCOPY:=objcopy
-export LD :=$(CC)
+export LD :=$(CXX)
 endif # TC
 
 #
