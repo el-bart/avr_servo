@@ -15,6 +15,7 @@
 #include "Timer2.hpp"
 #include "PowerSave.hpp"
 #include "ChronoTable.hpp"
+#include "PhaseGenerator.hpp"
 #include "uassert.hpp"
 
 
@@ -70,12 +71,63 @@ int main(void)
   }
 #endif
 
-  PersistentSettings settings;  // persistent settings
+  PersistentSettings settings;          // persistent settings
   ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
-  USART::init(chronoTable);     // prepare USART to work
-  Timer1             t1;        // configure T1
-  Timer2             t2;        // configure T2
-  sei();                        // allow interrupts globally
+  USART::QueueSend   qSend;             // output queue
+  USART::QueueRecv   qRecv;             // input queue
+  USART              rs(qSend, qRecv);  // prepare USART to work
+  Timer1             t1;                // configure T1
+  Timer2             t2;                // configure T2
+  PhaseGenerator     phaseGen;          // controling facility
+  sei();                                // allow interrupts globally
+
+  bool    hasMoreToDo=true;
+  uint8_t lastStep   =0xFF;
+  while(true)
+  {
+    const uint8_t step=t2.currentStep();
+    if(lastStep!=step)
+    {
+      lastStep   =step;
+      hasMoreToDo=true;
+    }
+
+    // cycle throught stages.
+    switch(step)
+    {
+      // initial 'high' state
+      case 0:
+           if(hasMoreToDo)
+             chronoTable.update();
+           // TODO: protocol I/O?
+           hasMoreToDo=false;
+           break;
+
+      // PWM generation for servos
+      case 1:
+           if(hasMoreToDo)
+             phaseGen.generate( t1, chronoTable.currentEntries() );
+           // TODO: protocol I/O?
+           hasMoreToDo=false;
+           break;
+
+      // 'wait' in 'low' state
+      case 2:
+      case 3:
+      case 4:
+           // TODO: protocol I/O?
+           break;
+
+      case 5:
+      default:
+           t2.resetStep();
+           hasMoreToDo=true;
+           break;
+    } // switch(current_step)
+
+    if(!hasMoreToDo)
+      PowerSave::idle();
+  }
 
 #if 0
   while(true)
