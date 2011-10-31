@@ -14,8 +14,9 @@
 //#define USART_BAUD (57600L)
 #define USART_BAUD (38400L)
 
-// max queue size
-#define QUEUE_MAX_SIZE (8)
+// max queues sizes
+#define QUEUE_SEND_MAX_SIZE  (8)
+#define QUEUE_RECV_MAX_SIZE (16)
 
 // servos count
 #define SERVO_COUNT (18)

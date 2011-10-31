@@ -5,11 +5,12 @@
 #include <inttypes.h>
 #include "Table.hpp"
 #include "PersistentSettings.hpp"
+#include "Noncopyable.hpp"
 
 /** \brief class gathering and parsing positions, providing
  *         fast-to-process output table.
  */
-class ChronoTable
+class ChronoTable: private Noncopyable
 {
 public:
   /** \brief entry of a single processing data unit.
