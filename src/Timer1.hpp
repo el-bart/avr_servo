@@ -9,7 +9,7 @@
 #include <avr/io.h>
 #include "Noncopyable.hpp"
 
-/** \brief timer1 wrapper.
+/** \brief 16-bit timer1 wrapper.
  */
 class Timer1: private Noncopyable
 {
@@ -36,7 +36,10 @@ public:
    */
   uint16_t get(void) const
   {
-    return TCNT1;
+    cli();
+    const uint16_t tmp=TCNT1;
+    sei();
+    return tmp;
   }
 }; // class Timer1
 
