@@ -26,17 +26,42 @@ uint8_t hex2num(char h)
   // error..
   return 0xFF;
 } // hex2num()
+
+
+char num2hex(uint8_t n)
+{
+  if(n>0x0F)
+    return '?';
+  static const char lut[]="0123456789abcdef";
+  return lut[n];
+} // num2hex()
+
+
+char computeChecksum(const char servoName, const char mode, const char posH, const char posL)
+{
+  // compute XOR of all fields
+  uint8_t out=0x00;
+  out^=servoName;
+  out^=mode;
+  out^=posH;
+  out^=posL;
+  // compute xor of half-bytes
+  out=((out>>4)&0x0F)^(out&0x0F);
+  // return as printable hex
+  return num2hex(out);
+} // computeChecksum()
 } // unnamed namespace
 
 
 void CommProtocol::process(ChronoTable::Positions &posTab)
 {
-  while( qRecv_.size()>=1+1+2+1 )
+  while( qRecv_.size()>=1+1+2+1+1 )
   {
     // get servo number
     const char servoName=qRecv_.pop();
     if(servoName<'a' || 'r'<servoName)
     {
+      replyError('?');
       skipUntilNewCommand();
       continue;
     }
@@ -46,6 +71,7 @@ void CommProtocol::process(ChronoTable::Positions &posTab)
     const char mode=qRecv_.pop();
     if(mode!='l' && mode!='h' && mode!='d' && mode!='s')
     {
+      replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
@@ -55,21 +81,34 @@ void CommProtocol::process(ChronoTable::Positions &posTab)
     posTmp[0]=hex2num( qRecv_.pop() );
     if(posTmp[0]>0x0F)
     {
+      replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
     posTmp[1]=hex2num( qRecv_.pop() );
     if(posTmp[1]>0x0F)
     {
+      replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
     const uint8_t pos=posTmp[0]*16+posTmp[1];
 
+    // test checksum correctness
+    const char checksumRecv=qRecv_.pop();
+    const char checksumComp=computeChecksum(servoName, mode, posTmp[0], posTmp[1]);
+    if(checksumRecv!=checksumComp)
+    {
+      replyError(servoName);
+      skipUntilNewCommand();
+      continue;
+    }
+
     // check for end of line
     const char end=qRecv_.pop();
     if(end!='\n' && end!='\r')
     {
+      replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
@@ -80,21 +119,10 @@ void CommProtocol::process(ChronoTable::Positions &posTab)
     // execute received orders
     const bool ret=execute(servoNo, mode, pos, posTab);
     // send confirmation, if it is ok or not
-    qSend_.push(servoName);
     if(ret)
-    {
-      qSend_.push('o');
-      qSend_.push('k');
-    }
+      replyOk(servoName);
     else
-    {
-      qSend_.push('E');
-      qSend_.push('R');
-      qSend_.push('R');
-      qSend_.push('O');
-      qSend_.push('R');
-    }
-    qSend_.push('\n');
+      replyError(servoName);
   } // while(has_more_date)
 }
 
@@ -175,4 +203,25 @@ bool CommProtocol::execute(const uint8_t srvNo, const char mode, const uint8_t p
 
   // unknown mode...
   return false;
+}
+
+
+void CommProtocol::replyOk(const char srvName)
+{
+  qSend_.push(srvName);
+  qSend_.push('o');
+  qSend_.push('k');
+  qSend_.push('\n');
+}
+
+
+void CommProtocol::replyError(const char srvName)
+{
+  qSend_.push(srvName);
+  qSend_.push('E');
+  qSend_.push('R');
+  qSend_.push('R');
+  qSend_.push('O');
+  qSend_.push('R');
+  qSend_.push('\n');
 }

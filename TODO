@@ -1,3 +1,2 @@
 * prepare prototype.
 * run software on hardware.
-* add checksums to communication protocol (ex. xor of all fileds, mapped to 1 hex).

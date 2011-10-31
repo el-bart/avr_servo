@@ -22,6 +22,8 @@ private:
   void skipUntilNewCommand(void);
   void skipEndMarkers(void);
   bool execute(uint8_t srvNo, char mode, uint8_t pos, ChronoTable::Positions &posTab);
+  void replyOk(char srvName);
+  void replyError(char srvName);
 
   QueueSend          &qSend_;
   QueueRecv          &qRecv_;
