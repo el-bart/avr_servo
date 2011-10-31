@@ -26,16 +26,17 @@ ISR(BADISR_vect)
   uassert(!"unhandled interrupt");
 }
 
-volatile int bytes_=0;      
 
-
+namespace
+{
 inline ChronoTable::Positions getDefaultPositions(const PersistentSettings &s)
 {
   ChronoTable::Positions out;
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
     out[i]=s.posDef().read(i);
   return out;
-}
+} // getDefaultPositions()
+} // unnamed namespace
 
 
 //
@@ -76,7 +77,7 @@ int main(void)
   ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
   QueueSend          qSend;                                         // output queue
   QueueRecv          qRecv;                                         // input queue
-  USART              rs(qSend, qRecv);                              // prepare USART to work
+  USART              usart(qSend, qRecv);                           // prepare USART to work
   Timer1             t1;                                            // configure T1
   Timer2             t2;                                            // configure T2
   PhaseGenerator     phaseGen;                                      // controling facility
@@ -106,6 +107,7 @@ int main(void)
       case 3:
       case 4:
            proto.process( chronoTable.currentPos() );
+           usart.sendData();
            break;
 
       case 5:
