@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "Noncopyable.hpp"
 
 /** \brief 16-bit timer1 wrapper.
