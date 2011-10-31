@@ -4,6 +4,7 @@
 #include "config.hpp"
 #include <inttypes.h>
 #include "Table.hpp"
+#include "PersistentSettings.hpp"
 
 /** \brief class gathering and parsing positions, providing
  *         fast-to-process output table.
@@ -15,9 +16,14 @@ public:
    */
   struct Entry
   {
-    uint16_t time_;         ///< time to switch pin(s) off
-    uint8_t  mask_;         ///< mask of pins to be turned off
+    uint8_t time_;         ///< time to switch pin(s) off
+    uint8_t maskPB_;       ///< mask of pins to be turned off in port B
+    uint8_t maskPC_;       ///< mask of pins to be turned off in port C
+    uint8_t maskPD_;       ///< mask of pins to be turned off in port D
   }; // struct Entry
+
+  typedef Table<Entry, SERVO_COUNT>   Entries;
+  typedef Table<uint8_t, SERVO_COUNT> Positions;
 
   /** \brief initialize data.
    */
@@ -26,7 +32,7 @@ public:
   /** \brief return reference to table of current positions.
    *  \return reference fo current positions to be changed.
    */
-  Table<uint16_t, 8> &currentPos(void)
+  Positions &currentPos(void)
   {
     return cur_;
   }
@@ -45,8 +51,12 @@ public:
   }
 
 private:
-  Table<uint16_t, 8> cur_;  // current positions
-  Table<Entry, 8>   e_;     // processed entries
+  Positions          cur_;          // current positions
+  Entries            e_;            // processed entries
+  const uint8_t      defMaskPB_;    // mask to apply to all entries of port B
+  const uint8_t      defMaskPC_;    // mask to apply to all entries of port C
+  const uint8_t      defMaskPD_;    // mask to apply to all entries of port D
+  PersistentSettings settings_;     // <min;default;max> settings for each servo
 }; // class ChronoTable
 
 #endif

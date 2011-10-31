@@ -3,18 +3,21 @@
 #include <avr/interrupt.h>
 #include "ChronoTable.hpp"
 
-ChronoTable::ChronoTable(void)
+ChronoTable::ChronoTable(void):
+  defMaskPB_( _BV(PB0) | _BV(PB1) | _BV(PB2) | _BV(PB3) | _BV(PB4) | _BV(PB5) ),
+  defMaskPC_( _BV(PC0) | _BV(PC1) | _BV(PC2) | _BV(PC3) | _BV(PC4) | _BV(PC5) ),
+  defMaskPD_( _BV(PD2) | _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )
 {
-  // initially start with default startup values
+  // initially start with default values
   for(uint8_t i=0; i<8; ++i)
-    cur_[i]=12000;
+    cur_[i]=settings_.posDef().read(i);
   // compute table for given entries
   compute();
 }
 
 namespace
 {
-inline void bubbleSort(uint8_t (&idxs)[8], const Table<uint16_t, 8> &c)
+inline void bubbleSort(uint8_t (&idxs)[8], const ChronoTable::Positions &c)
 {
   // find proper order of elements
   for(uint8_t i=0; i<8; ++i)
@@ -42,7 +45,7 @@ inline void bubbleSort(uint8_t (&idxs)[8], const Table<uint16_t, 8> &c)
 void ChronoTable::compute(void)
 {
   cli();                                // disable interrupts for a moment of copying
-  const Table<uint16_t, 8> cur=cur_;    // make local copy (original may change in interrupts)
+  const Positions cur=cur_;             // make local copy (original may change in interrupts)
   sei();                                // interrupts are welcome now
   uint8_t idxs[8]={0,1,2,3,4,5,6,7};    // sorted indexes
   bubbleSort(idxs, cur);                // find proper order of elements
@@ -66,7 +69,7 @@ void ChronoTable::compute(void)
   }
 
   // fill up missing elements with zeros
-  const Entry zero={0, 0x00};
+  const Entry zero={0, 0x00, 0x00, 0x00};
   for(uint8_t i=idxOut; i<8; ++i)
     e_[i]=zero;
 }
