@@ -1,9 +1,10 @@
 host->device:
-  <servo_name><mode><pos1><pos2><end>
+  <servo_name><mode><pos1><pos2><check_sum><end>
   where:
     servo_name is 'a'..'r'
     mode is 'l' (lowest), 'h' (highest), 'd' (default), 's' (set)
     pos[12] are 1 byte encoded as 2 pritable hex digits
+    check_sum is xor of all previous bytes (1B), xored high/low half-byte and encoded as printable hex
     end is CR or LF (note: any sequence of CR/LF will threated as the end of line)
 
 device->host:
