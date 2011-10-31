@@ -8,6 +8,10 @@ PhaseGenerator::PhaseGenerator(void):
   defMaskPC_( uint8_t(~( _BV(PC0) | _BV(PC1) | _BV(PC2) | _BV(PC3) | _BV(PC4) | _BV(PC5) )) ),
   defMaskPD_( uint8_t(~( _BV(PD2) | _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )) )
 {
+  // setup output pins
+  DDRB|=~defMaskPB_;
+  DDRC|=~defMaskPC_;
+  DDRD|=~defMaskPD_;
 }
 
 void PhaseGenerator::rise(void) const
