@@ -1,3 +1,4 @@
+* controlls up to 18 servos.
 * Timer2 (8-bit) - generates interrupt every 1ms, to keep 5ms cycle.
 * Timer1 (16-bit) - used for counting when to change position of a given servos.
 * port outputs to use: PC0..PC5, PD2..PD7, PB0..PB5.
