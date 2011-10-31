@@ -1,6 +1,10 @@
 #ifndef INCLUDE_QUEUE_HPP_FILE
 #define INCLUDE_QUEUE_HPP_FILE
 
+#include "config.hpp"
+#include <inttypes.h>
+
+
 template<uint8_t N>
 class Queue
 {
@@ -21,7 +25,7 @@ public:
       ++begin_;
   }
 
-  uint8_t peep(uint8_t pos) const
+  uint8_t peek(uint8_t pos) const
   {
     const uint8_t idx=(begin_+pos)%N;
     return d_[idx];
