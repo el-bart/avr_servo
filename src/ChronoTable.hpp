@@ -52,9 +52,6 @@ public:
 private:
   Positions          cur_;          // current positions
   EntryTable         e_;            // processed entries
-  const uint8_t      defMaskPB_;    // mask to apply to all entries of port B
-  const uint8_t      defMaskPC_;    // mask to apply to all entries of port C
-  const uint8_t      defMaskPD_;    // mask to apply to all entries of port D
   PersistentSettings settings_;     // <min;default;max> settings for each servo
 }; // class ChronoTable
 

@@ -3,10 +3,7 @@
 #include <avr/interrupt.h>
 #include "ChronoTable.hpp"
 
-ChronoTable::ChronoTable(const Positions defaultPositions):
-  defMaskPB_( _BV(PB0) | _BV(PB1) | _BV(PB2) | _BV(PB3) | _BV(PB4) | _BV(PB5) ),
-  defMaskPC_( _BV(PC0) | _BV(PC1) | _BV(PC2) | _BV(PC3) | _BV(PC4) | _BV(PC5) ),
-  defMaskPD_( _BV(PD2) | _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )
+ChronoTable::ChronoTable(const Positions defaultPositions)
 {
   // initially start with default values
   cur_=defaultPositions;
