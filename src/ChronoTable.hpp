@@ -3,9 +3,11 @@
 
 #include "config.hpp"
 #include <inttypes.h>
+
 #include "Table.hpp"
-#include "PersistentSettings.hpp"
+#include "EntryTable.hpp"
 #include "Noncopyable.hpp"
+#include "PersistentSettings.hpp"
 
 /** \brief class gathering and parsing positions, providing
  *         fast-to-process output table.
@@ -13,17 +15,6 @@
 class ChronoTable: private Noncopyable
 {
 public:
-  /** \brief entry of a single processing data unit.
-   */
-  struct Entry
-  {
-    uint8_t time_;         ///< time to switch pin(s) off
-    uint8_t maskPB_;       ///< mask of pins to be turned off in port B
-    uint8_t maskPC_;       ///< mask of pins to be turned off in port C
-    uint8_t maskPD_;       ///< mask of pins to be turned off in port D
-  }; // struct Entry
-
-  typedef Table<Entry, SERVO_COUNT>   Entries;
   typedef Table<uint8_t, SERVO_COUNT> Positions;
 
   /** \brief initialize data.
@@ -42,6 +33,13 @@ public:
    */
   void update(void);
 
+  /** \brief get preprocessed entries, so that it can be applied to the ports.
+   */
+  const EntryTable &currentEntries(void) const
+  {
+    return e_;
+  }
+
   /** \brief get entry of a given number.
    *  \param p entry number to get.
    *  \return requested entry.
@@ -53,7 +51,7 @@ public:
 
 private:
   Positions          cur_;          // current positions
-  Entries            e_;            // processed entries
+  EntryTable         e_;            // processed entries
   const uint8_t      defMaskPB_;    // mask to apply to all entries of port B
   const uint8_t      defMaskPC_;    // mask to apply to all entries of port C
   const uint8_t      defMaskPD_;    // mask to apply to all entries of port D
