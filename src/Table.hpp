@@ -1,7 +1,3 @@
-/*
- * Table.hpp
- *
- */
 #ifndef INCLUDE_TABLE_HPP_FILE
 #define INCLUDE_TABLE_HPP_FILE
 

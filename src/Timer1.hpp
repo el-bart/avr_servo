@@ -1,7 +1,3 @@
-/*
- * Timer1.hpp
- *
- */
 #ifndef INCLUDE_TIMER1_HPP_FILE
 #define INCLUDE_TIMER1_HPP_FILE
 

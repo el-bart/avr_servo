@@ -1,7 +1,3 @@
-/*
- * USART.cpp
- *
- */
 #include "config.hpp"
 
 #include <avr/io.h>

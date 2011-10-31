@@ -1,7 +1,3 @@
-/*
- * PowerSave.hpp
- *
- */
 #ifndef INCLUDE_POWERSAVE_HPP_FILE
 #define INCLUDE_POWERSAVE_HPP_FILE
 

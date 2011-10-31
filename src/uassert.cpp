@@ -1,7 +1,3 @@
-/*
- * uassert.cpp
- *
- */
 #include "config.hpp"
 
 #include <util/delay.h>

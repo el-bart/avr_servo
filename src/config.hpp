@@ -1,7 +1,3 @@
-/*
- * config.hpp
- *
- */
 #ifndef INCLUDE_CONFIG_HPP_FILE
 #define INCLUDE_CONFIG_HPP_FILE
 

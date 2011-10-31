@@ -1,7 +1,3 @@
-/*
- * TableEEPROM.hpp
- *
- */
 #ifndef INCLUDE_TABLEEEPROM_HPP_FILE
 #define INCLUDE_TABLEEEPROM_HPP_FILE
 

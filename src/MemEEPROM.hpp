@@ -1,7 +1,3 @@
-/*
- * MemEEPROM.hpp
- *
- */
 #ifndef INCLUDE_MEMEEPROM_HPP_FILE
 #define INCLUDE_MEMEEPROM_HPP_FILE
 

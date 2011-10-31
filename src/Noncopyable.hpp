@@ -1,7 +1,3 @@
-/*
- * Noncopyable.hpp
- *
- */
 #ifndef INCLUDE_NONCOPYABLE_HPP_FILE
 #define INCLUDE_NONCOPYABLE_HPP_FILE
 

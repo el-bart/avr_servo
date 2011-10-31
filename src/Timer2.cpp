@@ -1,7 +1,3 @@
-/*
- * Timer2.cpp
- *
- */
 #include "Timer2.hpp"
 #include <avr/interrupt.h>
 

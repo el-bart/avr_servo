@@ -1,7 +1,3 @@
-/*
- * ChronoTable.hpp
- *
- */
 #ifndef INCLUDE_CHRONOTABLE_HPP_FILE
 #define INCLUDE_CHRONOTABLE_HPP_FILE
 

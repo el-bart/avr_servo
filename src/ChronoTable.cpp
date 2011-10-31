@@ -1,7 +1,3 @@
-/*
- * ChronoTable.cpp
- *
- */
 #include "config.hpp"
 #include <avr/io.h>
 #include <avr/interrupt.h>

@@ -1,5 +1,7 @@
 /*
- * main.cpp
+ * AVR_servo
+ *
+ * servo controller driver, written for AVR uC.
  *
  */
 #include "config.hpp"       // this file must be included as first one!
