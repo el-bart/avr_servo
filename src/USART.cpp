@@ -12,7 +12,7 @@
 // TODO: add test for baud-rate error and show error if value is over 1%
 
 //
-// I/O queues
+// I/O queues and helper funcitons
 //
 namespace
 {
@@ -20,21 +20,22 @@ namespace
 QueueRecv *g_recvQueue=NULL;
 // output queue
 QueueSend *g_sendQueue=NULL;
-// flag checking if transmition is in progress
+
 
 bool canSend(void)
 {
   return (UCSRA & _BV(UDRE));
-}
-} // unnamed namespace
+} // canSend()
 
 
-static inline void sendDataImpl(void)
+inline void sendDataImpl(void)
 {
   uassert( canSend() );
   uassert(g_sendQueue==NULL);
   UDR=g_sendQueue->pop();
-}
+} // sendDataImpl()
+} // unnamed namespace
+
 
 // USART RX completed interrupt
 ISR(USART_RXC_vect)
