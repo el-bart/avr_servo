@@ -2,7 +2,7 @@
 #define INCLUDE_CONFIG_HPP_FILE
 
 // units commonly used
-#define KHz   1000L
+#define KHz   (1000L)
 #define MHz   (1000L*KHz)
 
 // quarc frequency in [Hz]
@@ -15,6 +15,9 @@
 #define USART_BAUD (38400L)
 
 // max queue size
-#define QUEUE_MAX_SIZE 8
+#define QUEUE_MAX_SIZE (8)
+
+// servos count
+#define SERVO_COUNT (18)
 
 #endif
