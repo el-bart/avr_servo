@@ -73,8 +73,8 @@ int main(void)
 
   PersistentSettings settings;          // persistent settings
   ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
-  USART::QueueSend   qSend;             // output queue
-  USART::QueueRecv   qRecv;             // input queue
+  QueueSend          qSend;             // output queue
+  QueueRecv          qRecv;             // input queue
   USART              rs(qSend, qRecv);  // prepare USART to work
   Timer1             t1;                // configure T1
   Timer2             t2;                // configure T2

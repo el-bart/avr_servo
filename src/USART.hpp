@@ -1,18 +1,16 @@
 #ifndef INCLUDE_USART_HPP_FILE
 #define INCLUDE_USART_HPP_FILE
 
+#include "config.hpp"
 #include <inttypes.h>
 #include "Noncopyable.hpp"
-#include "Queue.hpp"
+#include "CommQueues.hpp"
 
 /** \brief set of operations on serial interface.
  */
 class USART: private Noncopyable
 {
 public:
-  typedef Queue<QUEUE_RECV_SIZE> QueueSend;
-  typedef Queue<QUEUE_SEND_SIZE> QueueRecv;
-
   /** \brief initialize USART.
    */
   USART(QueueSend &qSend, QueueRecv &qRecv);

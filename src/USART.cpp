@@ -17,9 +17,9 @@
 namespace
 {
 // input queue
-USART::QueueRecv *g_recvQueue=NULL;
+QueueRecv *g_recvQueue=NULL;
 // output queue
-USART::QueueSend *g_sendQueue=NULL;
+QueueSend *g_sendQueue=NULL;
 // flag checking if transmition is in progress
 
 bool canSend(void)
