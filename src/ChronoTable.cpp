@@ -3,16 +3,15 @@
 #include <avr/interrupt.h>
 #include "ChronoTable.hpp"
 
-ChronoTable::ChronoTable(void):
+ChronoTable::ChronoTable(const Positions defaultPositions):
   defMaskPB_( _BV(PB0) | _BV(PB1) | _BV(PB2) | _BV(PB3) | _BV(PB4) | _BV(PB5) ),
   defMaskPC_( _BV(PC0) | _BV(PC1) | _BV(PC2) | _BV(PC3) | _BV(PC4) | _BV(PC5) ),
   defMaskPD_( _BV(PD2) | _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )
 {
   // initially start with default values
-  for(uint8_t i=0; i<8; ++i)
-    cur_[i]=settings_.posDef().read(i);
-  // compute table for given entries
-  compute();
+  cur_=defaultPositions;
+  // compute and update table for given entries
+  update();
 }
 
 namespace
@@ -42,7 +41,7 @@ inline void bubbleSort(uint8_t (&idxs)[8], const ChronoTable::Positions &c)
 } // bubbleSort()
 } // unnamed namespace
 
-void ChronoTable::compute(void)
+void ChronoTable::update(void)
 {
   cli();                                // disable interrupts for a moment of copying
   const Positions cur=cur_;             // make local copy (original may change in interrupts)

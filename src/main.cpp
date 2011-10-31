@@ -26,6 +26,16 @@ ISR(BADISR_vect)
 
 volatile int bytes_=0;      
 
+
+inline ChronoTable::Positions getDefaultPositions(const PersistentSettings &s)
+{
+  ChronoTable::Positions out;
+  for(uint8_t i=0; i<SERVO_COUNT; ++i)
+    out[i]=s.posDef().read(i);
+  return out;
+}
+
+
 //
 // MAIN
 //
@@ -65,6 +75,13 @@ int main(void)
     while( !(UCSRA&(1<<UDRE)) );
   }
 #endif
+
+  PersistentSettings settings;  // persistent settings
+  ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
+  USART::init(chronoTable);     // prepare USART to work
+  Timer1             t1;        // configure T1
+  Timer2             t2;        // configure T2
+  sei();                        // allow interrupts globally
 
 #if 0
   while(true)

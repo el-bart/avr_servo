@@ -27,7 +27,7 @@ public:
 
   /** \brief initialize data.
    */
-  ChronoTable(void);
+  explicit ChronoTable(const Positions defaultPositions);
 
   /** \brief return reference to table of current positions.
    *  \return reference fo current positions to be changed.
@@ -39,7 +39,7 @@ public:
 
   /** \brief compute new entry table basing on new settings.
    */
-  void compute(void);
+  void update(void);
 
   /** \brief get entry of a given number.
    *  \param p entry number to get.
