@@ -7,7 +7,7 @@ ChronoTable::ChronoTable(void)
 {
   // initially start with default startup values
   for(uint8_t i=0; i<8; ++i)
-    cur_.set(i, 12000);
+    cur_[i]=12000;
   // compute table for given entries
   compute();
 }
@@ -22,7 +22,7 @@ inline void bubbleSort(uint8_t (&idxs)[8], const Table<uint16_t, 8> &c)
     bool changed=false;
     for(uint8_t j=1; j<8; ++j)
     {
-      if( c.get(idxs[j-1]) > c.get(idxs[j]) )
+      if( c[idxs[j-1]] > c[idxs[j]] )
       {
         // swap
         const uint8_t tmp=idxs[j-1];
@@ -54,19 +54,19 @@ void ChronoTable::compute(void)
     uint8_t mask=0xFF;
     mask&=~_BV(idxs[i]);
     // try packing multiple entries into one, if possible
-    while( i<8-1 && cur.get(idxs[i])==cur.get(idxs[i+1]) )
+    while( i<8-1 && cur[idxs[i]]==cur[idxs[i+1]] )
     {
       ++i;
       mask&=~_BV(idxs[i]);
     }
     // save this entry
-    const Entry tmp={ cur.get(idxs[i]), mask };
-    e_.set(idxOut, tmp);
+    const Entry tmp={ cur[idxs[i]], mask };
+    e_[idxOut]=tmp;
     ++idxOut;
   }
 
   // fill up missing elements with zeros
   const Entry zero={0, 0x00};
   for(uint8_t i=idxOut; i<8; ++i)
-    e_.set(i, zero);
+    e_[i]=zero;
 }

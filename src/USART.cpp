@@ -103,7 +103,7 @@ void parseInQueue(void)
     return;
 
   // we have valid data, so we apply it
-  g_chronoTable->currentPos().set(servo, pos);
+  g_chronoTable->currentPos()[servo]=pos;
 
   // and we send the response
   USART::send(servo);

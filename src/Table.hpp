@@ -15,24 +15,23 @@ public:
   typedef T value_type;
 
   /** \brief access operator - const version.
-   *  \param s servo's number to get entry for.
+   *  \param n table entry to use.
    *  \return servo's entry.
    */
-  const T get(const uint8_t s) const
+  T operator[](const uint8_t n) const
   {
-    uassert(s<N);
-    return t_[s];
+    //uassert(n<N);
+    return t_[n];
   }
 
   /** \brief access operator - non-const version.
-   *  \param s servo's number to get entry for.
-   *  \param v new value.
+   *  \param n table entry to use.
    *  \return servo's entry.
    */
-  void set(const uint8_t s, const T v)
+  T &operator[](const uint8_t n)
   {
-    uassert(s<N);
-    t_[s]=v;
+    //uassert(n<N);
+    return t_[n];
   }
 
 private:

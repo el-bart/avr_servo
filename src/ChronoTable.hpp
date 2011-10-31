@@ -41,7 +41,7 @@ public:
    */
   const Entry get(const uint8_t p) const
   {
-    return e_.get(p);
+    return e_[p];
   }
 
 private:
