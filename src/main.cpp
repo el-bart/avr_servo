@@ -9,8 +9,8 @@
 #include <util/delay.h>
 
 #include "USART.hpp"
-//#include "Timer0.hpp"
 #include "Timer1.hpp"
+#include "Timer2.hpp"
 #include "PowerSave.hpp"
 #include "ChronoTable.hpp"
 #include "uassert.hpp"
