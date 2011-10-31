@@ -15,6 +15,7 @@
 #include "Timer2.hpp"
 #include "PowerSave.hpp"
 #include "ChronoTable.hpp"
+#include "CommProtocol.hpp"
 #include "PhaseGenerator.hpp"
 #include "uassert.hpp"
 
@@ -42,7 +43,7 @@ inline ChronoTable::Positions getDefaultPositions(const PersistentSettings &s)
 //
 int main(void)
 {
-#if 1
+#if 0
   #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
   DDRB|=0xFF;       // PB operates as output
 
@@ -71,69 +72,51 @@ int main(void)
   }
 #endif
 
-  PersistentSettings settings;          // persistent settings
+  PersistentSettings settings;                                      // persistent settings
   ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
-  QueueSend          qSend;             // output queue
-  QueueRecv          qRecv;             // input queue
-  USART              rs(qSend, qRecv);  // prepare USART to work
-  Timer1             t1;                // configure T1
-  Timer2             t2;                // configure T2
-  PhaseGenerator     phaseGen;          // controling facility
-  sei();                                // allow interrupts globally
+  QueueSend          qSend;                                         // output queue
+  QueueRecv          qRecv;                                         // input queue
+  USART              rs(qSend, qRecv);                              // prepare USART to work
+  Timer1             t1;                                            // configure T1
+  Timer2             t2;                                            // configure T2
+  PhaseGenerator     phaseGen;                                      // controling facility
+  CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
+  sei();                                                            // allow interrupts globally
 
-  bool    hasMoreToDo=true;
-  uint8_t lastStep   =0xFF;
   while(true)
   {
-    const uint8_t step=t2.currentStep();
-    if(lastStep!=step)
-    {
-      lastStep   =step;
-      hasMoreToDo=true;
-    }
 
     // cycle throught stages.
-    switch(step)
+    switch( t2.currentStep() )
     {
       // initial 'high' state
       case 0:
-           if(hasMoreToDo)
-           {
-             phaseGen.rise();
-             chronoTable.update();
-           }
-           // TODO: protocol I/O?
-           hasMoreToDo=false;
+           phaseGen.rise();
+           chronoTable.update();
            break;
 
       // PWM generation for servos
       case 1:
-           if(hasMoreToDo)
-           {
-             phaseGen.generate( t1, chronoTable.currentEntries() );
-             phaseGen.fall();
-           }
-           // TODO: protocol I/O?
-           hasMoreToDo=false;
+           phaseGen.generate( t1, chronoTable.currentEntries() );
+           phaseGen.fall();
            break;
 
       // 'wait' in 'low' state
       case 2:
       case 3:
       case 4:
-           // TODO: protocol I/O?
+           proto.process( chronoTable.currentPos() );
            break;
 
       case 5:
       default:
            t2.resetStep();
-           hasMoreToDo=true;
            break;
     } // switch(current_step)
 
-    if(!hasMoreToDo)
-      PowerSave::idle();
-  }
+    PowerSave::idle();
+
+  } // while(true)
 
 #if 0
   while(true)
