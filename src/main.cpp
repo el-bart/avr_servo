@@ -84,11 +84,21 @@ int main(void)
   CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
   sei();                                                            // allow interrupts globally
 
+  uint8_t lastStep=0xFF;
   while(true)
   {
 
-    // cycle throught stages.
-    switch( t2.currentStep() )
+    // wait in idle mode while nothing happens
+    const uint8_t step=t2.currentStep();
+    if(step==lastStep)
+    {
+      PowerSave::idle();
+      continue;
+    }
+    lastStep=step;
+
+    // something has to be done - process next stage
+    switch(step)
     {
       // initial 'high' state
       case 0:
@@ -115,8 +125,6 @@ int main(void)
            t2.resetStep();
            break;
     } // switch(current_step)
-
-    PowerSave::idle();
 
   } // while(true)
 
