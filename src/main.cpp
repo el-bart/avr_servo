@@ -41,15 +41,9 @@ inline ChronoTable::Positions getDefaultPositions(const PersistentSettings &s)
 //
 int main(void)
 {
-  DDRB|=0xFF;       // PB operates as output
-  //ChronoTable ct;   // table of computed positions to use
-  //USART::init(ct);  // prepare USART to work
-  //Timer1      t1;   // configure T1
-  //Timer0      t0;   // configure T0
-  //sei();            // allow interrupts globally
-
 #if 1
-#define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
+  #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
+  DDRB|=0xFF;       // PB operates as output
 
   // clock divider register (computed from baud rate and oscilator frequency)
   UBRRH=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>8) & 0x00FF );
