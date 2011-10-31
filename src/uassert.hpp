@@ -5,10 +5,10 @@
 #ifndef INCLUDE_UASSERT_HPP_FILE
 #define INCLUDE_UASSERT_HPP_FILE
 
-#include <inttypes.h>
-
 #ifndef NDEBUG
 // debug
+
+#include <inttypes.h>
 
 namespace detail
 {

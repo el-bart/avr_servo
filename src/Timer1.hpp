@@ -6,8 +6,7 @@
 #define INCLUDE_TIMER1_HPP_FILE
 
 #include "config.hpp"
-#include "Hardware/io.hpp"
-#include "Hardware/Timer1.hpp"
+#include <avr/io.h>
 #include "Noncopyable.hpp"
 
 /** \brief timer1 wrapper.
@@ -19,10 +18,6 @@ public:
    *  \note timer starts as stopped.
    */
   Timer1(void);
-  /** \brief mark timer as not used.
-   *  \note it does not touch timer settings.
-   */
-  ~Timer1(void);
 
   /** \brief start timer (resets counter to 0).
    */
@@ -41,7 +36,7 @@ public:
    */
   uint16_t get(void) const
   {
-    return Hardware::Timer1::getValue();
+    return TCNT1;
   }
 }; // class Timer1
 

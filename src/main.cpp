@@ -4,9 +4,9 @@
  */
 #include "config.hpp"       // this file must be included as first one!
 
-#include "Hardware/io.hpp"
-#include "Hardware/interrupt.hpp"
-#include "Hardware/delay.hpp"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "USART.hpp"
 //#include "Timer0.hpp"
@@ -22,21 +22,21 @@ ISR(BADISR_vect)
   uassert(!"unhandled interrupt");
 }
 
+volatile int bytes_=0;      
+
 //
 // MAIN
 //
 int main(void)
 {
-#if 0
   DDRB|=0xFF;       // PB operates as output
-#endif
   //ChronoTable ct;   // table of computed positions to use
   //USART::init(ct);  // prepare USART to work
   //Timer1      t1;   // configure T1
   //Timer0      t0;   // configure T0
   //sei();            // allow interrupts globally
 
-#if 0
+#if 1
 #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
 
   // clock divider register (computed from baud rate and oscilator frequency)

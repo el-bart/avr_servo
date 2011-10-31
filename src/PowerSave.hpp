@@ -6,7 +6,7 @@
 #define INCLUDE_POWERSAVE_HPP_FILE
 
 #include "config.hpp"
-#include "Hardware/PowerSave.hpp"
+#include <avr/sleep.h>
 
 /** \brief power-consumption reducing calls.
  */
@@ -16,7 +16,8 @@ struct PowerSave
    */
   static void idle(void)
   {
-    Hardware::PowerSave::enterIdleMode();
+    set_sleep_mode(SLEEP_MODE_IDLE);
+    sleep_mode();
   }
 }; // struct PowerSave
 

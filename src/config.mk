@@ -1,6 +1,9 @@
 # name of the application
 export PROGRAM_NAME:=avr_servo
 
+# default
+TC:=avr
+
 #
 # AVR
 #
@@ -9,7 +12,7 @@ ifeq ($(TC),avr)
 export CC :=avr-gcc
 export CXX:=avr-g++
 export OBJCOPY:=avr-objcopy
-export LD :=$(CXX)
+export LD :=$(CC)
 
 # tools settings
 export MCU_TYPE:=atmega8
@@ -29,7 +32,7 @@ ifeq ($(TC),gcc)
 export CC :=gcc
 export CXX:=g++
 export OBJCOPY:=objcopy
-export LD :=$(CXX)
+export LD :=$(CC)
 endif # TC
 
 #
