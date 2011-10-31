@@ -1,11 +1,11 @@
 #include "config.hpp"
 
+#include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 #include "uassert.hpp"
 #include "USART.hpp"
-#include "Queue.hpp"
 
 #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
 
@@ -16,85 +16,41 @@
 //
 namespace
 {
-ChronoTable *g_chronoTable=NULL;
-
 // input queue
-Queue<QUEUE_RECV_SIZE> g_inQueue;
+USART::QueueRecv *g_recvQueue=NULL;
 // output queue
-Queue<QUEUE_SEND_SIZE> g_outQueue;
+USART::QueueSend *g_sendQueue=NULL;
+// flag checking if transmition is in progress
 
-
-void parseInQueue(void)
+bool canSend(void)
 {
-  if( g_inQueue.size()<4 )
-    return;
-
-  // get servo number
-  const uint8_t servo=g_inQueue.pop();
-  // get servo position
-  const uint8_t posH =g_inQueue.peep(0);
-  const uint8_t posL =g_inQueue.peep(1);
-  // compute sum
-  const uint8_t sum  =servo^posH^posL;
-
-  // put together position
-  const uint16_t pos=(posH<<8)|posL;
-
-  // check if checksum is valid
-  if( sum!=g_inQueue.peep(2) )
-    return;
-  // if sum is fine, clear the queue
-  g_inQueue.clear();
-
-  // check if servo number is valid
-  if(servo>7)
-    return;
-  // check if position is valid
-  if(pos>24000)
-    return;
-  // invalid pointer to table?
-  if( g_chronoTable==NULL )
-    return;
-
-  // we have valid data, so we apply it
-  g_chronoTable->currentPos()[servo]=pos;
-
-  // and we send the response
-  USART::send(servo);
-  USART::send(sum);
-} // parseInQueue()
+  return (UCSRA & _BV(UDRE));
+}
 } // unnamed namespace
 
 
 static inline void sendDataImpl(void)
 {
-  uassert( UCSRA & _BV(UDRE) );
-  UDR=g_outQueue.pop();
+  uassert( canSend() );
+  uassert(g_sendQueue==NULL);
+  UDR=g_sendQueue->pop();
 }
-
-extern volatile int bytes_;              
 
 // USART RX completed interrupt
 ISR(USART_RXC_vect)
 {
-  const uint8_t c=UDR;          // read form hardware ASAP
-
-g_inQueue.push(c);          
-//return;
-
-  ++bytes_;         
-  if(bytes_>10)     
-    bytes_=0;       
-  return;           
-
-  g_inQueue.push(c);            // enqueue new byte
-  parseInQueue();               // try processing input queue
+  const uint8_t b=UDR;          // read form hardware ASAP
+  if(g_recvQueue==NULL)
+    return;
+  g_recvQueue->push(b);         // enqueue new byte
 }
 
 // USART TX completed interrupt
 ISR(USART_TXC_vect)
 {
-  if( g_outQueue.size()>0 )     // if have something to send
+  if(g_sendQueue==NULL)
+    return;
+  if( g_sendQueue->size()>0 )   // if have something to send
     sendDataImpl();
 }
 
@@ -102,12 +58,14 @@ ISR(USART_TXC_vect)
 ISR(USART_UDRE_vect)
 {
   UCSRB&=~_BV(UDRIE);           // data registry empty - disable interrupt
-  if( g_outQueue.size()>0 )     // if data register is empty and we have data to send
+  if(g_sendQueue==NULL)
+    return;
+  if( g_sendQueue->size()>0 )   // if data register is empty and we have data to send
     sendDataImpl();             // we can send it now
 }
 
 
-void USART::init(ChronoTable &ct)
+USART::USART(QueueSend &qSend, QueueRecv &qRecv)
 {
   // clock divider register (computed from baud rate and oscilator frequency)
   UBRRH=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>8) & 0x00FF );
@@ -125,23 +83,23 @@ void USART::init(ChronoTable &ct)
   PORTD|= _BV(PD0);     // RX high with pull-up
   DDRD |= _BV(PD1);     // TX as out
 
-  // set global pointer
-  g_chronoTable=&ct;
+  // set global pointers
+  g_recvQueue=&qRecv;
+  g_sendQueue=&qSend;
 }
 
-void USART::send(uint8_t b)
+USART::~USART(void)
 {
-  g_outQueue.push(b);               // enqueue next char to send
-  if( g_outQueue.size()==1 )        // this might be first char to send
-    UCSRB|=_BV(UDRIE);              // signal on data registry empty.
+  g_recvQueue=NULL;
+  g_sendQueue=NULL;
+}
+
+void USART::sendData(void)
+{
+  uassert(g_sendQueue!=NULL);
+  if( g_sendQueue->size()>0 )       // this might be first char to send
+    if( canSend() )                 // no transmition is ongoing right now
+      UCSRB|=_BV(UDRIE);            // signal on data registry empty.
                                     // if transmition has not yet started this will
                                     // send initial (first) byte as soon as USART is ready
-}
-
-uint8_t USART::recv(void)
-{
-  while( g_inQueue.size()==0 )
-  {
-  }
-  return g_inQueue.pop();
 }

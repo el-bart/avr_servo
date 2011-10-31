@@ -1,24 +1,26 @@
 #ifndef INCLUDE_USART_HPP_FILE
 #define INCLUDE_USART_HPP_FILE
 
-#include <stdio.h>
 #include <inttypes.h>
-#include "ChronoTable.hpp"
+#include "Noncopyable.hpp"
+#include "Queue.hpp"
 
 /** \brief set of operations on serial interface.
  */
-struct USART
+class USART: private Noncopyable
 {
+public:
+  typedef Queue<QUEUE_RECV_SIZE> QueueSend;
+  typedef Queue<QUEUE_SEND_SIZE> QueueRecv;
+
   /** \brief initialize USART.
    */
-  static void init(ChronoTable &ct);
+  USART(QueueSend &qSend, QueueRecv &qRecv);
+  ~USART(void);
 
-  /** \brief send singe byte.
-   *  \param b byte to send.
+  /** \brief signal begining of the sending data.
    */
-  static void send(uint8_t b);
-
-  static uint8_t recv(void);
-}; // struct USART
+  void sendData(void);
+}; // class USART
 
 #endif
