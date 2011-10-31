@@ -98,7 +98,10 @@ int main(void)
       // initial 'high' state
       case 0:
            if(hasMoreToDo)
+           {
+             phaseGen.rise();
              chronoTable.update();
+           }
            // TODO: protocol I/O?
            hasMoreToDo=false;
            break;
@@ -106,7 +109,10 @@ int main(void)
       // PWM generation for servos
       case 1:
            if(hasMoreToDo)
+           {
              phaseGen.generate( t1, chronoTable.currentEntries() );
+             phaseGen.fall();
+           }
            // TODO: protocol I/O?
            hasMoreToDo=false;
            break;
