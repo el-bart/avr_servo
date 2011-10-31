@@ -5,6 +5,7 @@
 
 #include "uassert.hpp"
 #include "USART.hpp"
+#include "Queue.hpp"
 
 #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
 
@@ -17,57 +18,10 @@ namespace
 {
 ChronoTable *g_chronoTable=NULL;
 
-
-template<uint8_t N>
-class Queue
-{
-public:
-  Queue(void):
-    size_(0)
-  {
-  }
-
-  void push(uint8_t b)
-  {
-    if(size_==N)
-      pop();
-    d_[size_]=b;
-    ++size_;
-  }
-
-  uint8_t peep(uint8_t pos)
-  {
-    return d_[pos];
-  }
-
-  uint8_t pop(void)
-  {
-    const uint8_t tmp=d_[0];
-    for(uint8_t i=1; i<size_; ++i)
-      d_[i-1]=d_[i];
-    --size_;
-    return tmp;
-  }
-
-  void clear(void)
-  {
-    size_=0;
-  }
-
-  uint8_t size(void)
-  {
-    return size_;
-  }
-
-private:
-  volatile uint8_t size_;
-  volatile uint8_t d_[N];
-}; // class Queue
-
 // input queue
-Queue<4> g_inQueue;
+Queue<QUEUE_RECV_SIZE> g_inQueue;
 // output queue
-Queue<2> g_outQueue;
+Queue<QUEUE_SEND_SIZE> g_outQueue;
 
 
 void parseInQueue(void)
