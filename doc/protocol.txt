@@ -7,7 +7,9 @@ host->device:
     end is CR or LF (note: any sequence of CR/LF will threated as the end of line)
 
 device->host:
-  <servo_no>OK<end>
+  <servo_no>ok<end>
+  or
+  <servo_no>error<end>
   where:
     servo_no is 'a'..'r'
     end is CR
