@@ -29,13 +29,11 @@ public:
   /** \brief get current counter value.
    *  \return counter value.
    *
-   *  this returns number of micro seconds since started. this means
-   *  8000 is 1ms, thus making typical servo to work in range
-   *  8000:16000, with center at 12000, though this may warry between
-   *  different devices.
+   *  counter returns current timer setting. it gives 1000 ticks every 1ms.
    */
   uint16_t get(void) const
   {
+    // interruptions must be disabled, to prevent races when reading 16-bit register.
     cli();
     const uint16_t tmp=TCNT1;
     sei();
