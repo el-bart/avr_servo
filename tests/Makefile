@@ -74,7 +74,7 @@ TEST_PROGRAM_NAME=$(PROGRAM_NAME).t
 export TEST_PROGRAM_NAME
 
 .PHONY: all
-all: debug
+all: test
 
 .PHONY: debug
 debug: CFLAGS+=-g3
