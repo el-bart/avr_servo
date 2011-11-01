@@ -1,0 +1,8 @@
+* operating up to 18 servos.
+* persistent declaration of min/max positions servo cannot overcome.
+* persistent declaration of default servos position.
+* RS-232 communication over simple, text-based (i.e. readable) protocol.
+* watchdog ensuring self-recovery after a failure.
+* low power consumption.
+* overcurrent fuse protection.
+* 0.7 deg precision for typical servos.
