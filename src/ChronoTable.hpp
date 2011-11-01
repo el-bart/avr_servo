@@ -4,7 +4,6 @@
 #include "config.hpp"
 #include <inttypes.h>
 
-#include "Table.hpp"
 #include "Positions.hpp"
 #include "EntryTable.hpp"
 #include "Noncopyable.hpp"

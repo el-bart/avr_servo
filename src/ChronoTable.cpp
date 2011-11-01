@@ -1,6 +1,4 @@
 #include "config.hpp"
-#include <avr/io.h>
-#include <avr/interrupt.h>
 
 #include "ChronoTable.hpp"
 #include "bubbleSort.hpp"
