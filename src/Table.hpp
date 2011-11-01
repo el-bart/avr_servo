@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include <inttypes.h>
+
 #include "uassert.hpp"
 
 /** \brief table of given elements

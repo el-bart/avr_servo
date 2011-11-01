@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include <avr/io.h>
+
 #include "Noncopyable.hpp"
 
 /** \brief 8-bit timer0 wrapper.

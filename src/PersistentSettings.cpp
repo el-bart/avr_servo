@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include "PersistentSettings.hpp"
 
 PersistentSettings::PersistentSettings(void):

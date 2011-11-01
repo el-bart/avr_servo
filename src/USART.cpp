@@ -1,11 +1,10 @@
 #include "config.hpp"
-
 #include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "uassert.hpp"
 #include "USART.hpp"
+#include "uassert.hpp"
 
 #define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
 

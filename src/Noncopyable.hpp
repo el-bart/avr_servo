@@ -1,6 +1,8 @@
 #ifndef INCLUDE_NONCOPYABLE_HPP_FILE
 #define INCLUDE_NONCOPYABLE_HPP_FILE
 
+#include "config.hpp"
+
 /** \brief boost::noncopyable clone.
  */
 class Noncopyable

@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include <inttypes.h>
+
 #include "Table.hpp"
 #include "TableEEPROM.hpp"
 

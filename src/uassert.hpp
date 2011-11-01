@@ -4,6 +4,7 @@
 #ifndef NDEBUG
 // debug
 
+#include "config.hpp"
 #include <inttypes.h>
 
 namespace detail

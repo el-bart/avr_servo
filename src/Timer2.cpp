@@ -1,5 +1,7 @@
-#include "Timer2.hpp"
+#include "config.hpp"
 #include <avr/interrupt.h>
+
+#include "Timer2.hpp"
 
 namespace
 {

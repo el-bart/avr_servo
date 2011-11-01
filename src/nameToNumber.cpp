@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include "nameToNumber.hpp"
 
 int nameToNumber(char n)
