@@ -8,7 +8,6 @@
 #include "Positions.hpp"
 #include "EntryTable.hpp"
 #include "Noncopyable.hpp"
-#include "PersistentSettings.hpp"
 
 /** \brief class gathering and parsing positions, providing
  *         fast-to-process output table.
@@ -49,9 +48,8 @@ public:
   }
 
 private:
-  Positions          cur_;          // current positions
-  EntryTable         e_;            // processed entries
-  PersistentSettings settings_;     // <min;default;max> settings for each servo
+  Positions  cur_;      // current positions
+  EntryTable e_;        // processed entries
 }; // class ChronoTable
 
 #endif
