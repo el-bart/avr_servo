@@ -97,7 +97,7 @@ void CommProtocol::process(Positions &posTab)
     // test checksum correctness
     const char checksumRecv=qRecv_.pop();
     const char checksumComp=computeChecksum(servoName, mode, posTmp[0], posTmp[1]);
-    if(checksumRecv!=checksumComp)
+    if(checksumRecv!=checksumComp && checksumRecv!='?')
     {
       replyError(servoName);
       skipUntilNewCommand();
