@@ -208,4 +208,18 @@ void testObj::test<18>(void)
   check(0<<0, 0<<0, 1<<7);
 }
 
+//
+// misc
+//
+
+// test all servos
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  for(int i=0; i<18; ++i)
+    servoNoToMask(i, e_);
+  check(0b00111111, 0b00111111, 0b11111100);
+}
+
 } // namespace tut
