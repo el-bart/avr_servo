@@ -3,7 +3,7 @@
 #include <avr/interrupt.h>
 
 #include "ChronoTable.hpp"
-#include "bubleSort.hpp"
+#include "bubbleSort.hpp"
 #include "servoNoToMask.hpp"
 
 
