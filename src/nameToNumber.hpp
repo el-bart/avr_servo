@@ -2,7 +2,6 @@
 #define INCLUDE_NAMETONUMBER_HPP_FILE
 
 #include "config.hpp"
-#include <inttypes.h>
 
 /** \brief converts name of the servo ('a'...'r') to it's number (0..17).
  *  \param n name of the servo.
