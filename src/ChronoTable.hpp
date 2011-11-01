@@ -5,6 +5,7 @@
 #include <inttypes.h>
 
 #include "Table.hpp"
+#include "Positions.hpp"
 #include "EntryTable.hpp"
 #include "Noncopyable.hpp"
 #include "PersistentSettings.hpp"
@@ -15,8 +16,6 @@
 class ChronoTable: private Noncopyable
 {
 public:
-  typedef Table<uint8_t, SERVO_COUNT> Positions;
-
   /** \brief initialize data.
    */
   explicit ChronoTable(const Positions defaultPositions);

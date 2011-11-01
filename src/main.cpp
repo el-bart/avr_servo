@@ -29,9 +29,9 @@ ISR(BADISR_vect)
 
 namespace
 {
-inline ChronoTable::Positions getDefaultPositions(const PersistentSettings &s)
+inline Positions getDefaultPositions(const PersistentSettings &s)
 {
-  ChronoTable::Positions out;
+  Positions out;
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
     out[i]=s.posDef().read(i);
   return out;

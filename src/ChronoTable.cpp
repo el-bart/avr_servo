@@ -1,7 +1,10 @@
 #include "config.hpp"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
 #include "ChronoTable.hpp"
+#include "bubleSort.hpp"
+#include "servoNoToMask.hpp"
 
 
 ChronoTable::ChronoTable(const Positions defaultPositions)
@@ -11,58 +14,6 @@ ChronoTable::ChronoTable(const Positions defaultPositions)
   // compute and update table for given entries
   update();
 }
-
-
-namespace
-{
-inline void bubbleSort(uint8_t (&idxs)[SERVO_COUNT], const ChronoTable::Positions &c)
-{
-  // find proper order of elements
-  for(uint8_t i=0; i<SERVO_COUNT; ++i)
-  {
-    bool changed=false;
-    for(uint8_t j=1; j<SERVO_COUNT; ++j)
-    {
-      if( c[idxs[j-1]] > c[idxs[j]] )
-      {
-        // swap
-        const uint8_t tmp=idxs[j-1];
-        idxs[j-1]=idxs[j];
-        idxs[j]  =tmp;
-        // mark some change
-        changed=true;
-      }
-    }
-    // already sorted?
-    if(!changed)
-      break;
-  }
-} // bubbleSort()
-
-
-void servoNoToMask(const uint8_t servoNo, Entry &out)
-{
-  if(servoNo<6) // PORTB?
-  {
-    const uint8_t tmp=servoNo;
-    out.maskPB_&=~_BV(tmp);
-    return;
-  }
-  if(servoNo<12) // PORTC?
-  {
-    const uint8_t tmp=servoNo-6;
-    out.maskPC_&=~_BV(tmp);
-    return;
-  }
-  if(servoNo<18) // PORTD?
-  {
-    const uint8_t tmp=servoNo-12+2;
-    out.maskPD_&=~_BV(tmp);
-    return;
-  }
-  // if we're here, it means invalid servo number. entry will be skipped...
-} // servoNoToMask()
-} // unnamed namespace
 
 
 void ChronoTable::update(void)

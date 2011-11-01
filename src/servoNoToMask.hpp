@@ -1,0 +1,32 @@
+#ifndef INCLUDE_SERVONOTOMASK_HPP_FILE
+#define INCLUDE_SERVONOTOMASK_HPP_FILE
+
+#include "config.hpp"
+#include <avr/io.h>
+
+#include "EntryTable.hpp"
+
+inline void servoNoToMask(const uint8_t servoNo, Entry &out)
+{
+  if(servoNo<6) // PORTB?
+  {
+    const uint8_t tmp=servoNo;
+    out.maskPB_&=~_BV(tmp);
+    return;
+  }
+  if(servoNo<12) // PORTC?
+  {
+    const uint8_t tmp=servoNo-6;
+    out.maskPC_&=~_BV(tmp);
+    return;
+  }
+  if(servoNo<18) // PORTD?
+  {
+    const uint8_t tmp=servoNo-12+2;
+    out.maskPD_&=~_BV(tmp);
+    return;
+  }
+  // if we're here, it means invalid servo number. entry will be skipped...
+} // servoNoToMask()
+
+#endif

@@ -53,7 +53,7 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 } // unnamed namespace
 
 
-void CommProtocol::process(ChronoTable::Positions &posTab)
+void CommProtocol::process(Positions &posTab)
 {
   while( qRecv_.size()>=1+1+2+1+1 )
   {
@@ -161,7 +161,7 @@ void CommProtocol::skipEndMarkers(void)
 }
 
 
-bool CommProtocol::execute(const uint8_t srvNo, const char mode, const uint8_t pos, ChronoTable::Positions &posTab)
+bool CommProtocol::execute(const uint8_t srvNo, const char mode, const uint8_t pos, Positions &posTab)
 {
   // read these to make code shorter later on
   const uint8_t pMin=settings_.posMin().read(srvNo);
