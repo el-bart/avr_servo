@@ -37,15 +37,6 @@ public:
     return e_;
   }
 
-  /** \brief get entry of a given number.
-   *  \param p entry number to get.
-   *  \return requested entry.
-   */
-  const Entry get(const uint8_t p) const
-  {
-    return e_[p];
-  }
-
 private:
   Positions  cur_;      // current positions
   EntryTable e_;        // processed entries
