@@ -13,6 +13,7 @@
 #include "USART.hpp"
 #include "Timer1.hpp"
 #include "Timer2.hpp"
+#include "Watchdog.hpp"
 #include "PowerSave.hpp"
 #include "ChronoTable.hpp"
 #include "CommProtocol.hpp"
@@ -73,6 +74,7 @@ int main(void)
   }
 #endif
 
+  Watchdog           wdg;                                           // initialize watchdog (disable by default)
   PersistentSettings settings;                                      // persistent settings
   ChronoTable        chronoTable( getDefaultPositions(settings) );  // chronology table
   QueueSend          qSend;                                         // output queue
@@ -82,6 +84,7 @@ int main(void)
   Timer2             t2;                                            // configure T2
   PhaseGenerator     phaseGen;                                      // controling facility
   CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
+  wdg.enable();                                                     // enable watchdog
   sei();                                                            // allow interrupts globally
 
   uint8_t lastStep=0xFF;
@@ -122,7 +125,8 @@ int main(void)
 
       case 5:
       default:
-           t2.resetStep();
+           wdg.reset();         // signal watchdog system is working fine
+           t2.resetStep();      // reset step counter (i.e. start new cycle)
            break;
     } // switch(current_step)
 
