@@ -136,7 +136,7 @@ void CommProtocol::skipUntilNewCommand(void)
     const char c=qRecv_.peek(i);
     if(c=='\n' || c=='\r')
       break;
-    toRemove=i+1;
+    ++toRemove;
   }
   qRecv_.remove(toRemove);
 
