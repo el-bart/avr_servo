@@ -8,6 +8,7 @@ class PersistentSettings
 {
 private:
   typedef PersistentTable<SERVO_COUNT> ServoTable;
+  typedef PersistentTable<2>           Flags;
 
 public:
   PersistentSettings(void);
@@ -40,9 +41,12 @@ public:
   }
 
 private:
+  void writeDefaultValues(void);
+
   ServoTable posMin_;
   ServoTable posDef_;
   ServoTable posMax_;
+  Flags      flags_;
 }; // class PersistentSettings
 
 #endif
