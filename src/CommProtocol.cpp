@@ -59,7 +59,7 @@ void CommProtocol::process(Positions &posTab)
   {
     // get servo number
     const char servoName=qRecv_.pop();
-    if(servoName<'a' || 'r'<servoName)
+    if(servoName<'a' || 'a'+SERVO_COUNT<servoName)
     {
       replyError('?');
       skipUntilNewCommand();
@@ -208,20 +208,18 @@ bool CommProtocol::execute(const uint8_t srvNo, const char mode, const uint8_t p
 
 void CommProtocol::replyOk(const char srvName)
 {
-  qSend_.push(srvName);
-  qSend_.push('o');
-  qSend_.push('k');
-  qSend_.push('\n');
+  replyStr(srvName, "-ok\n");
 }
 
 
 void CommProtocol::replyError(const char srvName)
 {
+  replyStr(srvName, "-ERROR\n");
+}
+
+void CommProtocol::replyStr(const char srvName, const char *str)
+{
   qSend_.push(srvName);
-  qSend_.push('E');
-  qSend_.push('R');
-  qSend_.push('R');
-  qSend_.push('O');
-  qSend_.push('R');
-  qSend_.push('\n');
+  for(const char *it=str; *it!=0; ++it)
+    qSend_.push(*it);
 }

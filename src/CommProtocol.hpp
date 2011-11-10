@@ -25,6 +25,7 @@ private:
   bool execute(uint8_t srvNo, char mode, uint8_t pos, Positions &posTab);
   void replyOk(char srvName);
   void replyError(char srvName);
+  void replyStr(char srvName, const char *str);
 
   QueueSend          &qSend_;
   QueueRecv          &qRecv_;
