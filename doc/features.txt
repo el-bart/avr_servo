@@ -6,3 +6,4 @@
 * low power consumption.
 * overcurrent fuse protection.
 * 0.7 deg precision for typical servos.
+* operating at 0.5ms to 2.5ms time period, making it sutable for every RC servo available.
