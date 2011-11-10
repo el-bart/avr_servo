@@ -153,11 +153,9 @@ void CommProtocol::skipEndMarkers(void)
     const char c=qRecv_.peek(i);
     if(c!='\n' && c!='\r')
       break;
-    toRemove=i+1;
+    ++toRemove;
   }
-
-  if(toRemove>0)
-    qRecv_.remove(toRemove);
+  qRecv_.remove(toRemove);
 }
 
 
