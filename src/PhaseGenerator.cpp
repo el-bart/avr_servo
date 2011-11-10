@@ -30,7 +30,7 @@ void PhaseGenerator::generate(Timer1 &t1, const EntryTable &et) const
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
   {
     // wait until proper time will come
-    while( et[i].time_ > static_cast<uint8_t>(t1.get()/4) )
+    while( et[i].time_ > static_cast<uint8_t>(t1.get()/8) )
     { /* wait... */ };
 
     // ok - update ports!
