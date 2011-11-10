@@ -106,8 +106,8 @@ flash_mcu:
 	@[ -f "gen/$(PROFILE)/$(BIN_FILE)" ] || { echo "file to flash must exist" ; exit 2 ; }
 	# flash program
 	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U flash:w:gen/$(PROFILE)/$(BIN_FILE)
-	# setup fuse bits to enable external oscilator
-	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U lfuse:w:255:m
+	# setup fuse bits
+	avrdude -P avrdoper -c stk500v2 -p $(MCU_PROG) -U lfuse:w:$(LOW_FUSE):m -U hfuse:w:$(HIGH_FUSE):m
 
 .PHONY: clean
 clean:
