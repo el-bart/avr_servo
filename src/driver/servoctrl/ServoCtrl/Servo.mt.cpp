@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
   Servo           servo{ ServoName{argv[2][0]}, dev };
 
-  for(uint8_t pos=50; pos<=200; pos+=50)
+  for(uint8_t pos=50; pos<=200; pos+=20)
   {
     cout<<"sending pos "<<int{pos}<<"..."<<endl;
     servo.setPos(pos);
