@@ -2,10 +2,8 @@
 #define INCLUDE_SERVOCTRL_COMMDEVICE_HPP_FILE
 
 #include <mutex>
-#include <string>
-#include <fstream>
+#include <boost/noncopyable.hpp>
 #include <boost/filesystem/path.hpp>
-#include <boost/filesystem/fstream.hpp>
 
 #include "ServoCtrl/Exception.hpp"
 #include "ServoCtrl/SharedPtrNotNull.hpp"
@@ -13,7 +11,7 @@
 namespace ServoCtrl
 {
 
-class CommDevice
+class CommDevice: private boost::noncopyable
 {
 public:
   struct ExceptionDevice: public Exception
@@ -41,13 +39,32 @@ public:
   };
 
 
-  explicit CommDevice(boost::filesystem::path devPath);
+  explicit CommDevice(const boost::filesystem::path &devPath);
 
-  void send(std::string cmd);
+  std::string run(std::string cmd);
 
 private:
-  std::mutex                 m_;
-  boost::filesystem::fstream dev_;
+  void configure(void);
+  void sendData(const std::string &cmd);
+  std::string recvData(void);
+  void discardContent(void);
+
+  class AutoDescriptor: private boost::noncopyable
+  {
+  public:
+    explicit AutoDescriptor(const int fd);
+    ~AutoDescriptor(void);
+    int get(void)
+    {
+      return fd_;
+    }
+
+  private:
+    int fd_;
+  }; // struct AutoDescriptor
+
+  std::mutex     m_;
+  AutoDescriptor fd_;
 }; // class CommDevice
 
 
