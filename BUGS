@@ -1,2 +1,8 @@
-* driver VERY often returns timeouts on responses - this can be an issue with an AVR or driver itself. investigate this...
-* when moving one servo, others do move as well (they shake a little) - it must be fixed!
+* when moving one servo very fasy (i.e. w/o waiting for reply), others do move as well
+  (they shake a little)... the problem appears to be communication that forces interrupts
+  during servos phase generation, making it last longer. beside interrupts also ocasionally
+  make whole cycle longer, therefor servos shake. probably reimplementing queues, so that
+  they won't be cyclic, but will be exchangable instead will do the trick.
+* when making processing longer then half of the cycles many packages get broken during
+  communication. this is a funny thing, since cycleLen/2 is a magic value for everything
+  to work fine. it must be analyzed some more...
