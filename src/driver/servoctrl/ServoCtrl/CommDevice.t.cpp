@@ -1,4 +1,5 @@
 #include <tut/tut.hpp>
+#include <thread>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -14,7 +15,8 @@ struct TestClass
   TestClass(void):
     devPath_("test-fifo")
   {
-    tut::ensure("unable to create fifi", mkfifo(devPath_)==0 );
+    unlink(devPath_);
+    tut::ensure("unable to create fifo", mkfifo(devPath_, 0600)==0 );
   }
 
   ~TestClass(void)
@@ -22,7 +24,7 @@ struct TestClass
     unlink(devPath_);
   }
 
-  const char *devPath_;
+  const char  *devPath_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -49,21 +51,40 @@ template<>
 void testObj::test<2>(void)
 {
   CommDevice cd(devPath_);
-  // TODO
+  cd.send("hello\n");
 }
 
-// 
+// test error condition
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  CommDevice cd(devPath_);
+  try
+  {
+    cd.send("oops-ERROR-found\n");
+    fail("no exception on error");
+  }
+  catch(const CommDevice::ExceptionProtocolError&)
+  {
+    // this is expected
+  }
 }
 
-// 
+// test error when opening non-existing file
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  try
+  {
+    CommDevice cd("/non/exisitng/element");
+    fail("no exception on error");
+  }
+  catch(const CommDevice::ExceptionDevice&)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
