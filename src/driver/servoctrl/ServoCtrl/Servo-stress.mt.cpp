@@ -8,13 +8,14 @@ using namespace ServoCtrl;
 
 int main(int argc, char **argv)
 {
-  if(argc!=1+4)
+  if(argc!=1+5)
   {
-    cerr<<argv[0]<<" <dev> <servo> <delay-ms> <fast[01]>"<<endl;
+    cerr<<argv[0]<<" <dev> <servo> <delay-ms> <fast[01]> <exit-on-error[01]>"<<endl;
     return 1;
   }
   const unsigned int delay=boost::lexical_cast<unsigned int>(argv[3]);
   const bool         fast =boost::lexical_cast<bool>(argv[4]);
+  const bool         eoe  =boost::lexical_cast<bool>(argv[5]);
 
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
   Servo           servo{ ServoName{argv[2][0]}, dev, fast };
@@ -32,18 +33,18 @@ int main(int argc, char **argv)
     catch(const std::exception &ex)
     {
       cerr<<argv[0]<<": @"<<int{pos}<<" ("<<typeid(ex).name()<<"): "<<ex.what()<<endl;
+      if(eoe)
+      {
+        cerr<<argv[0]<<": exiting of first error, as requested..."<<endl;
+        return 2;
+      }
     }
     pos+=dp;
     if(pos>200)
       dp=-1;
     if(pos<50)
       dp=+1;
-    continue;
-
-    cout<<"wait a while for servos to setup..."<<endl;
-    usleep(750*1000);
-    cout<<endl;
   } // while(true)
 
-return 0;
+  return 0;
 }
