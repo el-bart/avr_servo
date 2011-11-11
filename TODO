@@ -1,3 +1,2 @@
 * add command queue on the device.
 * add moving with different speeds.
-* driver VERY often returns timeouts on responses - this can be an issue with an AVR or driver itself. investigate this...
