@@ -112,7 +112,7 @@ std::string CommDevice::recvData(void)
     fd_set rdfd;
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
-    struct timeval timeout={0, 150*1000};   // 50[ms] TODO: magic value
+    struct timeval timeout={0, 250*1000};       // 250[ms] TODO: magic value
     const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &timeout);
     if(ret<0)
       throw ExceptionIO{"select() failed for some reason"};
@@ -165,7 +165,7 @@ void CommDevice::discardContent(void)
     if( read(fd_.get(), tmp, sizeof(tmp)-1)==-1 )
       throw ExceptionIO{"read(): unable to dispose of garbage in the buffers"};
     // if has some data already, wait a bit - maby there's more to come?
-    dt=20*1000;
+    dt=2*1000;      // 2[ms] // TODO: magic value
   }
 }
 

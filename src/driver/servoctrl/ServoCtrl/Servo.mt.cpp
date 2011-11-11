@@ -7,22 +7,23 @@ using namespace ServoCtrl;
 
 int main(int argc, char **argv)
 {
-  if(argc!=1+1+2)
+  if(argc!=1+2)
   {
-    cerr<<argv[0]<<" <dev> <x-servo> <y-servo>"<<endl;
+    cerr<<argv[0]<<" <dev> <servo>"<<endl;
     return 1;
   }
 
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
-  Servo           servoX{ ServoName{argv[2][0]}, dev };
-  Servo           servoY{ ServoName{argv[3][0]}, dev };
+  Servo           servo{ ServoName{argv[2][0]}, dev };
 
-  cout<<"sedninf 1\n";
-  servoX.setPos(50);
-  usleep(1*1000*1000);
-
-  cout<<"sedninf 2\n";
-  servoX.setPos(200);
+  for(uint8_t pos=50; pos<=200; pos+=50)
+  {
+    cout<<"sending pos "<<int{pos}<<"..."<<endl;
+    servo.setPos(pos);
+    cout<<"wait a while for servos to setup..."<<endl;
+    usleep(750*1000);
+    cout<<endl;
+  }
 
   return 0;
 }
