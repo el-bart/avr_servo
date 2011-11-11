@@ -77,26 +77,27 @@ void CommProtocol::process(Positions &posTab)
     }
 
     // get position
-    uint8_t posTmp[2];
-    posTmp[0]=hex2num( qRecv_.pop() );
-    if(posTmp[0]>0x0F)
+    const char    posHexHigh=qRecv_.pop();
+    const uint8_t posHigh   =hex2num(posHexHigh);
+    if(posHigh>0x0F)
     {
       replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
-    posTmp[1]=hex2num( qRecv_.pop() );
-    if(posTmp[1]>0x0F)
+    const char    posHexLow=qRecv_.pop();
+    const uint8_t posLow   =hex2num(posHexLow);
+    if(posLow>0x0F)
     {
       replyError(servoName);
       skipUntilNewCommand();
       continue;
     }
-    const uint8_t pos=posTmp[0]*16+posTmp[1];
+    const uint8_t pos=posHigh*16+posLow;
 
     // test checksum correctness
     const char checksumRecv=qRecv_.pop();
-    const char checksumComp=computeChecksum(servoName, mode, posTmp[0], posTmp[1]);
+    const char checksumComp=computeChecksum(servoName, mode, posHexHigh, posHexLow);
     if(checksumRecv!=checksumComp && checksumRecv!='?')
     {
       replyError(servoName);
