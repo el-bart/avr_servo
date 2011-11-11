@@ -22,9 +22,10 @@ export WITH_CCACHE:=1
 export FEATURES:=
 
 # project-specific flags
-export USER_OPT_FLAGS:=
-export USER_DBG_FLAGS:=
-export USER_PRF_FLAGS:=
+TMP:=-std=c++0x
+export USER_OPT_FLAGS:=$(TMP)
+export USER_DBG_FLAGS:=$(TMP)
+export USER_PRF_FLAGS:=$(TMP)
 # project-specific link flags
 export USER_OPT_LDFLAGS:=
 export USER_DBG_LDFLAGS:=
