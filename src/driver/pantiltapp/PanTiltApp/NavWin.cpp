@@ -69,7 +69,10 @@ struct NavWin::CommThread
 
       // TODO: make this conditional
       while(posXsent_==getX() && posYsent_==getY() && !quitNow())
-        std::this_thread::yield();
+      {
+        const struct timespec ts={0, 100*1000};
+        nanosleep(&ts, nullptr);
+      }
     }
   }
 
