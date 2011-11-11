@@ -15,7 +15,7 @@ Watchdog::~Watchdog(void)
 
 void Watchdog::enable(void)
 {
-  // since whole cycle is 5ms, it means loosing 12 cycles. if it happens,
+  // since whole cycle is 20ms, it means loosing 3 cycles. if it happens,
   // it can be safely assumed something went VERY wrong.
   wdt_enable(WDTO_60MS);
 }
