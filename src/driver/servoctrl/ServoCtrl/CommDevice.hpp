@@ -44,6 +44,7 @@ public:
   explicit CommDevice(const boost::filesystem::path &devPath);
 
   std::string run(std::string cmd);
+  void runFast(std::string cmd);
 
 private:
   void configure(void);

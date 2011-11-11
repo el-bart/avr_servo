@@ -108,4 +108,18 @@ void testObj::test<6>(void)
   ensure_equals("invalid response", cd.run("asa0?\n"), "a-ok\n");
 }
 
+// test sending fast commands
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  CommDevice cd(devPath_);
+  for(char c='3'; c<'b'; ++c)
+  {
+    char buf[]="asX0?\n";
+    buf[2]=c;
+    cd.runFast(buf);
+  }
+}
+
 } // namespace tut

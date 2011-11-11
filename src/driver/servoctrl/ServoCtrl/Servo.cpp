@@ -75,9 +75,13 @@ void Servo::send(char cmd, uint8_t pos)
   buf[6]=0;
 
   // send it
-  const std::string ret=dev_->run(buf);
-  // if we're here, it means it worked
-  // TODO: process response
+  if(fast_)
+    dev_->runFast(buf);
+  else
+  {
+    const std::string ret=dev_->run(buf);
+    // TODO: is this ret needed at all?
+  }
 }
 
 } // namespace ServoCtrl

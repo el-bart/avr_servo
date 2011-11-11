@@ -21,9 +21,10 @@ public:
     }
   }; // struct ExceptionInvalidHex
 
-  Servo(ServoName name, CommDevicePtrNN dev_):
+  Servo(ServoName name, CommDevicePtrNN dev_, bool fast):
     name_{ std::move(name) },
-    dev_{ std::move(dev_) }
+    dev_{ std::move(dev_) },
+    fast_{fast}
   {
   }
 
@@ -37,6 +38,7 @@ private:
 
   ServoName       name_;
   CommDevicePtrNN dev_;
+  bool            fast_;
 };
 
 } // namespace ServoCtrl

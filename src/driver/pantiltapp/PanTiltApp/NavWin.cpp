@@ -11,10 +11,10 @@ struct NavWin::CommThread
   typedef std::unique_lock<std::mutex> Lock;
 
   CommThread(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
+    srvX_{nameX, dev, true},
+    srvY_{nameY, dev, true},
     posXsent_{0},
     posYsent_{0},
-    srvX_{nameX, dev},
-    srvY_{nameY, dev},
     quit_{false}
   {
     setX(127);

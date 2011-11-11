@@ -61,6 +61,13 @@ std::string CommDevice::run(std::string cmd)
 }
 
 
+void CommDevice::runFast(std::string cmd)
+{
+  Lock lock{m_};
+  sendData(cmd);
+}
+
+
 void CommDevice::configure(void)
 {
   // ??
