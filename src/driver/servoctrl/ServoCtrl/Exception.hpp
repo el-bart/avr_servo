@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SERVOCTRL_EXCEPTION_HPP_FILE
 #define INCLUDE_SERVOCTRL_EXCEPTION_HPP_FILE
 
+/* public header */
+
 #include <string>
 #include <sstream>
 #include <stdexcept>

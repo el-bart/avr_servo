@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SERVOCTRL_SERVO_HPP_FILE
 #define INCLUDE_SERVOCTRL_SERVO_HPP_FILE
 
+/* public header */
+
 #include "ServoCtrl/CommDevice.hpp"
 #include "ServoCtrl/ServoName.hpp"
 #include "ServoCtrl/Exception.hpp"

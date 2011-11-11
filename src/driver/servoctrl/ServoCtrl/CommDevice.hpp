@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SERVOCTRL_COMMDEVICE_HPP_FILE
 #define INCLUDE_SERVOCTRL_COMMDEVICE_HPP_FILE
 
+/* public header */
+
 #include <mutex>
 #include <boost/noncopyable.hpp>
 #include <boost/filesystem/path.hpp>

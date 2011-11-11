@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SERVOCTRL_SERVONAME_HPP_FILE
 #define INCLUDE_SERVOCTRL_SERVONAME_HPP_FILE
 
+/* public header */
+
 #include "ServoCtrl/Exception.hpp"
 
 
