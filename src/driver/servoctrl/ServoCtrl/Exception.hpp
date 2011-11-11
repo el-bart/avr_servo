@@ -2,6 +2,7 @@
 #define INCLUDE_SERVOCTRL_EXCEPTION_HPP_FILE
 
 #include <string>
+#include <sstream>
 #include <stdexcept>
 
 namespace ServoCtrl
