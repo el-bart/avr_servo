@@ -1,16 +1,11 @@
 #include <gtkmm/main.h>
 
-#include "HelloWorldWindow.hpp"
+#include "NavWin.hpp"
 
-int main( int argc, char *argv[] )
+int main(int argc, char **argv)
 {
-  // Initialization
-  Gtk::Main kit( argc, argv );
-
-  // Create a hello world window object
-  HelloWorldWindow example;
-
-  // gtkmm main loop
-  Gtk::Main::run( example );
+  Gtk::Main kit(false);
+  NavWin    win;
+  Gtk::Main::run(win);
   return 0;
 }

@@ -3,11 +3,11 @@
 
 #include <gtkmm/window.h>
 
-class HelloWorldWindow: public Gtk::Window
+class NavWin: public Gtk::Window
 {
 public:
-  HelloWorldWindow(void);
-  ~HelloWorldWindow(void);
+  NavWin(void);
+  ~NavWin(void);
 
 protected:
   virtual bool on_motion_notify_event(GdkEventMotion* event);
