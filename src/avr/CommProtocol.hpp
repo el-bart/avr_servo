@@ -16,10 +16,12 @@ public:
 
   /** \brief updates basing on protocol data.
    *  \param posTab positions to update.
+   *  \return true, if there is more data to process, false otherwise.
    */
-  void process(Positions &posTab);
+  bool process(Positions &posTab);
 
 private:
+  bool hasDataToProcess(void) const;
   void skipUntilNewCommand(void);
   void skipEndMarkers(void);
   bool execute(uint8_t srvNo, char mode, uint8_t pos, Positions &posTab);

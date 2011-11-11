@@ -53,78 +53,91 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 } // unnamed namespace
 
 
-void CommProtocol::process(Positions &posTab)
+bool CommProtocol::process(Positions &posTab)
 {
-  while( qRecv_.size()>=1+1+2+1+1 )
+  // has data to process?
+  if( !hasDataToProcess() )
+    return false;
+
+  // ok - process it!
+
+  // get servo number
+  const char servoName=qRecv_.pop();
+  if(servoName<'a' || 'a'+SERVO_COUNT<servoName)
   {
-    // get servo number
-    const char servoName=qRecv_.pop();
-    if(servoName<'a' || 'a'+SERVO_COUNT<servoName)
-    {
-      replyError('?');
-      skipUntilNewCommand();
-      continue;
-    }
-    const uint8_t servoNo=nameToNumber(servoName);
+    replyError('?');
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
+  const uint8_t servoNo=nameToNumber(servoName);
 
-    // get mode
-    const char mode=qRecv_.pop();
-    if(mode!='l' && mode!='h' && mode!='d' && mode!='s')
-    {
-      replyError(servoName);
-      skipUntilNewCommand();
-      continue;
-    }
+  // get mode
+  const char mode=qRecv_.pop();
+  if(mode!='l' && mode!='h' && mode!='d' && mode!='s')
+  {
+    replyError(servoName);
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
 
-    // get position
-    const char    posHexHigh=qRecv_.pop();
-    const uint8_t posHigh   =hex2num(posHexHigh);
-    if(posHigh>0x0F)
-    {
-      replyError(servoName);
-      skipUntilNewCommand();
-      continue;
-    }
-    const char    posHexLow=qRecv_.pop();
-    const uint8_t posLow   =hex2num(posHexLow);
-    if(posLow>0x0F)
-    {
-      replyError(servoName);
-      skipUntilNewCommand();
-      continue;
-    }
-    const uint8_t pos=posHigh*16+posLow;
+  // get position
+  const char    posHexHigh=qRecv_.pop();
+  const uint8_t posHigh   =hex2num(posHexHigh);
+  if(posHigh>0x0F)
+  {
+    replyError(servoName);
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
+  const char    posHexLow=qRecv_.pop();
+  const uint8_t posLow   =hex2num(posHexLow);
+  if(posLow>0x0F)
+  {
+    replyError(servoName);
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
+  const uint8_t pos=posHigh*16+posLow;
 
-    // test checksum correctness
-    const char checksumRecv=qRecv_.pop();
-    const char checksumComp=computeChecksum(servoName, mode, posHexHigh, posHexLow);
-    if(checksumRecv!=checksumComp && checksumRecv!='?')
-    {
-      replyError(servoName);
-      skipUntilNewCommand();
-      continue;
-    }
+  // test checksum correctness
+  const char checksumRecv=qRecv_.pop();
+  const char checksumComp=computeChecksum(servoName, mode, posHexHigh, posHexLow);
+  if(checksumRecv!=checksumComp && checksumRecv!='?')
+  {
+    replyError(servoName);
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
 
-    // check for end of line
-    const char end=qRecv_.pop();
-    if(end!='\n' && end!='\r')
-    {
-      replyError(servoName);
-      skipUntilNewCommand();
-      continue;
-    }
+  // check for end of line
+  const char end=qRecv_.pop();
+  if(end!='\n' && end!='\r')
+  {
+    replyError(servoName);
+    skipUntilNewCommand();
+    return hasDataToProcess();
+  }
 
-    // remove extra elements from the queue
-    skipEndMarkers();
+  // remove extra elements from the queue
+  skipEndMarkers();
 
-    // execute received orders
-    const bool ret=execute(servoNo, mode, pos, posTab);
-    // send confirmation, if it is ok or not
-    if(ret)
-      replyOk(servoName);
-    else
-      replyError(servoName);
-  } // while(has_more_date)
+  // execute received orders
+  const bool ret=execute(servoNo, mode, pos, posTab);
+  // send confirmation, if it is ok or not
+  if(ret)
+    replyOk(servoName);
+  else
+    replyError(servoName);
+
+  // return info if there is more data to process, or not
+  return hasDataToProcess();
+}
+
+
+bool CommProtocol::hasDataToProcess(void) const
+{
+  // true, if there is at least one package to be processed
+  return qRecv_.size()>=1+1+2+1+1;
 }
 
 
