@@ -58,7 +58,8 @@ int main(void)
   wdg.enable();                                                     // enable watchdog
   sei();                                                            // allow interrupts globally
 
-  uint8_t lastStep=0xFF;
+  const unsigned int cycleLen=20*2;
+  uint8_t            lastStep=0xFF;
   while(true)
   {
 
@@ -88,12 +89,18 @@ int main(void)
 
       // 'wait' in 'low' state untile cycle ends
       default:
-           if(step<2*20)
+           // first part use for processing data - the more will be sent, the more
+           // responsive system will be. on the other hand making this too long
+           // may affect system's reliability...
+           if(step<cycleLen/2)        // TODO: magic value
            {
              proto.process( chronoTable.currentPos() );
              usart.sendData();
              break;
            }
+           // end of the cycle just wait, to ensure that no delays will be introduced
+           if(step<cycleLen)
+             break;
            wdg.reset();         // signal watchdog system is working fine
            t2.resetStep();      // reset step counter (i.e. start new cycle)
            break;
