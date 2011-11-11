@@ -6,14 +6,14 @@
 #include <fstream>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/noncopyable.hpp>
 
 #include "ServoCtrl/Exception.hpp"
+#include "ServoCtrl/SharedPtrNotNull.hpp"
 
 namespace ServoCtrl
 {
 
-class CommDevice: private boost::noncopyable
+class CommDevice
 {
 public:
   struct ExceptionDevice: public Exception
@@ -49,6 +49,9 @@ private:
   std::mutex                 m_;
   boost::filesystem::fstream dev_;
 }; // class CommDevice
+
+
+typedef SharedPtrNotNull<CommDevice> CommDevicePtrNN;
 
 } // namespace ServoCtrl
 
