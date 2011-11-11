@@ -39,7 +39,7 @@ char toHex(const uint8_t num)
 {
   if(num>0x0F)
     throw Servo::ExceptionInvalidHex{num, "number out of range"};
-  const char lut[]="01234567890abcdef";
+  const char lut[]="0123456789abcdef";
   return lut[num];
 } // fromHex()
 
@@ -61,18 +61,23 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 
 void Servo::send(char cmd, uint8_t pos)
 {
+  // TODO: fix this: 
+  const uint8_t posNum[2]={ uint8_t{(pos&0xF0)>>4}, uint8_t{(pos&0x0F)>>0} };
   // create command
   char buf[1+1+2+1+1+1];
-  buf[0]=toHex(name_.getName());
-  buf[1]=toHex(cmd);
-  buf[2]=toHex((pos&0xF0)>>4);
-  buf[3]=toHex((pos&0x0F)>>0);
+  buf[0]=name_.getName();
+  buf[1]=cmd;
+  buf[2]=toHex(posNum[0]);
+  buf[3]=toHex(posNum[1]);
+  //buf[4]='?';      // if checksums are not needed ;)
   buf[4]=computeChecksum(buf[0], buf[1], buf[2], buf[3]);
   buf[5]='\n';
   buf[6]=0;
+
   // send it
-  dev_->send(buf);
+  const std::string ret=dev_->run(buf);
   // if we're here, it means it worked
+  // TODO: process response
 }
 
 } // namespace ServoCtrl

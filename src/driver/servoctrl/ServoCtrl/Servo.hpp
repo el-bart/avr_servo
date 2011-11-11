@@ -14,7 +14,7 @@ public:
   struct ExceptionInvalidHex: public Exception
   {
     explicit ExceptionInvalidHex(const uint8_t byte, std::string details):
-      Exception{ Strm{}<<"invalid byte '"<<int{byte}<<"' when converting to hex: "<<details }
+      Exception{ Strm{}<<"invalid byte '"<<int{byte}<<"' ("<<byte<<") when converting to hex: "<<details }
     {
     }
   }; // struct ExceptionInvalidHex
