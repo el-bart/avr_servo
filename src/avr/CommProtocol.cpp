@@ -3,6 +3,7 @@
 
 #include "CommProtocol.hpp"
 #include "nameToNumber.hpp"
+#include "uassert.hpp"
 
 CommProtocol::CommProtocol(QueueSend &qSend, QueueRecv &qRecv, PersistentSettings &settings):
   qSend_(qSend),
@@ -59,13 +60,14 @@ void CommProtocol::process(Positions &posTab)
   {
     // get servo number
     const char servoName=qRecv_.pop();
-    if(servoName<'a' || 'a'+SERVO_COUNT<servoName)
+    if(servoName<'a' || 'a'+SERVO_COUNT<=servoName)
     {
       replyError('?');
       skipUntilNewCommand();
       continue;
     }
     const uint8_t servoNo=nameToNumber(servoName);
+    uassert(servoNo<SERVO_COUNT);
 
     // get mode
     const char mode=qRecv_.pop();
@@ -162,6 +164,7 @@ void CommProtocol::skipEndMarkers(void)
 
 bool CommProtocol::execute(const uint8_t srvNo, const char mode, const uint8_t pos, Positions &posTab)
 {
+  uassert(srvNo<SERVO_COUNT);
   // read these to make code shorter later on
   const uint8_t pMin=settings_.posMin().read(srvNo);
   const uint8_t pMax=settings_.posMax().read(srvNo);

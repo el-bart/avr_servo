@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include "PersistentSettings.hpp"
+#include "uassert.hpp"
 
 PersistentSettings::PersistentSettings(void):
   posMin_(0*SERVO_COUNT),
@@ -12,6 +13,7 @@ PersistentSettings::PersistentSettings(void):
     writeDefaultValues();
     flags_.write(0, 0x42);      // just mark that something has changed
   }
+  uassert(flags_.read(0)!=flags_.read(1));
 }
 
 void PersistentSettings::writeDefaultValues(void)

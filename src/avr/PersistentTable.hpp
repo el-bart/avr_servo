@@ -6,6 +6,7 @@
 
 #include "Table.hpp"
 #include "TableEEPROM.hpp"
+#include "uassert.hpp"
 
 /** \brief table keept in memory (for fast access) and in EEPROM (for persistnecy).
  */
@@ -30,6 +31,7 @@ public:
    */
   uint8_t read(const uint8_t n) const
   {
+    uassert(n<N);
     return ram_[n];
   }
 
@@ -39,6 +41,7 @@ public:
    */
   void write(const uint8_t n, const uint8_t d)
   {
+    uassert(n<N);
     ram_[n]=d;
     eeprom_.write(n, d);
   }

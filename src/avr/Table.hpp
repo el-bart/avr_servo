@@ -21,7 +21,7 @@ public:
    */
   T operator[](const uint8_t n) const
   {
-    //uassert(n<N);
+    uassert(n<N);
     return t_[n];
   }
 
@@ -31,7 +31,7 @@ public:
    */
   T &operator[](const uint8_t n)
   {
-    //uassert(n<N);
+    uassert(n<N);
     return t_[n];
   }
 

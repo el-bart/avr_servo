@@ -57,8 +57,7 @@ ISR(USART_TXC_vect)
 ISR(USART_UDRE_vect)
 {
   UCSRB&=~_BV(UDRIE);           // data registry empty - disable interrupt
-  if(g_sendQueue==NULL)
-    return;
+  uassert(g_sendQueue!=NULL);
   if( g_sendQueue->size()>0 )   // if data register is empty and we have data to send
     sendDataImpl();             // we can send it now
 }
