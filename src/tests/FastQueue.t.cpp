@@ -37,7 +37,6 @@ void testObj::test<2>(void)
   ensure_equals("invalid element", q_.peek(0), 42);
 }
 
-/*
 // test getting element from stack
 template<>
 template<>
@@ -47,23 +46,11 @@ void testObj::test<3>(void)
   ensure_equals("invalid element", q_.pop(), 42);
   ensure_equals("invalid size after removal", q_.size(), 0);
 }
-*/
-
-/*
-// test removal element when no element in the queue
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  q_.pop();
-  ensure_equals("invalid size after removal", q_.size(), 0);
-}
-*/
 
 // test copyability
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<4>(void)
 {
   q_.push(6);
   q_.push(9);
@@ -77,7 +64,7 @@ void testObj::test<5>(void)
 // test clear
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<5>(void)
 {
   q_.push(6);
   q_.push(9);
@@ -88,13 +75,43 @@ void testObj::test<6>(void)
 // test peeking multiple elements
 template<>
 template<>
-void testObj::test<7>(void)
+void testObj::test<6>(void)
 {
   q_.push(6);
   q_.push(9);
   ensure_equals("invalid size", q_.size(), 2);
   ensure_equals("invalid element 0", q_.peek(0), 6);
   ensure_equals("invalid element 1", q_.peek(1), 9);
+}
+
+// test content after adding and removing few elements
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  q_.push(6);
+  q_.push(9);
+  q_.push(3);
+  q_.pop();
+  ensure_equals("invalid size", q_.size(), 2);
+  ensure_equals("invalid element 0", q_.peek(0), 9);
+  ensure_equals("invalid element 1", q_.peek(1), 3);
+}
+
+// test popping after adding and removing few elements
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  q_.push(6);
+  q_.push(9);
+  q_.push(3);
+  q_.pop();
+  ensure_equals("invalid size/0", q_.size(), 2);
+  ensure_equals("invalid element 0", q_.pop(), 9);
+  ensure_equals("invalid size/1", q_.size(), 1);
+  ensure_equals("invalid element 1", q_.pop(), 3);
+  ensure_equals("invalid size/2", q_.size(), 0);
 }
 
 } // namespace tut
