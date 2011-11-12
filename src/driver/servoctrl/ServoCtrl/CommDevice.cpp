@@ -74,11 +74,9 @@ void CommDevice::configure(void)
   if( fcntl(fd_.get(), F_SETFL, 0)==-1 )
     throw ExceptionIO{"fcntl() failed"};
 
-  // read current settings
+  // initial settings
   struct termios opts;
   memset(&opts, 0, sizeof(opts));
-  if( tcgetattr(fd_.get(), &opts)!=0 )
-    throw ExceptionIO{"tcgetattr(): getting current settings failed"};
 
   // set baud rate
   const speed_t speed=B38400;
