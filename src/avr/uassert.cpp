@@ -6,9 +6,7 @@
 
 #include "uassert.hpp"
 
-// TODO
 
-/*
 namespace
 {
 void debug_send_char(uint8_t c)
@@ -28,14 +26,12 @@ void debug_send_hex(uint8_t h)
     debug_send_char('A'+(h-10));
 }
 } // unnamed namespace
-*/
 
 namespace detail
 {
 
 void uassertInternalImplementation(uint16_t line, const char *file)
 {
-  /*
   cli();    // disable interrupts
 
   // loop forever sending asseration details and blinking the led
@@ -71,7 +67,6 @@ void uassertInternalImplementation(uint16_t line, const char *file)
     _delay_ms(250);
 
   } // while(true)
-  */
 } // uassertInternalImplementation()
 
 } // namespace detail
