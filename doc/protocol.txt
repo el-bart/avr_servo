@@ -12,7 +12,7 @@ host->device:
 device->host:
   <servo_no>ok<end>
   or
-  <servo_no>error<end>
+  <servo_no>ERR<end>
   where:
     servo_no is 'a'..'r'
-    end is CR
+    end is CR ('\n')
