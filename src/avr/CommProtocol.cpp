@@ -139,8 +139,7 @@ void CommProtocol::skipUntilNewCommand(void)
       break;
     ++toRemove;
   }
-  // TODO: uncomment                                                                            
-  //qRecv_.remove(toRemove);
+  qRecv_.remove(toRemove);
 
   // now skip all end markers
   skipEndMarkers();
@@ -157,8 +156,7 @@ void CommProtocol::skipEndMarkers(void)
       break;
     ++toRemove;
   }
-  // TODO: uncomment                                                                        
-  //qRecv_.remove(toRemove);
+  qRecv_.remove(toRemove);
 }
 
 

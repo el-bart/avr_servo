@@ -34,8 +34,6 @@ inline void sendDataImpl(void)
   UDR=g_sendQueue->pop();
 } // sendDataImpl()
 
-char buf[128];
-char *g_end=buf;
 } // unnamed namespace
 
 
@@ -44,12 +42,7 @@ ISR(USART_RXC_vect)
 {
   const uint8_t b=UDR;          // read form hardware ASAP
   uassert(g_recvQueue!=NULL);
-  g_end=buf;
-  *g_end=b;
-  ++g_end;
-  return;
   g_recvQueue->push(b);         // enqueue new byte
-  g_recvQueue->clear();                     
 }
 
 // USART TX completed interrupt
@@ -77,8 +70,6 @@ USART::USART(QueueSend &qSend, QueueRecv &qRecv)
   UBRRH=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>8) & 0x00FF );
   UBRRL=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>0) & 0x00FF );
 
-  // enable interrupts
-  enable();
   // enable transciever
   UCSRB|= _BV(RXEN);    // RX enable
   UCSRB|= _BV(TXEN);    // TX enable
@@ -89,8 +80,11 @@ USART::USART(QueueSend &qSend, QueueRecv &qRecv)
   DDRD |= _BV(PD1);     // TX as out
 
   // set global pointers
-  setSendQueue(qSend);
-  setRecvQueue(qRecv);
+  g_recvQueue=&qRecv;
+  g_sendQueue=&qSend;
+
+  // enable interrupts
+  enable();
 }
 
 
@@ -126,20 +120,4 @@ void USART::disable(void)
   // disable interrupts
   UCSRB&=~_BV(RXCIE);   // RX complete
   UCSRB&=~_BV(TXCIE);   // TX complete
-}
-
-
-void USART::setSendQueue(QueueSend &qSend)
-{
-  cli();
-  g_sendQueue=&qSend;
-  sei();
-}
-
-
-void USART::setRecvQueue(QueueRecv &qRecv)
-{
-  cli();
-  g_recvQueue=&qRecv;
-  sei();
 }

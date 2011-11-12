@@ -23,9 +23,6 @@ public:
 
   void enable(void);
   void disable(void);
-
-  void setSendQueue(QueueSend &qSend);
-  void setRecvQueue(QueueRecv &qRecv);
 }; // class USART
 
 #endif
