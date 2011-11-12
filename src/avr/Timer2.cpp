@@ -2,6 +2,8 @@
 #include <avr/interrupt.h>
 
 #include "Timer2.hpp"
+#include "ScopedIntLock.hpp"
+
 
 namespace
 {
@@ -34,10 +36,12 @@ Timer2::Timer2(void)
 
 uint8_t Timer2::currentStep(void)
 {
+  ScopedIntLock lock;
   return g_stepCounter;
 }
 
 void Timer2::resetStep(void)
 {
+  ScopedIntLock lock;
   g_stepCounter=0;
 }
