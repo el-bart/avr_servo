@@ -55,7 +55,10 @@ int main(void)
   Timer2             t2;                                            // configure T2
   PhaseGenerator     phaseGen;                                      // controling facility
   CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
+#ifdef NDEBUG
+  // watchdog should be enabled only in release modes
   wdg.enable();                                                     // enable watchdog
+#endif
   sei();                                                            // allow interrupts globally
 
   const unsigned int cycleLen=20*2;
