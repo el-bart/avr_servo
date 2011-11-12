@@ -4,6 +4,8 @@
 #include "config.hpp"
 #include <inttypes.h>
 
+#include "ScopedIntLock.hpp"
+
 
 template<uint8_t N>
 class Queue
@@ -17,6 +19,7 @@ public:
 
   void push(uint8_t b)
   {
+    ScopedIntLock lock;
     const uint8_t idx=(begin_+size())%N;
     d_[idx]=b;
     if(size()!=N)
@@ -27,12 +30,14 @@ public:
 
   uint8_t peek(uint8_t pos) const
   {
+    ScopedIntLock lock;
     const uint8_t idx=(begin_+pos)%N;
     return d_[idx];
   }
 
   uint8_t pop(void)
   {
+    ScopedIntLock lock;
     const uint8_t tmp=d_[begin_];
     remove(1);
     return tmp;
@@ -40,6 +45,7 @@ public:
 
   void remove(const uint8_t count)
   {
+    ScopedIntLock lock;
     if(count>=size())
     {
       clear();
@@ -51,12 +57,14 @@ public:
 
   void clear(void)
   {
+    ScopedIntLock lock;
     size_ =0;
     begin_=0;
   }
 
   uint8_t size(void) const
   {
+    ScopedIntLock lock;
     return size_;
   }
 

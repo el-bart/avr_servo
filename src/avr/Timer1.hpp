@@ -6,6 +6,7 @@
 #include <avr/interrupt.h>
 
 #include "Noncopyable.hpp"
+#include "ScopedIntLock.hpp"
 
 /** \brief 16-bit timer1 wrapper.
  */
@@ -32,10 +33,8 @@ public:
   uint16_t get(void) const
   {
     // interruptions must be disabled, to prevent races when reading 16-bit register.
-    cli();
-    const uint16_t tmp=TCNT1;
-    sei();
-    return tmp;
+    ScopedIntLock lock;
+    return TCNT1;
   }
 }; // class Timer1
 
