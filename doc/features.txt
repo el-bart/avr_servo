@@ -7,3 +7,4 @@
 * overcurrent fuse protection.
 * 0.7 deg precision for typical servos.
 * operating at 0.5ms to 2.5ms time period, making it sutable for every RC servo available.
+* RS-232 communication with 38400,8N1 speed/mode.
