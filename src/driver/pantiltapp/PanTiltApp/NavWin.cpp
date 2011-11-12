@@ -11,8 +11,8 @@ struct NavWin::CommThread
   typedef std::unique_lock<std::mutex> Lock;
 
   CommThread(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
-    srvX_{nameX, dev, true},
-    srvY_{nameY, dev, true},
+    srvX_{nameX, dev, false},
+    srvY_{nameY, dev, false},
     posXsent_{0},
     posYsent_{0},
     quit_{false}
@@ -144,11 +144,11 @@ bool NavWin::on_motion_notify_event(GdkEventMotion* event)
 
   posUpdate(posX_, lastX_, event->x);
   thImpl_->setX(posX_);
-  lastX_=event->x;
+  //lastX_=event->x;
 
   posUpdate(posY_, lastY_, event->y);
   thImpl_->setY(posY_);
-  lastY_=event->y;
+  //lastY_=event->y;
 
   return true;
 }
@@ -193,6 +193,8 @@ void NavWin::posUpdate(uint8_t &pos, double last, double now)
 
 int NavWin::posDiff(double last, double now)
 {
+  return (now-last)/7;
+
   if(last<now)
     return +1;
   if(last>now)

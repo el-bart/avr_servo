@@ -122,4 +122,15 @@ void testObj::test<7>(void)
   }
 }
 
+// test something to far servo
+// this reproduces bug when controller crashed on this
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const char lut[]="0123456789abcdef";
+  CommDevice cd(devPath_);
+  cd.run("os70?\n");
+}
+
 } // namespace tut

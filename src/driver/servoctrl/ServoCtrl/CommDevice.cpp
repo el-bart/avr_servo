@@ -117,7 +117,7 @@ std::string CommDevice::recvData(void)
     fd_set rdfd;
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
-    struct timeval timeout={0, 50*1000};       // 250[ms] TODO: magic value
+    struct timeval timeout={0, 20*1000};        // 20[ms] TODO: magic value
     const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &timeout);
     if(ret<0)
       throw ExceptionIO{"select() failed for some reason"};
