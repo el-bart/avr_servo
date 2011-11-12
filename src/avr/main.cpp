@@ -67,7 +67,7 @@ int main(void)
     const uint8_t step=t2.currentStep();
     if(step==lastStep)
     {
-      //PowerSave::idle();
+      PowerSave::idle();
       continue;
     }
     lastStep=step;
@@ -93,8 +93,9 @@ int main(void)
       default:
            // first part use for processing data - the more will be sent, the more
            // responsive system will be. on the other hand making this too long
-           // may affect system's reliability...
-           if(step<cycleLen/2)      // TODO: magic value
+           // may affect system's reliability, since reponses to be transmitted
+           // may not make it on time, before next cycle starts.
+           if(step<cycleLen/2)  // TODO: magic value
            {
              proto.process( chronoTable.currentPos() );
              usart.sendData();
