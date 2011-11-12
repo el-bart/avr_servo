@@ -2,9 +2,9 @@
 #define INCLUDE_COMMQUEUES_HPP_FILE
 
 #include "config.hpp"
-#include "Queue.hpp"
+#include "FastQueue.hpp"
 
-typedef Queue<QUEUE_RECV_SIZE> QueueSend;
-typedef Queue<QUEUE_SEND_SIZE> QueueRecv;
+typedef FastQueue<QUEUE_RECV_SIZE> QueueSend;
+typedef FastQueue<QUEUE_SEND_SIZE> QueueRecv;
 
 #endif

@@ -55,7 +55,7 @@ int main(void)
   Timer2             t2;                                            // configure T2
   PhaseGenerator     phaseGen;                                      // controling facility
   CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
-  wdg.enable();                                                     // enable watchdog
+  //wdg.enable();                                                     // enable watchdog
   sei();                                                            // allow interrupts globally
 
   const unsigned int cycleLen=20*2;
@@ -67,7 +67,7 @@ int main(void)
     const uint8_t step=t2.currentStep();
     if(step==lastStep)
     {
-      PowerSave::idle();
+      //PowerSave::idle();
       continue;
     }
     lastStep=step;
@@ -77,6 +77,7 @@ int main(void)
     {
       // initial 'high' state
       case 0:
+           usart.disable();
            phaseGen.rise();
            chronoTable.update();
            break;
@@ -85,6 +86,7 @@ int main(void)
       case 1:
            phaseGen.generate( t1, chronoTable.currentEntries() );
            phaseGen.fall();
+           usart.enable();
            break;
 
       // 'wait' in 'low' state untile cycle ends
@@ -92,7 +94,7 @@ int main(void)
            // first part use for processing data - the more will be sent, the more
            // responsive system will be. on the other hand making this too long
            // may affect system's reliability...
-           if(step<cycleLen/2)        // TODO: magic value
+           if(step<cycleLen-2)        // TODO: magic value
            {
              proto.process( chronoTable.currentPos() );
              usart.sendData();

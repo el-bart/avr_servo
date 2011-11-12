@@ -30,9 +30,12 @@ bool canSend(void)
 inline void sendDataImpl(void)
 {
   uassert( canSend() );
-  uassert(g_sendQueue==NULL);
+  uassert(g_sendQueue!=NULL);
   UDR=g_sendQueue->pop();
 } // sendDataImpl()
+
+char buf[128];
+char *g_end=buf;
 } // unnamed namespace
 
 
@@ -40,16 +43,19 @@ inline void sendDataImpl(void)
 ISR(USART_RXC_vect)
 {
   const uint8_t b=UDR;          // read form hardware ASAP
-  if(g_recvQueue==NULL)
-    return;
+  uassert(g_recvQueue!=NULL);
+  g_end=buf;
+  *g_end=b;
+  ++g_end;
+  return;
   g_recvQueue->push(b);         // enqueue new byte
+  g_recvQueue->clear();                     
 }
 
 // USART TX completed interrupt
 ISR(USART_TXC_vect)
 {
-  if(g_sendQueue==NULL)
-    return;
+  uassert(g_sendQueue!=NULL);
   if( g_sendQueue->size()>0 )   // if have something to send
     sendDataImpl();
 }
@@ -72,8 +78,7 @@ USART::USART(QueueSend &qSend, QueueRecv &qRecv)
   UBRRL=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>0) & 0x00FF );
 
   // enable interrupts
-  UCSRB|= _BV(RXCIE);   // RX complete
-  UCSRB|= _BV(TXCIE);   // TX complete
+  enable();
   // enable transciever
   UCSRB|= _BV(RXEN);    // RX enable
   UCSRB|= _BV(TXEN);    // TX enable
@@ -84,15 +89,18 @@ USART::USART(QueueSend &qSend, QueueRecv &qRecv)
   DDRD |= _BV(PD1);     // TX as out
 
   // set global pointers
-  g_recvQueue=&qRecv;
-  g_sendQueue=&qSend;
+  setSendQueue(qSend);
+  setRecvQueue(qRecv);
 }
+
 
 USART::~USART(void)
 {
   g_recvQueue=NULL;
   g_sendQueue=NULL;
+  disable();
 }
+
 
 void USART::sendData(void)
 {
@@ -102,4 +110,36 @@ void USART::sendData(void)
       UCSRB|=_BV(UDRIE);            // signal on data registry empty.
                                     // if transmition has not yet started this will
                                     // send initial (first) byte as soon as USART is ready
+}
+
+
+void USART::enable(void)
+{
+  // enable interrupts
+  UCSRB|= _BV(RXCIE);   // RX complete
+  UCSRB|= _BV(TXCIE);   // TX complete
+}
+
+
+void USART::disable(void)
+{
+  // disable interrupts
+  UCSRB&=~_BV(RXCIE);   // RX complete
+  UCSRB&=~_BV(TXCIE);   // TX complete
+}
+
+
+void USART::setSendQueue(QueueSend &qSend)
+{
+  cli();
+  g_sendQueue=&qSend;
+  sei();
+}
+
+
+void USART::setRecvQueue(QueueRecv &qRecv)
+{
+  cli();
+  g_recvQueue=&qRecv;
+  sei();
 }

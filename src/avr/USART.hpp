@@ -20,6 +20,12 @@ public:
   /** \brief signal begining of the sending data.
    */
   void sendData(void);
+
+  void enable(void);
+  void disable(void);
+
+  void setSendQueue(QueueSend &qSend);
+  void setRecvQueue(QueueRecv &qRecv);
 }; // class USART
 
 #endif
