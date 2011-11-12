@@ -111,6 +111,9 @@ void USART::enable(void)
   // enable interrupts
   UCSRB|= _BV(RXCIE);   // RX complete
   UCSRB|= _BV(TXCIE);   // TX complete
+
+  uassert(g_sendQueue!=NULL);
+  uassert(g_recvQueue!=NULL);
 }
 
 
