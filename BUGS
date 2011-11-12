@@ -1,8 +1,4 @@
-* when moving one servo very fasy (i.e. w/o waiting for reply), others do move as well
-  (they shake a little)... the problem appears to be communication that forces interrupts
-  during servos phase generation, making it last longer. beside interrupts also ocasionally
-  make whole cycle longer, therefor servos shake. probably reimplementing queues, so that
-  they won't be cyclic, but will be exchangable instead will do the trick.
-* when making processing longer then half of the cycles many packages get broken during
-  communication. this is a funny thing, since cycleLen/2 is a magic value for everything
-  to work fine. it must be analyzed some more...
+* sending "os00?\n" kills the software - it stops responsing, though watdog
+  does not react as well. sending commands to last 6 servos does the same.
+* when running PanTiltApp demo program system randomly crashes with assertion
+  from USART's interrupt on data arrival, that input queue pointer is NULL.
