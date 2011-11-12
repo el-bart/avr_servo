@@ -50,7 +50,7 @@ std::string CommDevice::run(std::string cmd)
     if(ret.length()>0 && cmd.length()>0 && ret[0]!=cmd[0])
       continue;
     // report errors
-    if( ret.find("ERROR")!=std::string::npos )
+    if( ret.find("ERR")!=std::string::npos )
       throw ExceptionProtocolError{ret};
     // look like all's ok
     return ret;
@@ -117,7 +117,7 @@ std::string CommDevice::recvData(void)
     fd_set rdfd;
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
-    struct timeval timeout={0, 250*1000};       // 250[ms] TODO: magic value
+    struct timeval timeout={0, 50*1000};       // 250[ms] TODO: magic value
     const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &timeout);
     if(ret<0)
       throw ExceptionIO{"select() failed for some reason"};

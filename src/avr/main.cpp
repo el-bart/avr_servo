@@ -91,11 +91,8 @@ int main(void)
 
       // 'wait' in 'low' state untile cycle ends
       default:
-           // first part use for processing data - the more will be sent, the more
-           // responsive system will be. on the other hand making this too long
-           // may affect system's reliability, since reponses to be transmitted
-           // may not make it on time, before next cycle starts.
-           if(step<cycleLen/2)  // TODO: magic value
+           // process commands until next-to-last cycle (the last one that can be used)
+           if(step<cycleLen-2)
            {
              proto.process( chronoTable.currentPos() );
              usart.sendData();

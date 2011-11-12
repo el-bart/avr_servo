@@ -213,7 +213,7 @@ void CommProtocol::replyOk(const char srvName)
 
 void CommProtocol::replyError(const char srvName)
 {
-  replyStr(srvName, "-ERROR\n");
+  replyStr(srvName, "-ERR\n");
 }
 
 void CommProtocol::replyStr(const char srvName, const char *str)
