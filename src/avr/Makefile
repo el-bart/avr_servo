@@ -93,6 +93,13 @@ profile: TARGET:=all
 profile:
 	@$(run-in-gen)
 
+.PHONY: simdebug
+simdebug: CFLAGS+=-Os -g
+simdebug: CXXFLAGS+=-Os -g
+simdebug: TARGET:=all
+simdebug:
+	@$(run-in-gen)
+
 .PHONY: test
 test: CFLAGS+=-g3
 test: CXXFLAGS+=-g3
