@@ -55,7 +55,7 @@ int main(void)
   Timer2             t2;                                            // configure T2
   PhaseGenerator     phaseGen;                                      // controling facility
   CommProtocol       proto(qSend, qRecv, settings);                 // protocol parser
-  //wdg.enable();                                                     // enable watchdog
+  wdg.enable();                                                     // enable watchdog
   sei();                                                            // allow interrupts globally
 
   const unsigned int cycleLen=20*2;
@@ -94,10 +94,16 @@ int main(void)
            // first part use for processing data - the more will be sent, the more
            // responsive system will be. on the other hand making this too long
            // may affect system's reliability...
-           if(step<cycleLen-2)        // TODO: magic value
+           if(step<cycleLen/2)      // TODO: magic value
            {
              proto.process( chronoTable.currentPos() );
              usart.sendData();
+             break;
+           }
+           // during last step disable usart, to ensure RT PWM generation
+           if(step==cycleLen-1)
+           {
+             usart.disable();
              break;
            }
            // end of the cycle just wait, to ensure that no delays will be introduced
