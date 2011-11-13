@@ -25,9 +25,9 @@ struct TestClass
       check(et[i], 0, 0x00, 0x00, 0x00);
   }
 
-  void check(const Entry &e, const uint8_t time, const uint8_t maskPB, const uint8_t maskPC, const uint8_t maskPD) const
+  void check(const Entry &e, const uint8_t etime, const uint8_t maskPB, const uint8_t maskPC, const uint8_t maskPD) const
   {
-    tut::ensure_equals("invalid time stamp", (int)e.time_, (int)time);
+    tut::ensure_equals("invalid time stamp", (int)e.time_, (int)etime);
     tut::ensure_equals("invalid PB value", (int)e.maskPB_, (int)maskPB);
     tut::ensure_equals("invalid PC value", (int)e.maskPC_, (int)maskPC);
     tut::ensure_equals("invalid PD value", (int)e.maskPD_, (int)maskPD);
@@ -129,6 +129,18 @@ void testObj::test<4>(void)
   check(et()[16], 26, 0b11111111, 0b11111111, 0b10111111);
   check(et()[17], 27, 0b11111111, 0b11111111, 0b01111111);
   checkEnd(et(), 18);   // i.e. - do nothing... ;)
+}
+
+// test setting 'o' servo to 0x00 (bug-test)
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ct_.currentPos()['o'-'a']=0x00;
+  ct_.update();
+  check(et()[0],   0, 0b11111111, 0b11111111, 0b11101111);
+  check(et()[1], 200, 0b11000000, 0b11000000, 0b00010011);
+  checkEnd(et(), 2);
 }
 
 } // namespace tut
