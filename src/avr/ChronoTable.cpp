@@ -32,6 +32,7 @@ void ChronoTable::update(void)
       servoNoToMask(idxs[i], entry);
     }
     // save this entry
+    uassert(idxOut<SERVO_COUNT);
     e_[idxOut]=entry;
     ++idxOut;
   }
