@@ -6,9 +6,21 @@
 
 #include "uassert.hpp"
 
+// TODO: c&p code
+#define USART_UBRR(baud,f) ( ((f)/((baud)*16L)) -1 )
 
 namespace
 {
+void init_usart(void)
+{
+  // clock divider register (computed from baud rate and oscilator frequency)
+  UBRRH=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>8) & 0x00FF );
+  UBRRL=(uint8_t)( (USART_UBRR(USART_BAUD, F_CPU)>>0) & 0x00FF );
+
+  UCSRB|= _BV(TXEN);    // TX enable
+  DDRD |= _BV(PD1);     // TX as out
+}
+
 void debug_send_char(uint8_t c)
 {
   // wait for transmition to be over
@@ -33,7 +45,8 @@ namespace detail
 
 void uassertInternalImplementation(uint16_t line, const char *file)
 {
-  cli();    // disable interrupts
+  cli();        // disable interrupts
+  init_usart(); // enable usart in a required mode
 
   // loop forever sending asseration details and blinking the led
   while(true)
@@ -58,15 +71,9 @@ void uassertInternalImplementation(uint16_t line, const char *file)
     for(const char *tmp="\r\n"; *tmp!=0; ++tmp)
       debug_send_char(*tmp);
 
-    //
-    // blink led
-    //
-
-    PORTD|= _BV(5); // LED on
+    // wait a while
     _delay_ms(250);
-    PORTD&=~_BV(5); // LED off
     _delay_ms(250);
-
   } // while(true)
 } // uassertInternalImplementation()
 
