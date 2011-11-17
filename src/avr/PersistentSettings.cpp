@@ -3,10 +3,13 @@
 #include "uassert.hpp"
 
 PersistentSettings::PersistentSettings(void):
-  posMin_(0*SERVO_COUNT),
-  posDef_(1*SERVO_COUNT),
-  posMax_(2*SERVO_COUNT),
-  flags_(3*SERVO_COUNT)
+  // NOTE: AVRs have a bug, that when power is down while writing to EEPROM
+  //       contents of the first byte may change. to avoid this, it must no
+  //       be used inside the program
+  posMin_(1+0*SERVO_COUNT),
+  posDef_(1+1*SERVO_COUNT),
+  posMax_(1+2*SERVO_COUNT),
+  flags_ (1+3*SERVO_COUNT)
 {
   if(flags_.read(0)==flags_.read(1))
   {
