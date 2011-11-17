@@ -25,6 +25,7 @@
 ISR(BADISR_vect)
 {
   uassert(!"unhandled interrupt");
+  for(;;) {};   // watchdog will do the rest
 }
 
 
