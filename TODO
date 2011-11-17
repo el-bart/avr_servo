@@ -1,2 +1,3 @@
 * add command queue on the device.
 * add moving with different speeds.
+* update PCB, so that uC can signal RS-232 is it cannot accept any data (i.e. in hard-RT parts of code).
