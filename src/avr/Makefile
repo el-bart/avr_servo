@@ -160,12 +160,12 @@ $(PROGRAM_NAME): $(CXXOBJS) $(COBJS)
 # C++ source files:
 %.o: %.cpp $(SRCDIR)/Makefile
 	echo "CXX $*.cpp"
-	$(CXX) $(CXXFLAGS) -MMD -c "$(SRCDIR)/$*.cpp" -o "$@"
+	$(CXX) $(CXXFLAGS) -MMD -c "$(SRCDIR)/$*.cpp" -o "$@" "-DBASE_SRC_NAME=\"$*.cpp\""
 
 # C source files:
 %.o: %.c $(SRCDIR)/Makefile
 	echo "CC  $*.c"
-	$(CC) $(CFLAGS) -MMD -c "$(SRCDIR)/$*.c" -o "$@"
+	$(CC) $(CFLAGS) -MMD -c "$(SRCDIR)/$*.c" -o "$@" "-DBASE_SRC_NAME=\"$*.c\""
 
 $(HEX_FILE): $(PROGRAM_NAME)
 	echo "HEX $<"

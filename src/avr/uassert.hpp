@@ -16,7 +16,9 @@ namespace detail
 void uassertInternalImplementation(uint16_t line, const char *file);
 }
 
-#define uassert(cond) do { if(!(cond)) detail::uassertInternalImplementation(__LINE__, __FILE__); } while(0)
+// NOTE: BASE_SRC_NAME (set by build process) is used here instead of __FILE__, since
+//       full path takes FAR too much of the memory (over 0.5kB!) in this code
+#define uassert(cond) do { if(!(cond)) detail::uassertInternalImplementation(__LINE__, BASE_SRC_NAME); } while(0)
 
 #else
 // release
