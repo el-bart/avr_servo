@@ -33,7 +33,7 @@ char num2hex(uint8_t n)
 {
   if(n>0x0F)
     return '?';
-  static const char lut[]="0123456789abcdef";
+  const char *lut="0123456789abcdef";
   return lut[n];
 } // num2hex()
 
