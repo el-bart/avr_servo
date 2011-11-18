@@ -38,6 +38,12 @@ inline Positions getDefaultPositions(const PersistentSettings &s)
     out[i]=s.posDef().read(i);
   return out;
 } // getDefaultPositions()
+
+inline void waitUntilStep(const Timer2 &t2, const uint8_t step)
+{
+  while( t2.currentStep()<step )
+    PowerSave::idle();
+} // waitUntilStep()
 } // unnamed namespace
 
 
@@ -63,62 +69,46 @@ int main(void)
   sei();                                                            // allow interrupts globally
 
   const unsigned int cycleLen=20*2;
-  uint8_t            lastStep=0xFF;
   while(true)
   {
 
-    // wait in idle mode while nothing happens
-    const uint8_t step=t2.currentStep();
-    if(step==lastStep)
-    {
-      PowerSave::idle();
-      continue;
-    }
-    lastStep=step;
+    //
+    // phase I: first rising edge (hard-RT)
+    //
+    phaseGen.rise();
+    waitUntilStep(t2, 1);
 
-    // something has to be done - process next stage
-    switch(step)
-    {
-      // initial 'high' state
-      case 0:
-           usart.disable();
-           phaseGen.rise();
-           break;
+    //
+    // phase II: phase generation (hard-RT)
+    //
+    phaseGen.generate( t1, chronoTable.currentEntries() );
+    phaseGen.fall();
 
-      // PWM generation for servos
-      case 1:
-           phaseGen.generate( t1, chronoTable.currentEntries() );
-           phaseGen.fall();
-           usart.enable();
-           // NOTE: it is very important that chrono-table is re-calculated here, and not
-           //       during the initial cycle, since for certain data sets this computations
-           //       can take few ms!
-           chronoTable.update();
-           break;
+    //
+    // phase III: doing I/O processing
+    //
+    usart.enable();
+    proto.process( chronoTable.currentPos() );
+    usart.sendData();
 
-      // 'wait' in 'low' state untile cycle ends
-      default:
-           // process commands until next-to-last cycle (the last one that can be used)
-           if(step<cycleLen-2)
-           {
-             proto.process( chronoTable.currentPos() );
-             usart.sendData();
-             break;
-           }
-           // during last step disable usart, to ensure RT PWM generation
-           if(step==cycleLen-1)
-           {
-             usart.disable();
-             break;
-           }
-           // just wait until the end of the cycle, to ensure that no delays will be introduced
-           if(step<cycleLen)
-             break;
-           wdg.reset();         // signal watchdog system is working fine
-           t2.resetStep();      // reset step counter (i.e. start new cycle)
-           break;
-    } // switch(current_step)
+    //
+    // phase IV: computing output data for phase generation
+    //
+    chronoTable.update();                   // NOTE: this may take few ms...
 
+    //
+    // phase V: waiting for next-to-last cycle - this can be done in sleep mode
+    //
+    waitUntilStep(t2, cycleLen-1);
+    uassert( t2.currentStep()==cycleLen-1 );// if this fails, it means computations last too long...
+
+    //
+    // phase VI: do final tasks and close the cycle
+    //
+    usart.disable();                        // disable USART, to ensure no delays in hard-RT part
+    waitUntilStep(t2, cycleLen);            // wait until final step is reached
+    wdg.reset();                            // reset watchdog
+    t2.resetStep();                         // reset step counter
   } // while(true)
 
   // code never reaches here
