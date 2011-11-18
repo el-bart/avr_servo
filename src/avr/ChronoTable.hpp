@@ -16,7 +16,7 @@ class ChronoTable: private Noncopyable
 public:
   /** \brief initialize data.
    */
-  explicit ChronoTable(const Positions defaultPositions);
+  explicit ChronoTable(const Positions &defaultPositions);
 
   /** \brief return reference to table of current positions.
    *  \return reference fo current positions to be changed.

@@ -6,7 +6,7 @@
 #include "uassert.hpp"
 
 
-ChronoTable::ChronoTable(const Positions defaultPositions)
+ChronoTable::ChronoTable(const Positions &defaultPositions)
 {
   // initially start with default values
   cur_=defaultPositions;
