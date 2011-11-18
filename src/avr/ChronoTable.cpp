@@ -3,6 +3,7 @@
 #include "ChronoTable.hpp"
 #include "bubbleSort.hpp"
 #include "servoNoToMask.hpp"
+#include "uassert.hpp"
 
 
 ChronoTable::ChronoTable(const Positions defaultPositions)
@@ -23,6 +24,7 @@ void ChronoTable::update(void)
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
   {
     // make default mask for this element
+    uassert(idxs[i]<SERVO_COUNT);
     Entry entry={cur_[idxs[i]], 0xFF, 0xFF, 0xFF};
     servoNoToMask(idxs[i], entry);
     // try packing multiple entries into one, if possible
