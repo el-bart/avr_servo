@@ -5,14 +5,19 @@
 
 using namespace std;
 
+namespace
+{
+constexpr bool g_useFastMode=false;
+} // unnamed namespace
+
 
 struct NavWin::CommThread
 {
   typedef std::unique_lock<std::mutex> Lock;
 
   CommThread(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
-    srvX_{nameX, dev, false},
-    srvY_{nameY, dev, false},
+    srvX_{nameX, dev, g_useFastMode},
+    srvY_{nameY, dev, g_useFastMode},
     posXsent_{0},
     posYsent_{0},
     quit_{false}
@@ -56,15 +61,15 @@ struct NavWin::CommThread
       if( posXsent_!=getX() )
       {
         const uint8_t p=getX();
-        send(srvX_, p);
-        posXsent_=p;
+        if( send(srvX_, p) )
+          posXsent_=p;
       }
 
       if( posYsent_!=getY() )
       {
         const uint8_t p=getY();
-        send(srvY_, p);
-        posYsent_=p;
+        if( send(srvY_, p) )
+          posYsent_=p;
       }
 
       // TODO: make this conditional
@@ -140,17 +145,16 @@ bool NavWin::on_motion_notify_event(GdkEventMotion* event)
   if(event==NULL)
     return false;
 
-  //cout<<"mouse pos: "<<event->x<<" "<<event->y<<endl;
   if(!pressed_)
     return true;
 
   posUpdate(posX_, lastX_, event->x);
   thImpl_->setX(posX_);
-  //lastX_=event->x;
+  lastX_=event->x;
 
   posUpdate(posY_, lastY_, event->y);
   thImpl_->setY(posY_);
-  //lastY_=event->y;
+  lastY_=event->y;
 
   return true;
 }
@@ -160,7 +164,6 @@ bool NavWin::on_button_press_event(GdkEventButton* event)
   if(event==NULL)
     return false;
 
-  //cout<<"press: "<<event->x<<" "<<event->y<<endl;
   pressed_=true;
   lastX_  =event->x;
   lastY_  =event->y;
@@ -173,7 +176,6 @@ bool NavWin::on_button_release_event(GdkEventButton* event)
   if(event==NULL)
     return false;
 
-  //cout<<"release: "<<event->x<<" "<<event->y<<endl;
   pressed_=false;
   return true;
 }
@@ -195,11 +197,11 @@ void NavWin::posUpdate(uint8_t &pos, double last, double now)
 
 int NavWin::posDiff(double last, double now)
 {
-  return (now-last)/7;
+  const int d=2;
 
   if(last<now)
-    return +1;
+    return +d;
   if(last>now)
-    return -1;
+    return -d;
   return 0;
 }
