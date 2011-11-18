@@ -34,7 +34,7 @@ Timer2::Timer2(void)
   TIMSK|=_BV(OCIE2);
 }
 
-uint8_t Timer2::currentStep(void)
+uint8_t Timer2::currentStep(void) const
 {
   ScopedIntLock lock;
   return g_stepCounter;

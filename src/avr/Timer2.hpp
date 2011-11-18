@@ -12,7 +12,7 @@ class Timer2: private Noncopyable
 {
 public:
   Timer2(void);
-  uint8_t currentStep(void);
+  uint8_t currentStep(void) const;
   void resetStep(void);
 }; // class Timer2
 
