@@ -83,7 +83,6 @@ int main(void)
       case 0:
            usart.disable();
            phaseGen.rise();
-           chronoTable.update();
            break;
 
       // PWM generation for servos
@@ -91,6 +90,10 @@ int main(void)
            phaseGen.generate( t1, chronoTable.currentEntries() );
            phaseGen.fall();
            usart.enable();
+           // NOTE: it is very important that chrono-table is re-calculated here, and not
+           //       during the initial cycle, since for certain data sets this computations
+           //       can take few ms!
+           chronoTable.update();
            break;
 
       // 'wait' in 'low' state untile cycle ends
@@ -108,7 +111,7 @@ int main(void)
              usart.disable();
              break;
            }
-           // end of the cycle just wait, to ensure that no delays will be introduced
+           // just wait until the end of the cycle, to ensure that no delays will be introduced
            if(step<cycleLen)
              break;
            wdg.reset();         // signal watchdog system is working fine
