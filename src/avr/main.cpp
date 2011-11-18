@@ -97,18 +97,19 @@ int main(void)
     chronoTable.update();                   // NOTE: this may take few ms...
 
     //
-    // phase V: waiting for next-to-last cycle - this can be done in sleep mode
+    // phase V: waiting for next-to-last cycle and disable USART
     //
     waitUntilStep(t2, cycleLen-1);
-    uassert( t2.currentStep()==cycleLen-1 );// if this fails, it means computations last too long...
+    usart.disable();                        // disable USART, to ensure no delays in hard-RT part
 
     //
     // phase VI: do final tasks and close the cycle
     //
-    usart.disable();                        // disable USART, to ensure no delays in hard-RT part
     waitUntilStep(t2, cycleLen);            // wait until final step is reached
     wdg.reset();                            // reset watchdog
     t2.resetStep();                         // reset step counter
+    uassert( t2.currentStep()==cycleLen );  // if this fails, it means computations last too long...
+                                            // NOTE: it may fail, when heavy stress is presented in debug mode.
   } // while(true)
 
   // code never reaches here
