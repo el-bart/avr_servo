@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     usleep(delay*1000);
     const uint8_t srvNo=rndSrvNo();
     const uint8_t pos  =rndPos();
-    cout<<"sending pos "<<int{pos}<<"..."<<endl;
+    cout<<"sending pos "<<int{pos}<<" to servo "<<char{ServoName::first()+srvNo}<<"..."<<endl;
     try
     {
       servos.at(srvNo).setPos(pos);

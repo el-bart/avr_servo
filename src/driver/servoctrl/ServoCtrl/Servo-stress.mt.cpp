@@ -25,7 +25,7 @@ int main(int argc, char **argv)
   while(true)
   {
     usleep(delay*1000);
-    cout<<"sending pos "<<int{pos}<<"..."<<endl;
+    cout<<"sending pos "<<int{pos}<<" to servo "<<argv[2][0]<<"..."<<endl;
     try
     {
       servo.setPos(pos);
