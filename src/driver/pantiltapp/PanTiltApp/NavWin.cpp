@@ -83,17 +83,19 @@ private:
     return quit_;
   }
 
-  void send(ServoCtrl::Servo &srv, const uint8_t pos)
+  bool send(ServoCtrl::Servo &srv, const uint8_t pos)
   {
     cout<<"sedning "<<int{pos}<<endl;
     try
     {
       srv.setPos(pos);
+      return true;
     }
     catch(const std::exception &ex)
     {
       cerr<<"oops: "<<ex.what()<<" - proceeding"<<endl;
     }
+    return false;
   }
 
   mutable std::mutex m_;
