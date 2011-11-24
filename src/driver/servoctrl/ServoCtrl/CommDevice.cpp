@@ -87,6 +87,8 @@ void CommDevice::configure(void)
   opts.c_cflag &= ~CSTOPB;
   opts.c_cflag &= ~CSIZE;
   opts.c_cflag |=  CS8;
+  // enable CRT/CTS hardware flow control
+  opts.c_cflag |=  CRTSCTS;
 
   // apply these settings
   if( tcsetattr(fd_.get(), TCSANOW, &opts)!=0 )
