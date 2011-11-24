@@ -114,7 +114,7 @@ template<>
 void testObj::test<7>(void)
 {
   CommDevice cd(devPath_);
-  for(char c='3'; c<'b'; ++c)
+  for(char c: {'3','5','7','9','b','d'})
   {
     char buf[]="asX0?\n";
     buf[2]=c;
@@ -128,7 +128,6 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const char lut[]="0123456789abcdef";
   CommDevice cd(devPath_);
   cd.run("os70?\n");
 }

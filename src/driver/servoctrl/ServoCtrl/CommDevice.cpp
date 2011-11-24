@@ -32,6 +32,11 @@ CommDevice::CommDevice(const boost::filesystem::path &devPath):
   if(fd_.get()==-1)
     throw ExceptionDevice{devPath};
   configure();
+  // this is a little trick - it appears that when RS-232 is started
+  // it needs a little while to warm up. so we wait 10 20ms cycles
+  // and cleanup any trashes that may have arrived.
+  usleep(10*20*1000);
+  discardContent();
 }
 
 std::string CommDevice::run(std::string cmd)
@@ -52,7 +57,7 @@ std::string CommDevice::run(std::string cmd)
     // report errors
     if( ret.find("ERR")!=std::string::npos )
       throw ExceptionProtocolError{ret};
-    // look like all's ok
+    // looks like all's ok
     return ret;
   }
 
@@ -119,7 +124,7 @@ std::string CommDevice::recvData(void)
     fd_set rdfd;
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
-    struct timeval timeout={0, 20*1000};        // 20[ms] TODO: magic value
+    struct timeval timeout={0, 40*1000};       // 40[ms] TODO: magic value
     const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &timeout);
     if(ret<0)
       throw ExceptionIO{"select() failed for some reason"};
@@ -172,7 +177,7 @@ void CommDevice::discardContent(void)
     if( read(fd_.get(), tmp, sizeof(tmp)-1)==-1 )
       throw ExceptionIO{"read(): unable to dispose of garbage in the buffers"};
     // if has some data already, wait a bit - maby there's more to come?
-    dt=2*1000;      // 2[ms] // TODO: magic value
+    dt=6*1000;      // 6[ms] // TODO: magic value
   }
 }
 

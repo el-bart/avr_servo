@@ -37,7 +37,7 @@ public:
   }
   static constexpr char last(void)
   {
-    return 'r';
+    return 'q';
   }
 
 private:

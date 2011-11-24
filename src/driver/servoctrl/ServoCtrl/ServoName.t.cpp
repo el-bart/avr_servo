@@ -39,7 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid last servo", s_.last(), 'r');
+  ensure_equals("invalid last servo", s_.last(), 'q');
 }
 
 // test getting name
