@@ -77,6 +77,8 @@ USART::USART(QueueSend &qSend, QueueRecv &qRecv)
   DDRD &=~_BV(PD0);     // RX as in
   PORTD|= _BV(PD0);     // RX high with pull-up
   DDRD |= _BV(PD1);     // TX as out
+  // configure hardware flow control on pin PD.2
+  DDRD |= _BV(PD2);     // CTS as output
 
   // set global pointers
   g_recvQueue=&qRecv;
@@ -111,6 +113,8 @@ void USART::enable(void)
   // enable interrupts
   UCSRB|= _BV(RXCIE);   // RX complete
   UCSRB|= _BV(TXCIE);   // TX complete
+  // CTS - ready to receive data
+  PORTD&=~_BV(PD2);     // CTS to enable
 
   uassert(g_sendQueue!=NULL);
   uassert(g_recvQueue!=NULL);
@@ -119,6 +123,8 @@ void USART::enable(void)
 
 void USART::disable(void)
 {
+  // CTS - cannot receive data
+  PORTD|= _BV(PD2);     // CTS to disable
   // disable interrupts
   UCSRB&=~_BV(RXCIE);   // RX complete
   UCSRB&=~_BV(TXCIE);   // TX complete
