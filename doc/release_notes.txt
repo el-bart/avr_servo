@@ -1,0 +1,15 @@
+-- v1.1.0 --
+* operating up to 17 servos.
+* added RTS/CTS hardware flow control.
+
+
+-- v1.0.0 --
+* operating up to 18 servos.
+* persistent declaration of min/max positions servo cannot overcome.
+* persistent declaration of default servos position.
+* watchdog ensuring self-recovery after a failure.
+* low power consumption.
+* overcurrent fuse protection.
+* less then 1.5 deg precision for typical servos.
+* can go beyond min-max positions of RC mechanisms with longer/shorter impulses.
+* RS-232, plain-text protocol.
