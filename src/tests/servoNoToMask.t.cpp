@@ -160,7 +160,7 @@ template<>
 void testObj::test<13>(void)
 {
   servoNoToMask(12, e_);
-  check(0<<0, 0<<0, 1<<2);
+  check(0<<0, 0<<0, 1<<3);
 }
 
 // test servo 13
@@ -169,7 +169,7 @@ template<>
 void testObj::test<14>(void)
 {
   servoNoToMask(13, e_);
-  check(0<<0, 0<<0, 1<<3);
+  check(0<<0, 0<<0, 1<<4);
 }
 
 // test servo 14
@@ -178,7 +178,7 @@ template<>
 void testObj::test<15>(void)
 {
   servoNoToMask(14, e_);
-  check(0<<0, 0<<0, 1<<4);
+  check(0<<0, 0<<0, 1<<5);
 }
 
 // test servo 15
@@ -187,7 +187,7 @@ template<>
 void testObj::test<16>(void)
 {
   servoNoToMask(15, e_);
-  check(0<<0, 0<<0, 1<<5);
+  check(0<<0, 0<<0, 1<<6);
 }
 
 // test servo 16
@@ -196,15 +196,6 @@ template<>
 void testObj::test<17>(void)
 {
   servoNoToMask(16, e_);
-  check(0<<0, 0<<0, 1<<6);
-}
-
-// test servo 17
-template<>
-template<>
-void testObj::test<18>(void)
-{
-  servoNoToMask(17, e_);
   check(0<<0, 0<<0, 1<<7);
 }
 
@@ -215,11 +206,11 @@ void testObj::test<18>(void)
 // test all servos
 template<>
 template<>
-void testObj::test<19>(void)
+void testObj::test<18>(void)
 {
-  for(int i=0; i<18; ++i)
+  for(int i=0; i<SERVO_COUNT; ++i)
     servoNoToMask(i, e_);
-  check(0b00111111, 0b00111111, 0b11111100);
+  check(0b00111111, 0b00111111, 0b11111000);
 }
 
 } // namespace tut

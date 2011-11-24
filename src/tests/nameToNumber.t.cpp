@@ -24,7 +24,7 @@ template<>
 void testObj::test<1>(void)
 {
   int i=0;
-  for(char c='a'; c<='r'; ++c, ++i)
+  for(char c='a'; c<'a'+SERVO_COUNT; ++c, ++i)
     ensure_equals("invalid convertion", nameToNumber(c), i);
 }
 
@@ -33,7 +33,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid convertion of invalid name", nameToNumber('r'+1), -1);
+  ensure_equals("invalid convertion of invalid name", nameToNumber('q'+1), -1);
 }
 
 // test converting invalid name - one before
