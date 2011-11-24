@@ -1,2 +1,3 @@
 * add command queue on the device.
 * add moving with different speeds.
+* test device under heavy load (as many servos, as possible), on real power supply, and check if uC does not reboots. if there is a problem, add more decoupling near the uC.
