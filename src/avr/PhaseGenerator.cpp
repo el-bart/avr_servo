@@ -6,7 +6,7 @@
 PhaseGenerator::PhaseGenerator(void):
   defMaskPB_( uint8_t(~( _BV(PB0) | _BV(PB1) | _BV(PB2) | _BV(PB3) | _BV(PB4) | _BV(PB5) )) ),
   defMaskPC_( uint8_t(~( _BV(PC0) | _BV(PC1) | _BV(PC2) | _BV(PC3) | _BV(PC4) | _BV(PC5) )) ),
-  defMaskPD_( uint8_t(~( _BV(PD2) | _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )) )
+  defMaskPD_( uint8_t(~(            _BV(PD3) | _BV(PD4) | _BV(PD5) | _BV(PD6) | _BV(PD7) )) )
 {
   // setup output pins
   DDRB|=~defMaskPB_;

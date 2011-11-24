@@ -17,9 +17,9 @@ void servoNoToMask(const uint8_t servoNo, Entry &out)
     out.maskPC_&=~_BV(tmp);
     return;
   }
-  if(servoNo<18) // PORTD?
+  if(servoNo<17) // PORTD?
   {
-    const uint8_t tmp=servoNo-12+2;
+    const uint8_t tmp=servoNo-12+3;
     out.maskPD_&=~_BV(tmp);
     return;
   }

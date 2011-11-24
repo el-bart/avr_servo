@@ -3,7 +3,7 @@
 
 int nameToNumber(char n)
 {
-  if(n<'a' || 'r'<n)
+  if(n<'a' || 'a'+SERVO_COUNT-1<n)
     return -1;
   return n-'a';
 }

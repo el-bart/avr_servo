@@ -9,9 +9,6 @@
 #define F_CPU (8L*MHz)
 
 // USART speed (bps)
-//#define USART_BAUD (19200L)
-// TODO: check if it is fine speed
-//#define USART_BAUD (57600L)
 #define USART_BAUD (38400L)
 
 // max queues sizes
@@ -19,6 +16,6 @@
 #define QUEUE_RECV_SIZE (120)
 
 // servos count
-#define SERVO_COUNT (18)
+#define SERVO_COUNT (17)
 
 #endif

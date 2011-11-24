@@ -17,8 +17,8 @@ ChronoTable::ChronoTable(const Positions &defaultPositions)
 
 void ChronoTable::update(void)
 {
-  uint8_t idxs[SERVO_COUNT]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};  // sorted indexes
-  bubbleSort(idxs, cur_);                                                   // find proper order of elements
+  uint8_t idxs[SERVO_COUNT]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}; // sorted indexes
+  bubbleSort(idxs, cur_);                                               // find proper order of elements
 
   uint8_t idxOut=0;
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
