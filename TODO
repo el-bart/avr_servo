@@ -3,3 +3,4 @@
 * add more I/O operations (no computations for the chrono table though!).
 * add "BURST" command to set all servos to a given poistions.
 * improve I/O speed, using new 16MHz quartz.
+* consider adding more precition to controling servos (few extra bits?).
