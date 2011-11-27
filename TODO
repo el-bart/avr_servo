@@ -1,3 +1,5 @@
 * add command queue on the device.
 * add moving with different speeds.
-* test device under heavy load (as many servos, as possible), on real power supply, and check if uC does not reboots. if there is a problem, add more decoupling near the uC.
+* add more I/O operations (no computations for the chrono table though!).
+* add "BURST" command to set all servos to a given poistions.
+* improve I/O speed, using new 16MHz quartz.
