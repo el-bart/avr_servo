@@ -1,0 +1,88 @@
+#include <iostream>
+#include <utility>
+#include <ctype.h>
+#include <curses.h>
+
+#include "ServoCtrl/Servo.hpp"
+
+using namespace std;
+using namespace ServoCtrl;
+
+int main(int argc, char **argv)
+{
+  if(argc!=1+2)
+  {
+    cerr<<argv[0]<<" <dev> <servo>"<<endl;
+    return 1;
+  }
+
+  CommDevicePtrNN dev{ new CommDevice{argv[1]} };
+  Servo           servo{ ServoName{argv[2][0]}, dev, true };
+
+  initscr();
+  cbreak();
+  noecho();
+
+  uint8_t pos=256/2;
+  while( cin.good() )
+  {
+    clear();
+    printw("setting position to %d...\n", static_cast<int>(pos));
+    servo.setPos(pos);
+
+    printw("\n");
+    printw("Q=>quit\n");
+    printw("\n");
+    printw("A=>+1   S=>+10   D=>+100\n");
+    printw("Z=>-1   X=>-10   V=>-100\n");
+    printw("\n");
+
+    const char in=getch();
+    const char c =tolower(in);
+
+    // +-1
+    if(c=='a')
+    {
+      pos=min(pos+1, 255);
+      continue;
+    }
+    if(c=='z')
+    {
+      pos=max(pos-1, 0);
+      continue;
+    }
+
+    // +-10
+    if(c=='s')
+    {
+      pos=min(pos+10, 255);
+      continue;
+    }
+    if(c=='x')
+    {
+      pos=max(pos-10, 0);
+      continue;
+    }
+
+    // +-100
+    if(c=='d')
+    {
+      pos=min(pos+100, 255);
+      continue;
+    }
+    if(c=='c')
+    {
+      pos=max(pos-100, 0);
+      continue;
+    }
+
+    if(c=='q')
+      break;
+  }
+
+  endwin();
+
+  cout<<"exiting..."<<endl;
+
+  return 0;
+}
