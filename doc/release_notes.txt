@@ -1,3 +1,8 @@
+-- ?? --
+* increased serial speed to 57600bps.
+* changed quartz to 11.0592MHz.
+
+
 -- v1.1.0 --
 * operating up to 17 servos.
 * added RTS/CTS hardware flow control.

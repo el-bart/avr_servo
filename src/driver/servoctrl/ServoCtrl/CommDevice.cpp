@@ -84,7 +84,7 @@ void CommDevice::configure(void)
   memset(&opts, 0, sizeof(opts));
 
   // set baud rate
-  const speed_t speed=B38400;
+  const speed_t speed=B57600;
   cfsetispeed(&opts, speed);
   cfsetospeed(&opts, speed);
   // 8N1 (8 data bits, no parity, 1 stop bit)
