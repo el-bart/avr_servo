@@ -30,7 +30,7 @@ void PhaseGenerator::generate(Timer1 &t1, const EntryTable &et) const
   for(uint8_t i=0; i<SERVO_COUNT; ++i)
   {
     // TODO: why 13? computations say 10.8 is the exact value... :/
-    const uint16_t tmp=et[i].time_*13;
+    const uint16_t tmp=et[i].time_*11;
     // wait until proper time will come
     while( tmp > t1.get() )
     { /* wait... */ };
