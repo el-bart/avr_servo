@@ -132,4 +132,15 @@ void testObj::test<8>(void)
   cd.run("os70?\n");
 }
 
+// check proper recover, after sending non-full command followed by the correct one
+// this is a bug test, for the older implementaiton on uC.
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  CommDevice cd(devPath_);
+  cd.runFast("os0?\n"); // this command is invalid
+  cd.run("os70?\n");    // this one is fine
+}
+
 } // namespace tut
