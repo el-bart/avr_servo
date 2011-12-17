@@ -32,6 +32,9 @@ int main(int argc, char **argv)
 
     printw("\n");
     printw("Q=>quit\n");
+    printw("H=>set current as max pos.\n");
+    printw("L=>set current as min pos.\n");
+    printw("B=>set current as begin pos.\n");
     printw("\n");
     printw("A=>+1   S=>+10   D=>+100\n");
     printw("Z=>-1   X=>-10   V=>-100\n");
@@ -73,6 +76,23 @@ int main(int argc, char **argv)
     if(c=='c')
     {
       pos=max(pos-100, 0);
+      continue;
+    }
+
+    // set min/max/def positions
+    if(c=='l')
+    {
+      servo.setMinPos(pos);
+      continue;
+    }
+    if(c=='h')
+    {
+      servo.setMaxPos(pos);
+      continue;
+    }
+    if(c=='b')
+    {
+      servo.setDefaultPos(pos);
       continue;
     }
 
