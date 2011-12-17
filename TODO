@@ -2,6 +2,7 @@
 * add moving with different speeds.
 * add more I/O operations (no computations for the chrono table though!).
 * implement asynchronous communication in the driver using future/promise mechanism.
+* fix uC implementation to check fo rnew lines instead of checking the buffer's size.
 
 consider:
 * add "BURST" command to set all servos to a given poistions.

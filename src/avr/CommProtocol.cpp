@@ -56,6 +56,7 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 
 void CommProtocol::process(Positions &posTab)
 {
+  // TODO: fix this to check for new lines in queue
   while( qRecv_.size()>=1+1+2+1+1 )
   {
     // get servo number
