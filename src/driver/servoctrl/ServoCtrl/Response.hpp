@@ -17,16 +17,16 @@ namespace ServoCtrl
 class Response
 {
 public:
-  typedef std::future<std::string>  FutureValue;
-  typedef std::promise<std::string> PromiseValue;
+  typedef std::future<std::string>  Future;
+  typedef std::promise<std::string> Promise;
 
-  explicit Response(FutureValue fv);
+  explicit Response(Future fut);
 
   bool ok(void);
   bool error(void);
 
 private:
-  FutureValue fv_;
+  Future fut_;
 }; // class Response
 
 } // namespace ServoCtrl

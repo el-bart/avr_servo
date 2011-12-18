@@ -3,8 +3,8 @@
 namespace ServoCtrl
 {
 
-Response::Response(FutureValue fv):
-  fv_( std::move(fv) )
+Response::Response(Future fut):
+  fut_( std::move(fut) )
 {
 }
 
@@ -17,7 +17,7 @@ bool Response::ok(void)
 
 bool Response::error(void)
 {
-  const std::string r=fv_.get();
+  const std::string r=fut_.get();
   return r.find("ERR")!=std::string::npos;
 }
 
