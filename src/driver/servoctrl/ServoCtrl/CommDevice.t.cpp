@@ -133,14 +133,35 @@ void testObj::test<8>(void)
 }
 
 // check proper recover, after sending non-full command followed by the correct one
-// this is a bug test, for the older implementaiton on uC.
+// this is a bug test, for the older implementaiton of command queue.
 template<>
 template<>
 void testObj::test<9>(void)
 {
   CommDevice cd(devPath_);
-  cd.runFast("os0?\n"); // this command is invalid
-  cd.run("os70?\n");    // this one is fine
+  cd.runFast("os0?\n");     // this command is invalid
+  cd.run("os70?\n");        // this one is fine
+}
+
+// check proper recover, after sending invalid command followed by the correct one
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  CommDevice cd(devPath_);
+  cd.runFast("xs70?\n");    // this command is invalid
+  cd.run("os70?\n");        // this one is fine
+}
+
+// check if extreamly long packets are parsed as one, invalid data set
+// this is a bug test, for the older implementaiton of command queue on uC.
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  CommDevice cd(devPath_);
+  cd.runFast("vvXXyyZZwwQQssRRttBlah...\n");    // this command is invalid
+  cd.run("os70?\n");                            // this one is fine
 }
 
 } // namespace tut
