@@ -111,7 +111,6 @@ void CommDevice::sendData(const std::string &cmd)
 
 std::string CommDevice::recvData(void)
 {
-
   constexpr size_t  bufSize=16;     // TODO: magic value
   char              buf[bufSize];   // input buffer
   char             *ptr =buf;       // start from
