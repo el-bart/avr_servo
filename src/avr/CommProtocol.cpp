@@ -51,14 +51,31 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
   // return as printable hex
   return num2hex(out);
 } // computeChecksum()
+
+
+inline bool isNewLine(const char c)
+{
+  return c=='\n' || c=='\r';
+} // isNewLine()
+
+
+bool hasNewPacket(const QueueRecv &q)
+{
+  uint8_t p=0;
+  for(; p<q.size(); ++p)
+    if( isNewLine( q.peek(p) ) )
+      return true;
+  return false;
+} // has NewPacket()
 } // unnamed namespace
 
 
 void CommProtocol::process(Positions &posTab)
 {
-  // TODO: fix this to check for new lines in queue
-  while( qRecv_.size()>=1+1+2+1+1 )
+  while( hasNewPacket(qRecv_) )
   {
+    uassert( qRecv_.size()>0 );
+
     // get servo number
     const char servoName=qRecv_.pop();
     if(servoName<'a' || 'a'+SERVO_COUNT<=servoName)
@@ -110,7 +127,7 @@ void CommProtocol::process(Positions &posTab)
 
     // check for end of line
     const char end=qRecv_.pop();
-    if(end!='\n' && end!='\r')
+    if( !isNewLine(end) )
     {
       replyError(servoName);
       skipUntilNewCommand();
@@ -138,7 +155,7 @@ void CommProtocol::skipUntilNewCommand(void)
   for(uint8_t i=0; i<qRecv_.size(); ++i)
   {
     const char c=qRecv_.peek(i);
-    if(c=='\n' || c=='\r')
+    if( isNewLine(c) )
       break;
     ++toRemove;
   }
@@ -155,7 +172,7 @@ void CommProtocol::skipEndMarkers(void)
   for(uint8_t i=0; i<qRecv_.size(); ++i)
   {
     const char c=qRecv_.peek(i);
-    if(c!='\n' && c!='\r')
+    if( !isNewLine(c) )
       break;
     ++toRemove;
   }
