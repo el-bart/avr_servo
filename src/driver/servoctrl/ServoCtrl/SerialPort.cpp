@@ -34,7 +34,7 @@ int dirMode(const int dir)
     return O_RDWR;
   if(dir==SerialPort::READ)
     return O_RDONLY;
-  if(dir&SerialPort::WRITE)
+  if(dir==SerialPort::WRITE)
     return O_WRONLY;
 
   assert(!"unknown mode - update the code");
