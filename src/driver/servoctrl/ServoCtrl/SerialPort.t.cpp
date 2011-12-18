@@ -118,23 +118,10 @@ void testObj::test<7>(void)
   ensure_equals("invalid reponse", rd_->readLine(100), "b-ok\n");
 }
 
-// try sending multiple commands: error, ok - it should recover
-template<>
-template<>
-void testObj::test<8>(void)
-{
-  // force proto error
-  wr_->writeLine("wtf?\n");
-  ensure_equals("incalid error reponse", rd_->readLine(100), "?-ERR\n");
-  // test recovery
-  wr_->writeLine("as50?\n");
-  ensure_equals("invalid response", rd_->readLine(100), "a-ok\n");
-}
-
 // check if CR is end-of-packet
 template<>
 template<>
-void testObj::test<9>(void)
+void testObj::test<8>(void)
 {
   wr_->writeLine("as40?\r");
   ensure_equals("invalid response", rd_->readLine(100), "a-ok\n");
@@ -143,7 +130,7 @@ void testObj::test<9>(void)
 // check if CL is end-of-packet
 template<>
 template<>
-void testObj::test<10>(void)
+void testObj::test<9>(void)
 {
   wr_->writeLine("as60?\n");
   ensure_equals("invalid response", rd_->readLine(100), "a-ok\n");
@@ -152,7 +139,7 @@ void testObj::test<10>(void)
 // test timeout on reading
 template<>
 template<>
-void testObj::test<11>(void)
+void testObj::test<10>(void)
 {
   try
   {
@@ -168,7 +155,7 @@ void testObj::test<11>(void)
 // test opening single instance in R/W mode
 template<>
 template<>
-void testObj::test<12>(void)
+void testObj::test<11>(void)
 {
   // destroy previous instances
   rd_.reset();

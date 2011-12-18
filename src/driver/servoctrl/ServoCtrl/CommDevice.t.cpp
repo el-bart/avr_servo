@@ -13,11 +13,11 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    devPath_("/dev/ttyUSB0")
+    cd_("/dev/ttyUSB0")
   {
   }
 
-  const char  *devPath_;
+  CommDevice cd_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -30,51 +30,25 @@ factory tf("ServoCtrl/CommDevice");
 namespace tut
 {
 
-// try opening USART 0
+// open whatever and try sending something
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  CommDevice cd(devPath_);
-}
-
-// open whatever and try sending something
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  CommDevice cd(devPath_);
-  ensure_equals("invalid response", cd.run("as7f?\n"), "a-ok\n");
+  ensure_equals("invalid response", cd_.run("as7f?\n"), "a-ok\n");
 }
 
 // test error condition
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
-  CommDevice cd(devPath_);
   try
   {
-    cd.run("wtf?\n");
+    cd_.run("wtf?\n");
     fail("no exception on error");
   }
   catch(const CommDevice::ExceptionProtocolError&)
-  {
-    // this is expected
-  }
-}
-
-// test error when opening non-existing file
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  try
-  {
-    CommDevice cd("/non/exisitng/element");
-    fail("no exception on error");
-  }
-  catch(const CommDevice::ExceptionDevice&)
   {
     // this is expected
   }
@@ -83,42 +57,39 @@ void testObj::test<4>(void)
 // try sending multiple commands
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<3>(void)
 {
-  CommDevice cd(devPath_);
-  ensure_equals("invalid response 1", cd.run("as30?\n"), "a-ok\n");
-  ensure_equals("invalid response 2", cd.run("asa0?\n"), "a-ok\n");
+  ensure_equals("invalid response 1", cd_.run("as30?\n"), "a-ok\n");
+  ensure_equals("invalid response 2", cd_.run("asa0?\n"), "a-ok\n");
 }
 
 // try sending multiple commands: error, ok - it should recover
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<4>(void)
 {
-  CommDevice cd(devPath_);
   try
   {
-    cd.run("wtf?\n");
+    cd_.run("wtf?\n");
     fail("no expcetion on error message");
   }
   catch(const CommDevice::ExceptionProtocolError&)
   {
     // this is expected
   }
-  ensure_equals("invalid response", cd.run("asa0?\n"), "a-ok\n");
+  ensure_equals("invalid response", cd_.run("asa0?\n"), "a-ok\n");
 }
 
 // test sending fast commands
 template<>
 template<>
-void testObj::test<7>(void)
+void testObj::test<5>(void)
 {
-  CommDevice cd(devPath_);
   for(char c: {'3','5','7','9','b','d'})
   {
     char buf[]="asX0?\n";
     buf[2]=c;
-    cd.runFast(buf);
+    cd_.runFast(buf);
   }
 }
 
@@ -126,70 +97,47 @@ void testObj::test<7>(void)
 // this reproduces bug when controller crashed on this
 template<>
 template<>
-void testObj::test<8>(void)
+void testObj::test<6>(void)
 {
-  CommDevice cd(devPath_);
-  cd.run("os70?\n");
+  cd_.run("os70?\n");
 }
 
 // check proper recover, after sending non-full command followed by the correct one
 // this is a bug test, for the older implementaiton of command queue.
 template<>
 template<>
-void testObj::test<9>(void)
+void testObj::test<7>(void)
 {
-  CommDevice cd(devPath_);
-  cd.runFast("os0?\n");     // this command is invalid
-  cd.run("os70?\n");        // this one is fine
+  cd_.runFast("os0?\n");     // this command is invalid
+  cd_.run("os70?\n");        // this one is fine
 }
 
 // check proper recover, after sending invalid command followed by the correct one
 template<>
 template<>
-void testObj::test<10>(void)
+void testObj::test<8>(void)
 {
-  CommDevice cd(devPath_);
-  cd.runFast("xs70?\n");    // this command is invalid
-  cd.run("os70?\n");        // this one is fine
+  cd_.runFast("xs70?\n");    // this command is invalid
+  cd_.run("os70?\n");        // this one is fine
 }
 
 // check if extreamly long packets are parsed as one, invalid data set
 // this is a bug test, for the older implementaiton of command queue on uC.
 template<>
 template<>
-void testObj::test<11>(void)
+void testObj::test<9>(void)
 {
-  CommDevice cd(devPath_);
-  cd.runFast("vvXXyyZZwwQQssRRttBlah...\n");    // this command is invalid
-  cd.run("os70?\n");                            // this one is fine
-}
-
-// check if CR is end-of-packet
-template<>
-template<>
-void testObj::test<12>(void)
-{
-  CommDevice cd(devPath_);
-  cd.run("os70?\r");
-}
-
-// check if CL is end-of-packet
-template<>
-template<>
-void testObj::test<13>(void)
-{
-  CommDevice cd(devPath_);
-  cd.run("os70?\n");
+  cd_.runFast("vvXXyyZZwwQQssRRttBlah...\n");    // this command is invalid
+  cd_.run("os70?\n");                            // this one is fine
 }
 
 // check if longer sequence of CR/CL chars is end-of-packet
 template<>
 template<>
-void testObj::test<14>(void)
+void testObj::test<10>(void)
 {
-  CommDevice cd(devPath_);
-  cd.run("os70?\r\n\r");
-  cd.run("bs70?\n");
+  cd_.run("os70?\r\n\r");
+  cd_.run("bs70?\n");
 }
 
 } // namespace tut
