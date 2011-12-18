@@ -28,13 +28,16 @@ SerialPort::AutoDescriptor::~AutoDescriptor(void)
 
 namespace
 {
-int dirMode(const SerialPort::Direction dir)
+int dirMode(const int dir)
 {
+  if( (dir&SerialPort::READ) && (dir&SerialPort::WRITE) )
+    return O_RDWR;
   if(dir==SerialPort::READ)
     return O_RDONLY;
-  if(dir==SerialPort::WRITE)
+  if(dir&SerialPort::WRITE)
     return O_WRONLY;
-  assert(!"unsupported direction - update the code");
+
+  assert(!"unknown mode - update the code");
   return 0;
 } // dirMode()
 
@@ -46,7 +49,7 @@ bool isEOL(const char c)
 } // unnamed namespace
 
 
-SerialPort::SerialPort(const boost::filesystem::path &devPath, const Direction dir):
+SerialPort::SerialPort(const boost::filesystem::path &devPath, const int dir):
   fd_( open(devPath.native().c_str(), dirMode(dir)|O_NOCTTY|O_NDELAY) )
 {
   if(fd_.get()==-1)
@@ -56,7 +59,7 @@ SerialPort::SerialPort(const boost::filesystem::path &devPath, const Direction d
   // it needs a little while to warm up. so we wait 10 20ms cycles
   // and cleanup any trashes that may have arrived.
   usleep(10*20*1000);
-  if(dir==READ)
+  if(dir&READ)
     discardContent();
 }
 

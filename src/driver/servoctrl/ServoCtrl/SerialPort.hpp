@@ -42,12 +42,12 @@ public:
 
   enum Direction
   {
-    READ,
-    WRITE
+    READ =1,
+    WRITE=2
   };
 
 
-  SerialPort(const boost::filesystem::path &devPath, Direction dir);
+  SerialPort(const boost::filesystem::path &devPath, int dir);
 
   /** \brief sends given line.
    *  \param line lien to be sent.

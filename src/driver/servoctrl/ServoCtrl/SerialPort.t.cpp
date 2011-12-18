@@ -19,9 +19,9 @@ struct TestClass
   {
   }
 
-  const char      *devPath_;
-  SerialPortPtrNN  rd_;
-  SerialPortPtrNN  wr_;
+  const char                  *devPath_;
+  std::unique_ptr<SerialPort>  rd_;
+  std::unique_ptr<SerialPort>  wr_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -163,6 +163,20 @@ void testObj::test<11>(void)
   {
     // this is expected
   }
+}
+
+// test opening single instance in R/W mode
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  // destroy previous instances
+  rd_.reset();
+  wr_.reset();
+  // do the test
+  SerialPortPtrNN p{ new SerialPort{devPath_, SerialPort::READ|SerialPort::WRITE} };
+  p->writeLine("as90?");
+  ensure_equals("invalid response", p->readLine(100), "a-ok\n");
 }
 
 } // namespace tut
