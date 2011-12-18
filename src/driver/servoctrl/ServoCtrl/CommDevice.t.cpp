@@ -164,4 +164,32 @@ void testObj::test<11>(void)
   cd.run("os70?\n");                            // this one is fine
 }
 
+// check if CR is end-of-packet
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  CommDevice cd(devPath_);
+  cd.run("os70?\r");
+}
+
+// check if CL is end-of-packet
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  CommDevice cd(devPath_);
+  cd.run("os70?\n");
+}
+
+// check if longer sequence of CR/CL chars is end-of-packet
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  CommDevice cd(devPath_);
+  cd.run("os70?\r\n\r");
+  cd.run("bs70?\n");
+}
+
 } // namespace tut
