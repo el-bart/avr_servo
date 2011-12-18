@@ -17,8 +17,16 @@ bool Response::ok(void)
 
 bool Response::error(void)
 {
-  const std::string r=fut_.get();
-  return r.find("ERR")!=std::string::npos;
+  try
+  {
+    const std::string r=fut_.get();
+    return r.find("ERR")!=std::string::npos;
+  }
+  catch(...)
+  {
+    // errors are propagated as codes here
+  }
+  return true;
 }
 
 } // namespace ServoCtrl
