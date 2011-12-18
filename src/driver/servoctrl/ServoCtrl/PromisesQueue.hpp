@@ -5,6 +5,7 @@
 
 #include <deque>
 #include <mutex>
+#include <condition_variable>
 #include <boost/noncopyable.hpp>
 
 #include "ServoCtrl/TimerRT.hpp"
@@ -34,8 +35,9 @@ public:
 private:
   typedef std::deque<Element> Promises;
 
-  std::mutex m_;
-  Promises   queue_;
+  std::mutex              m_;
+  std::condition_variable nonEmpty_;
+  Promises                queue_;
 }; // class PromisesQueue
 
 } // namespace ServoCtrl

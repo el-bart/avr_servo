@@ -1,4 +1,7 @@
+#include <cassert>
+
 #include "ServoCtrl/PromisesQueue.hpp"
+
 
 namespace ServoCtrl
 {
@@ -14,6 +17,7 @@ Response::Future PromisesQueue::push(ServoName s)
     Lock lock(m_);
     queue_.push_back( std::move(e) );
   }
+  nonEmpty_.notify_one();
   return f;
 }
 
@@ -21,6 +25,9 @@ Response::Future PromisesQueue::push(ServoName s)
 PromisesQueue::Element PromisesQueue::pop(void)
 {
   Lock lock(m_);
+  while( queue_.size()==0 )
+    nonEmpty_.wait(lock);
+  assert( queue_.size()>0 );
   Element e=std::move( queue_.front() );
   queue_.pop_front();
   return std::move(e);
