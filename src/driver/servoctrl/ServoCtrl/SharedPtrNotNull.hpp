@@ -129,7 +129,7 @@ public:
   }
   /** \brief swaps pointers held inside.
    *  \param other object to swap pointers with.
-   *  \note this call is NOT thread safe, and make others not-thread-sage too!
+   *  \note this call is NOT thread safe, and make others not-thread-safe too!
    *        if this call is to be used, whole access has to be carefully
    *        mutexed, allong with all places given object is used in.
    */
