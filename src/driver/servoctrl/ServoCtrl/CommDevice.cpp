@@ -111,6 +111,8 @@ void CommDevice::sendData(const std::string &cmd)
 
 std::string CommDevice::recvData(void)
 {
+  // TODO: this code must be executed in a separate thread, to set future/promises pairs in async form.
+
   constexpr size_t  bufSize=16;     // TODO: magic value
   char              buf[bufSize];   // input buffer
   char             *ptr =buf;       // start from

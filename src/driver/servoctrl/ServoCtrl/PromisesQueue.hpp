@@ -1,5 +1,5 @@
-#ifndef INCLUDE_SERVOCTRL_PROMISEQUEUE_HPP_FILE
-#define INCLUDE_SERVOCTRL_PROMISEQUEUE_HPP_FILE
+#ifndef INCLUDE_SERVOCTRL_PROMISESQUEUE_HPP_FILE
+#define INCLUDE_SERVOCTRL_PROMISESQUEUE_HPP_FILE
 
 /* public header */
 
@@ -18,7 +18,7 @@
 namespace ServoCtrl
 {
 
-class PromiseQueue: private boost::noncopyable
+class PromisesQueue: private boost::noncopyable
 {
 public:
   struct Element
@@ -36,7 +36,7 @@ private:
 
   std::mutex m_;
   Promises   queue_;
-}; // class Response
+}; // class PromisesQueue
 
 } // namespace ServoCtrl
 

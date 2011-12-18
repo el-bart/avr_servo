@@ -1,4 +1,4 @@
-#include "ServoCtrl/PromiseQueue.hpp"
+#include "ServoCtrl/PromisesQueue.hpp"
 
 namespace ServoCtrl
 {
@@ -6,7 +6,7 @@ namespace ServoCtrl
 typedef std::unique_lock<std::mutex> Lock;
 
 
-Response::Future PromiseQueue::push(ServoName s)
+Response::Future PromisesQueue::push(ServoName s)
 {
   Element          e={ std::move(s), TimerRT{}, Response::Promise{} };
   Response::Future f=e.p_.get_future();
@@ -18,7 +18,7 @@ Response::Future PromiseQueue::push(ServoName s)
 }
 
 
-PromiseQueue::Element PromiseQueue::pop(void)
+PromisesQueue::Element PromisesQueue::pop(void)
 {
   Lock lock(m_);
   Element e=std::move( queue_.front() );
