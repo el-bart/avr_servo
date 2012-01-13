@@ -5,19 +5,13 @@
 
 using namespace std;
 
-namespace
-{
-constexpr bool g_useFastMode=false;
-} // unnamed namespace
-
-
 struct NavWin::CommThread
 {
   typedef std::unique_lock<std::mutex> Lock;
 
   CommThread(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
-    srvX_{nameX, dev, g_useFastMode},
-    srvY_{nameY, dev, g_useFastMode},
+    srvX_{nameX, dev},
+    srvY_{nameY, dev},
     posXsent_{0},
     posYsent_{0},
     quit_{false}

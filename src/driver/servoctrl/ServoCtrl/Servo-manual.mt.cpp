@@ -17,7 +17,7 @@ int main(int argc, char **argv)
   }
 
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
-  Servo           servo{ ServoName{argv[2][0]}, dev, true };
+  Servo           servo{ ServoName{argv[2][0]}, dev };
 
   initscr();
   cbreak();

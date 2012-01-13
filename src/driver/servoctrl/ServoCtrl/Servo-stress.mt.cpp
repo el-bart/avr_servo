@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   const bool         eoe  =boost::lexical_cast<bool>(argv[5]);
 
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
-  Servo           servo{ ServoName{argv[2][0]}, dev, fast };
+  Servo           servo{ ServoName{argv[2][0]}, dev };
 
   uint8_t pos=50;
   uint8_t dp =1;
@@ -28,7 +28,9 @@ int main(int argc, char **argv)
     cout<<"sending pos "<<int{pos}<<" to servo "<<argv[2][0]<<"..."<<endl;
     try
     {
-      servo.setPos(pos);
+      Response r=servo.setPos(pos);
+      if( !fast && r.error() )
+        throw std::runtime_error("error while setting position");
     }
     catch(const std::exception &ex)
     {

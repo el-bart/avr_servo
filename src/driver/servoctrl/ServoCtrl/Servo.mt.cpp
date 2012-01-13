@@ -14,12 +14,14 @@ int main(int argc, char **argv)
   }
 
   CommDevicePtrNN dev{ new CommDevice{argv[1]} };
-  Servo           servo{ ServoName{argv[2][0]}, dev, true };
+  Servo           servo{ ServoName{argv[2][0]}, dev };
 
   for(uint8_t pos=50; pos<=200; pos+=20)
   {
     cout<<"sending pos "<<int{pos}<<"..."<<endl;
-    servo.setPos(pos);
+    Response r=servo.setPos(pos);
+    if( r.error() )
+      cout<<"ERROR: cannot set servo to a required position"<<endl;
     cout<<"wait a while for servos to setup..."<<endl;
     usleep(750*1000);
     cout<<endl;

@@ -1,4 +1,8 @@
+#include <stdexcept>
+#include <iostream>             
+
 #include "ServoCtrl/Response.hpp"
+
 
 namespace ServoCtrl
 {
@@ -22,8 +26,9 @@ bool Response::error(void)
     const std::string r=fut_.get();
     return r.find("ERR")!=std::string::npos;
   }
-  catch(...)
+  catch(const std::exception &ex)
   {
+    std::cerr<<"ERR: "<<ex.what()<<std::endl;               
     // errors are propagated as codes here
   }
   return true;

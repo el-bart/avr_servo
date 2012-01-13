@@ -23,13 +23,20 @@ int main(int argc, char **argv)
   std::vector<Servo> servos;
   servos.reserve( ServoName::last()-ServoName::first() + 1 );
   for(auto sn=ServoName::first(); sn!=ServoName::last()+1; ++sn)
-    servos.push_back( Servo{ ServoName{sn}, dev, fast } );
+    servos.push_back( Servo{ ServoName{sn}, dev } );
 
   uint8_t pos=256/2;
   int     dp =+1;
   while(true)
   {
+    // give servos a while to set on positions
     usleep(delay*1000);
+
+    // prepare memory for output elements
+    std::vector<Response> rets;
+    rets.reserve( servos.size() );
+
+    // set values to servos
     for(auto it=servos.begin(); it!=servos.end(); ++it)
     {
       pos+=dp;
@@ -39,20 +46,25 @@ int main(int argc, char **argv)
         dp=+1;
 
       cout<<"sending pos "<<int{pos}<<endl;
-      try
+      rets.push_back( it->setPos(pos) );
+    } // for(servo)
+
+    // check the responses
+    if(!fast)
+    {
+      for(auto it=rets.begin(); it!=rets.end(); ++it)
       {
-        it->setPos(pos);
-      }
-      catch(const std::exception &ex)
-      {
-        cerr<<argv[0]<<": @"<<int{pos}<<" ("<<typeid(ex).name()<<"): "<<ex.what()<<endl;
+        if( it->ok() )
+          continue;
+        // error...
+        cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo no. "<<it-rets.begin()<<endl;
         if(eoe)
         {
           cerr<<argv[0]<<": exiting of first error, as requested..."<<endl;
           return 2;
         }
-      }
-    } // for(servo)
+      } // for(responses)
+    } // if(!fast)
   } // while(true)
 
   return 0;

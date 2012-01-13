@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   std::vector<Servo> servos;
   servos.reserve( ServoName::last()-ServoName::first() + 1 );
   for(auto sn=ServoName::first(); sn!=ServoName::last()+1; ++sn)
-    servos.push_back( Servo{ ServoName{sn}, dev, fast } );
+    servos.push_back( Servo{ ServoName{sn}, dev } );
 
   // prepare random generators
   uniform_int_distribution<> uniSrvNo( 0, ServoName::last()-ServoName::first() );
@@ -42,7 +42,9 @@ int main(int argc, char **argv)
     cout<<"sending pos "<<int{pos}<<" to servo "<<char{ServoName::first()+srvNo}<<"..."<<endl;
     try
     {
-      servos.at(srvNo).setPos(pos);
+      Response r=servos.at(srvNo).setPos(pos);
+      if( !fast && r.error() )
+        throw std::runtime_error("error while setting device");
     }
     catch(const std::exception &ex)
     {
