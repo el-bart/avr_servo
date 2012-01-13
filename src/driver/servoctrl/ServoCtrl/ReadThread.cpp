@@ -4,6 +4,7 @@ namespace ServoCtrl
 {
 
 ReadThread::ReadThread(SerialPortPtrNN rd):
+  quit_{false},
   rd_{rd},
   th_{ [&]{ threadBody(); } }
 {
@@ -15,7 +16,7 @@ ReadThread::~ReadThread(void)
   quit_=true;
   try
   {
-    // add some just to queue
+    // add something to queue
     q_.push( ServoName{ ServoName::first() } );
     // wait for thread to end
     if( th_.joinable() )

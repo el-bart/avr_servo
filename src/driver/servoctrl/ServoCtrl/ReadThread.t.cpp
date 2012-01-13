@@ -51,25 +51,13 @@ void testObj::test<2>(void)
   ensure("invalid response", r.ok() );
 }
 
-// 
+// test tomeout when no thing arrives
 template<>
 template<>
 void testObj::test<3>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<4>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<5>(void)
-{
+  Response r=th_.enqueue( ServoName{ServoName::first()} );
+  ensure("error not risen", r.error() );
 }
 
 } // namespace tut
