@@ -16,16 +16,6 @@ namespace ServoCtrl
 class ReadThread
 {
 public:
-  /*
-  struct ExceptionProtocolError: public Exception
-  {
-    explicit ExceptionProtocolError(std::string message):
-      Exception{ Strm{}<<"protocol reported error: "<<std::move(message) }
-    {
-    }
-  };
-  */
-
   explicit ReadThread(SerialPortPtrNN rd);
   ~ReadThread(void);
 

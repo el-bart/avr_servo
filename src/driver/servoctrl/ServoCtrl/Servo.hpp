@@ -5,6 +5,7 @@
 
 #include "ServoCtrl/CommDevice.hpp"
 #include "ServoCtrl/ServoName.hpp"
+#include "ServoCtrl/Response.hpp"
 #include "ServoCtrl/Exception.hpp"
 
 namespace ServoCtrl
@@ -21,24 +22,18 @@ public:
     }
   }; // struct ExceptionInvalidHex
 
-  Servo(ServoName name, CommDevicePtrNN dev_, bool fast):
-    name_{ std::move(name) },
-    dev_{ std::move(dev_) },
-    fast_{fast}
-  {
-  }
+  Servo(ServoName name, CommDevicePtrNN dev_);
 
-  void setPos(uint8_t pos);
-  void setMinPos(uint8_t pos);
-  void setMaxPos(uint8_t pos);
-  void setDefaultPos(uint8_t pos);
+  Response setPos(uint8_t pos);
+  Response setMinPos(uint8_t pos);
+  Response setMaxPos(uint8_t pos);
+  Response setDefaultPos(uint8_t pos);
 
 private:
-  void send(char cmd, uint8_t pos);
+  Response send(char cmd, uint8_t pos);
 
   ServoName       name_;
   CommDevicePtrNN dev_;
-  bool            fast_;
 };
 
 } // namespace ServoCtrl

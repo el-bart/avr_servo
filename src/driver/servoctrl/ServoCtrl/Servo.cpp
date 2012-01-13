@@ -3,24 +3,30 @@
 namespace ServoCtrl
 {
 
-void Servo::setPos(uint8_t pos)
+Servo::Servo(ServoName name, CommDevicePtrNN dev_):
+  name_{ std::move(name) },
+  dev_{ std::move(dev_) }
 {
-  send('s', pos);
 }
 
-void Servo::setMinPos(uint8_t pos)
+Response Servo::setPos(uint8_t pos)
 {
-  send('l', pos);
+  return send('s', pos);
 }
 
-void Servo::setMaxPos(uint8_t pos)
+Response Servo::setMinPos(uint8_t pos)
 {
-  send('h', pos);
+  return send('l', pos);
 }
 
-void Servo::setDefaultPos(uint8_t pos)
+Response Servo::setMaxPos(uint8_t pos)
 {
-  send('d', pos);
+  return send('h', pos);
+}
+
+Response Servo::setDefaultPos(uint8_t pos)
+{
+  return send('d', pos);
 }
 
 
@@ -59,7 +65,7 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 } // unnamed namespace
 
 
-void Servo::send(char cmd, uint8_t pos)
+Response Servo::send(char cmd, uint8_t pos)
 {
   // TODO: fix this: 
   const uint8_t posNum[2]={ uint8_t{(pos&0xF0)>>4}, uint8_t{(pos&0x0F)>>0} };
@@ -73,15 +79,8 @@ void Servo::send(char cmd, uint8_t pos)
   buf[4]=computeChecksum(buf[0], buf[1], buf[2], buf[3]);
   buf[5]='\n';
   buf[6]=0;
-
   // send it
-  if(fast_)
-    dev_->runFast(buf);
-  else
-  {
-    const std::string ret=dev_->run(buf);
-    // TODO: is this ret needed at all?
-  }
+  return dev_->run(buf);
 }
 
 } // namespace ServoCtrl

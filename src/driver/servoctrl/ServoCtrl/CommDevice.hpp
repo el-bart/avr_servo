@@ -8,6 +8,8 @@
 
 #include "ServoCtrl/SharedPtrNotNull.hpp"
 #include "ServoCtrl/SerialPort.hpp"
+#include "ServoCtrl/ReadThread.hpp"
+#include "ServoCtrl/ServoName.hpp"
 #include "ServoCtrl/Exception.hpp"
 
 namespace ServoCtrl
@@ -26,12 +28,12 @@ public:
 
   explicit CommDevice(const boost::filesystem::path &devPath);
 
-  std::string run(std::string cmd);
-  void runFast(std::string cmd);
+  Response run(std::string cmd);
 
 private:
-  SerialPortPtrNN rd_;
   SerialPortPtrNN wr_;
+  SerialPortPtrNN rd_;
+  ReadThread      th_;
 }; // class CommDevice
 
 

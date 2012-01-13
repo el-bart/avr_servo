@@ -35,7 +35,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid response", cd_.run("as7f?\n"), "a-ok\n");
+  ensure("invalid response", cd_.run("as7f?\n").ok() );
 }
 
 // test error condition
@@ -48,7 +48,7 @@ void testObj::test<2>(void)
     cd_.run("wtf?\n");
     fail("no exception on error");
   }
-  catch(const CommDevice::ExceptionProtocolError&)
+  catch(const ServoName::ExceptionInvalidServo&)
   {
     // this is expected
   }
@@ -59,8 +59,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invalid response 1", cd_.run("as30?\n"), "a-ok\n");
-  ensure_equals("invalid response 2", cd_.run("asa0?\n"), "a-ok\n");
+  ensure("invalid response 1", cd_.run("as30?\n").ok() );
+  ensure("invalid response 2", cd_.run("asa0?\n").ok() );
 }
 
 // try sending multiple commands: error, ok - it should recover
@@ -73,11 +73,11 @@ void testObj::test<4>(void)
     cd_.run("wtf?\n");
     fail("no expcetion on error message");
   }
-  catch(const CommDevice::ExceptionProtocolError&)
+  catch(const ServoName::ExceptionInvalidServo&)
   {
     // this is expected
   }
-  ensure_equals("invalid response", cd_.run("asa0?\n"), "a-ok\n");
+  ensure("invalid response", cd_.run("asa0?\n").ok() );
 }
 
 // test sending fast commands
@@ -89,7 +89,7 @@ void testObj::test<5>(void)
   {
     char buf[]="asX0?\n";
     buf[2]=c;
-    cd_.runFast(buf);
+    cd_.run(buf);
   }
 }
 
@@ -108,8 +108,8 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  cd_.runFast("os0?\n");     // this command is invalid
-  cd_.run("os70?\n");        // this one is fine
+  cd_.run("os0?\n");        // this command is invalid
+  cd_.run("os70?\n");       // this one is fine
 }
 
 // check proper recover, after sending invalid command followed by the correct one
@@ -117,8 +117,8 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  cd_.runFast("xs70?\n");    // this command is invalid
-  cd_.run("os70?\n");        // this one is fine
+  cd_.run("osXx?\n");       // this command is invalid
+  cd_.run("os70?\n");       // this one is fine
 }
 
 // check if extreamly long packets are parsed as one, invalid data set
@@ -127,8 +127,8 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  cd_.runFast("vvXXyyZZwwQQssRRttBlah...\n");    // this command is invalid
-  cd_.run("os70?\n");                            // this one is fine
+  cd_.run("ovvXXyyZZwwQQssRRttBlah...\n");      // this command is invalid
+  cd_.run("os70?\n");                           // this one is fine
 }
 
 // check if longer sequence of CR/CL chars is end-of-packet

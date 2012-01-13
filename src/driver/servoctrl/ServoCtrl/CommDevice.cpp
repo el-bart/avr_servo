@@ -13,24 +13,17 @@ namespace ServoCtrl
 {
 
 CommDevice::CommDevice(const boost::filesystem::path &devPath):
+  wr_{ new SerialPort{devPath, SerialPort::WRITE} },
   rd_{ new SerialPort{devPath, SerialPort::READ} },
-  wr_{ new SerialPort{devPath, SerialPort::WRITE} }
+  th_{rd_}
 {
 }
 
-std::string CommDevice::run(std::string cmd)
+Response CommDevice::run(std::string cmd)
 {
+  const ServoName sn{cmd[0]};   // can be terminating zero, in case of empty string
   wr_->writeLine( std::move(cmd) );
-  std::string ret=rd_->readLine(40);
-  if( ret.find("ERR")!=std::string::npos )
-    throw ExceptionProtocolError{ret};
-  return ret;
-}
-
-
-void CommDevice::runFast(std::string cmd)
-{
-  wr_->writeLine( std::move(cmd) );
+  return th_.enqueue(sn);
 }
 
 } // namespace ServoCtrl
