@@ -1,3 +1,7 @@
+-- v?? --
+* non-blocking communication on PC side, with future-promise mechanism.
+
+
 -- v1.1.0 --
 * operating up to 17 servos.
 * added RTS/CTS hardware flow control.
