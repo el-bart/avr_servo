@@ -71,7 +71,7 @@ void testObj::test<4>(void)
   try
   {
     cd_.run("wtf?\n");
-    fail("no expcetion on error message");
+    fail("no exception on error message");
   }
   catch(const ServoName::ExceptionInvalidServo&)
   {
@@ -103,7 +103,7 @@ void testObj::test<6>(void)
 }
 
 // check proper recover, after sending non-full command followed by the correct one
-// this is a bug test, for the older implementaiton of command queue.
+// this is a bug test, for the older implementation of command queue.
 template<>
 template<>
 void testObj::test<7>(void)
@@ -122,7 +122,7 @@ void testObj::test<8>(void)
 }
 
 // check if extreamly long packets are parsed as one, invalid data set
-// this is a bug test, for the older implementaiton of command queue on uC.
+// this is a bug test, for the older implementation of command queue on uC.
 template<>
 template<>
 void testObj::test<9>(void)

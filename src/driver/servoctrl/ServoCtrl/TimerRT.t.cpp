@@ -43,7 +43,7 @@ void testObj::test<2>(void)
   ensure("10[ms] not measured", m1<m2);
 }
 
-// test reseting
+// test resetting
 template<>
 template<>
 void testObj::test<3>(void)

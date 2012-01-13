@@ -91,7 +91,7 @@ void testObj::test<4>(void)
   ensure("invalid pointer after copy-ctor", pnn.get()==nn_.get() );
 }
 
-// test creationg form std  shared pointer
+// test creating form std  shared pointer
 template<>
 template<>
 void testObj::test<5>(void)
@@ -101,7 +101,7 @@ void testObj::test<5>(void)
   ensure("invalid pointer after creating form std::shared_ptr", pnn.get()==bp.get() );
 }
 
-// test throw on copying from std::shared_ptr(NULL)
+// test throw on copying from std::shared_ptr(nullptr)
 template<>
 template<>
 void testObj::test<6>(void)
@@ -129,7 +129,7 @@ void testObj::test<7>(void)
   ensure("invalid pointer value", bp.get()==nn_.get() );
 }
 
-// test assignmet from other instance
+// test assignment from other instance
 template<>
 template<>
 void testObj::test<8>(void)
@@ -339,7 +339,7 @@ void testObj::test<32>(void)
   ensure("invalid pointer value", nn_.get()==ptr );
 }
 
-// test convertion from non-const to const pointer for self - copy c-tor
+// test conversion from non-const to const pointer for self - copy c-tor
 template<>
 template<>
 void testObj::test<33>(void)
@@ -348,7 +348,7 @@ void testObj::test<33>(void)
   ConstPtrNN b(a);
 }
 
-// test convertion from non-const to const pointer for std::shared_ptr - copy c-tor
+// test conversion from non-const to const pointer for std::shared_ptr - copy c-tor
 template<>
 template<>
 void testObj::test<34>(void)
@@ -357,7 +357,7 @@ void testObj::test<34>(void)
   ConstPtrNN b(a);
 }
 
-// test convertion from non-const to const pointer for std::unique_ptr - copy c-tor
+// test conversion from non-const to const pointer for std::unique_ptr - copy c-tor
 template<>
 template<>
 void testObj::test<35>(void)
@@ -366,7 +366,7 @@ void testObj::test<35>(void)
   ConstPtrNN           b(std::move(a));
 }
 
-// test convertion from non-const to const pointer for self - assignment
+// test conversion from non-const to const pointer for self - assignment
 template<>
 template<>
 void testObj::test<36>(void)
@@ -377,7 +377,7 @@ void testObj::test<36>(void)
   ensure_equals("invalid element", *b, 42);
 }
 
-// test convertion from non-const to const pointer for std::shared_ptr - assignment
+// test conversion from non-const to const pointer for std::shared_ptr - assignment
 template<>
 template<>
 void testObj::test<37>(void)
@@ -388,7 +388,7 @@ void testObj::test<37>(void)
   ensure_equals("invalid element", *b, 42);
 }
 
-// test convertion from non-const to const pointer for std::unique_ptr - assignment
+// test conversion from non-const to const pointer for std::unique_ptr - assignment
 template<>
 template<>
 void testObj::test<38>(void)
@@ -477,7 +477,7 @@ void testObj::test<45>(void)
   PtrNN b(a);
 }
 
-// test compariosn of const and non-const pointers (compile test)
+// test comparison of const and non-const pointers (compile test)
 template<>
 template<>
 void testObj::test<46>(void)
@@ -512,7 +512,7 @@ void testObj::test<46>(void)
   d!=a;
 }
 
-// test compariosn of base-derived pointers (compile test)
+// test comparison of base-derived pointers (compile test)
 template<>
 template<>
 void testObj::test<47>(void)
@@ -547,7 +547,7 @@ void testObj::test<47>(void)
   d!=a;
 }
 
-// test compariosn of base-derived pointers with NULLs (compile test)
+// test comparison of base-derived pointers with NULLs (compile test)
 template<>
 template<>
 void testObj::test<48>(void)

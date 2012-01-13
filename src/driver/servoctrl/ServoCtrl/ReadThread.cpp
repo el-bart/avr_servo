@@ -45,7 +45,7 @@ void ReadThread::threadBody(void)
       PromisesQueue::Element e=q_.pop();
       try
       {
-        // TODO: compute deadlien basing on t_
+        // TODO: compute deadline basing on t_
         std::string ret=rd_->readLine(40);
         // fulfill promise
         e.p_.set_value( std::move(ret) );

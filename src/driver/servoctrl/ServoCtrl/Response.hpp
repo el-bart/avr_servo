@@ -13,7 +13,7 @@
 namespace ServoCtrl
 {
 
-/** \brief reponse object, representing driver's response on given command.
+/** \brief response object, representing driver's response on given command.
  */
 class Response
 {

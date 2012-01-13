@@ -66,9 +66,9 @@ public:
   };
 
 
-  /** \brief create servial port device representaion.
-   *  \param devPath path to the phisical device.
-   *  \param dir     direction of the communication channed (see 'Direction' enum).
+  /** \brief create servial port device representation.
+   *  \param devPath path to the physical device.
+   *  \param dir     direction of the communication channel (see 'Direction' enum).
    *  \note single device can be an I/O device as well.
    */
   SerialPort(const boost::filesystem::path &devPath, int dir);

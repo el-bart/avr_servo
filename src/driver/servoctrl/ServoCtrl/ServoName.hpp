@@ -9,12 +9,12 @@
 namespace ServoCtrl
 {
 
-/** \brief representaiton of a servo name.
+/** \brief representation of a servo name.
  */
 class ServoName
 {
 public:
-  /** \brief exception thrown on invlaid name.
+  /** \brief exception thrown on invalid name.
    */
   struct ExceptionInvalidServo: public Exception
   {

@@ -31,7 +31,7 @@ private:
   typedef T&                  reference;
 
 public:
-  /** \brief exception thrown when tryin to assign nullptr.
+  /** \brief exception thrown when trying to assign nullptr.
    */
   struct ExceptionNullPointer: public Exception
   {
@@ -62,7 +62,7 @@ public:
     ptr_=std::move(other.ptr_);
     assert( ptr_.get()!=nullptr );
   }
-  /** \brief convertion c-tor (from related pointers).
+  /** \brief conversion c-tor (from related pointers).
    *  \param other object to copy from.
    */
   template<typename U>
@@ -98,8 +98,8 @@ public:
     assert( ptr_.get()!=nullptr );
     return ptr_;
   }
-  /** \brief assignmen of other instance.
-   *  \param other object to assigne from.
+  /** \brief assignment of other instance.
+   *  \param other object to assign from.
    *  \return const-reference to this object.
    */
   template<typename U>
@@ -117,7 +117,7 @@ public:
     return get();
   }
   /** \brief dereference operator.
-   *  \return reference to helpd object.
+   *  \return reference to held object.
    */
   reference operator*(void) const
   {
@@ -135,7 +135,7 @@ public:
    *  \param other object to swap pointers with.
    *  \note this call is NOT thread safe, and make others not-thread-safe too!
    *        if this call is to be used, whole access has to be carefully
-   *        mutexed, allong with all places given object is used in.
+   *        mutexed, along with all places given object is used in.
    */
   void swap(this_type &other)
   {
@@ -166,7 +166,7 @@ private:
 //       during calls like SPNN<X> == SPNN<const X>.
 //
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -177,7 +177,7 @@ bool operator<(const SharedPtrNotNull<T> &left, const SharedPtrNotNull<U> &right
   return left.get()<right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -188,7 +188,7 @@ bool operator==(const SharedPtrNotNull<T> &left, const SharedPtrNotNull<U> &righ
   return left.get()==right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -199,7 +199,7 @@ bool operator!=(const SharedPtrNotNull<T> &left, const SharedPtrNotNull<U> &righ
   return left.get()!=right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -210,7 +210,7 @@ bool operator<(const std::shared_ptr<T> &left, const SharedPtrNotNull<U> &right)
   return left.get()<right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -221,7 +221,7 @@ bool operator==(const std::shared_ptr<T> &left, const SharedPtrNotNull<U> &right
   return left.get()==right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -232,7 +232,7 @@ bool operator!=(const std::shared_ptr<T> &left, const SharedPtrNotNull<U> &right
   return left.get()!=right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -243,7 +243,7 @@ bool operator<(const SharedPtrNotNull<T> &left, const std::shared_ptr<U> &right)
   return left.get()<right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.
@@ -254,7 +254,7 @@ bool operator==(const SharedPtrNotNull<T> &left, const std::shared_ptr<U> &right
   return left.get()==right.get();
 }
 
-/** \brief comapre pointers.
+/** \brief compare pointers.
  *  \param left  left side of the relation.
  *  \param right right side of the relation.
  *  \return result of corresponding operation on raw pointers.

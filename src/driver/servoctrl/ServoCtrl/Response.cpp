@@ -27,7 +27,7 @@ bool Response::error(void)
   }
   catch(const std::exception &/*ex*/)
   {
-    // TODO: this should be redon, so that error details can be read form here
+    // TODO: this should be read and stored, so that error details can be read form here
     // errors are propagated as codes here
   }
   return true;

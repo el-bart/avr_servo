@@ -106,7 +106,7 @@ private:
 
   bool send(ServoCtrl::Servo &srv, const uint8_t pos)
   {
-    cout<<"sedning "<<int{pos}<<endl;
+    cout<<"sending "<<int{pos}<<endl;
     try
     {
       srv.setPos(pos);
@@ -158,7 +158,7 @@ NavWin::~NavWin(void)
 
 bool NavWin::on_motion_notify_event(GdkEventMotion* event)
 {
-  if(event==NULL)
+  if(event==nullptr)
     return false;
 
   if(!pressed_)
@@ -177,7 +177,7 @@ bool NavWin::on_motion_notify_event(GdkEventMotion* event)
 
 bool NavWin::on_button_press_event(GdkEventButton* event)
 {
-  if(event==NULL)
+  if(event==nullptr)
     return false;
 
   pressed_=true;
@@ -189,7 +189,7 @@ bool NavWin::on_button_press_event(GdkEventButton* event)
 
 bool NavWin::on_button_release_event(GdkEventButton* event)
 {
-  if(event==NULL)
+  if(event==nullptr)
     return false;
 
   pressed_=false;

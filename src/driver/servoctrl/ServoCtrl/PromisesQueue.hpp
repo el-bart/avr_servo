@@ -17,7 +17,7 @@
 namespace ServoCtrl
 {
 
-/** \brief queue of response promisses.
+/** \brief queue of response promises.
  */
 class PromisesQueue: private boost::noncopyable
 {

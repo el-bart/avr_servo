@@ -25,7 +25,7 @@ public:
   ~ReadThread(void);
 
   /** \brief adds new request to the processing queue.
-   *  \param s name of the servo responseis expected for.
+   *  \param s name of the servo responses expected for.
    *  \return response object (future).
    */
   Response enqueue(ServoName s);

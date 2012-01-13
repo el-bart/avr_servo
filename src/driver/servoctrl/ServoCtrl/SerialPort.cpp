@@ -134,7 +134,7 @@ std::string SerialPort::recvData(const unsigned int timeout)
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
     struct timeval tout={0, timeout*1000};  // wait a while for the data
-    const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &tout);
+    const int ret=select(fd_.get()+1, &rdfd, nullptr, nullptr, &tout);
     if(ret<0)
       throw ExceptionIO{"select() failed for some reason"};
     if(ret==0)
@@ -178,14 +178,14 @@ void SerialPort::discardContent(void)
     fd_set rdfd;
     FD_ZERO(&rdfd);
     FD_SET(fd_.get(), &rdfd);
-    const int ret=select(fd_.get()+1, &rdfd, NULL, NULL, &timeout);
+    const int ret=select(fd_.get()+1, &rdfd, nullptr, nullptr, &timeout);
     if(ret<=0)
       return;
 
     char tmp[128];
     if( read(fd_.get(), tmp, sizeof(tmp)-1)==-1 )
       throw ExceptionIO{"read(): unable to dispose of garbage in the buffers"};
-    // if has some data already, wait a bit - maby there's more to come?
+    // if has some data already, wait a bit - maybe there's more to come?
     dt=6*1000;      // 6[ms] // TODO: magic value
   }
 }

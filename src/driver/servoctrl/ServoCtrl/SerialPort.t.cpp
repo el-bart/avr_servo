@@ -42,7 +42,7 @@ void testObj::test<1>(void)
   wr_->writeLine("with new line\n");
 }
 
-// test seding some data NOT ending with new line
+// test sending some data NOT ending with new line
 template<>
 template<>
 void testObj::test<2>(void)
@@ -89,7 +89,7 @@ void testObj::test<5>(void)
 {
   try
   {
-    SerialPort cd("/non/exisitng/element", SerialPort::READ);
+    SerialPort cd("/non/existing/element", SerialPort::READ);
     fail("no exception on error");
   }
   catch(const SerialPort::ExceptionDevice&)
@@ -104,7 +104,7 @@ template<>
 void testObj::test<6>(void)
 {
   wr_->writeLine("as30?\n");
-  ensure_equals("invalid reponse", rd_->readLine(100), "a-ok\n");
+  ensure_equals("invalid response", rd_->readLine(100), "a-ok\n");
 }
 
 // try sending multiple commands
@@ -114,8 +114,8 @@ void testObj::test<7>(void)
 {
   wr_->writeLine("as30?\n");
   wr_->writeLine("bs30?\n");
-  ensure_equals("invalid reponse", rd_->readLine(100), "a-ok\n");
-  ensure_equals("invalid reponse", rd_->readLine(100), "b-ok\n");
+  ensure_equals("invalid response", rd_->readLine(100), "a-ok\n");
+  ensure_equals("invalid response", rd_->readLine(100), "b-ok\n");
 }
 
 // check if CR is end-of-packet
@@ -144,7 +144,7 @@ void testObj::test<10>(void)
   try
   {
     rd_->readLine(1);
-    fail("timeout not occured");
+    fail("timeout not occurred");
   }
   catch(const SerialPort::ExceptionTimeout&)
   {
