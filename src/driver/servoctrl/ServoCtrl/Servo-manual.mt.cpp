@@ -28,7 +28,9 @@ int main(int argc, char **argv)
   {
     clear();
     printw("setting position to %d...\n", static_cast<int>(pos));
-    servo.setPos(pos);
+    const bool err=servo.setPos(pos).error();
+    if(err)
+      printw("ERROR SETTING POSITION\n");
 
     printw("\n");
     printw("Q=>quit\n");
@@ -82,17 +84,23 @@ int main(int argc, char **argv)
     // set min/max/def positions
     if(c=='l')
     {
-      servo.setMinPos(pos);
+      const bool ret=servo.setMinPos(pos).ok();
+      if(!ret)
+        printw("ERROR SETTING MINIMAL POSITION\n");
       continue;
     }
     if(c=='h')
     {
-      servo.setMaxPos(pos);
+      const bool ret=servo.setMaxPos(pos).ok();
+      if(!ret)
+        printw("ERROR SETTING MAXIMAL POSITION\n");
       continue;
     }
     if(c=='b')
     {
-      servo.setDefaultPos(pos);
+      const bool ret=servo.setDefaultPos(pos).ok();
+      if(!ret)
+        printw("ERROR SETTING DEFAULT POSITION\n");
       continue;
     }
 
