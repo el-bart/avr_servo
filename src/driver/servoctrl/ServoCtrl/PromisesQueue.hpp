@@ -14,7 +14,6 @@
 #include "ServoCtrl/Exception.hpp"
 
 // TODO: doxygen
-// TODO: tests
 
 namespace ServoCtrl
 {
