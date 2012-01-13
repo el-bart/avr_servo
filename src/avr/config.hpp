@@ -6,10 +6,10 @@
 #define MHz   (1000L*KHz)
 
 // quarc frequency in [Hz]
-#define F_CPU (11059200L)
+#define F_CPU (8L*MHz)
 
 // USART speed (bps)
-#define USART_BAUD (57600L)
+#define USART_BAUD (38400L)
 
 // max queues sizes
 #define QUEUE_SEND_SIZE (110)

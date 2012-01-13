@@ -28,7 +28,7 @@ public:
   /** \brief get current counter value.
    *  \return counter value.
    *
-   *  counter returns current timer setting. it gives 1382.4 ticks every 1ms.
+   *  counter returns current timer setting. it gives 1000 ticks every 1ms.
    */
   uint16_t get(void) const
   {

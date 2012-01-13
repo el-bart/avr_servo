@@ -23,13 +23,12 @@ Timer2::Timer2(void)
   resetStep();
   // initial value for counter
   TCNT2 =0;
-  // start counting every 0.5ms, that is every 5529.6 machine cycles,
-  // that is every 250 timer cycles, when prescaller is set to 8:
-  //   c=f/1000/2 -> 5529.6
-  //   o=f/8/250  -> 5529.6
-  OCR2  =250;           // set TOP to 250
+  // start counting every 0.5ms, that is every 4000 machine cycles,
+  // that is every 125 timer cycles, when prescaller is set to 32.
+  OCR2  =125;           // set TOP to 125
   TCCR2|=_BV(WGM21);    // set CTC mode
-  TCCR2|=_BV(CS21);     // set preskaler to 8
+  TCCR2|=_BV(CS21);     // set preskaler to 32
+  TCCR2|=_BV(CS20);     // ...
   // enable interrrupts from timer2
   TIFR |=_BV(OCF2);
   TIMSK|=_BV(OCIE2);
