@@ -11,22 +11,50 @@
 namespace ServoCtrl
 {
 
+/** \brief representation of a single servo mechanism.
+ */
 class Servo
 {
 public:
+  /** \brief exception throw on error in hex parsing.
+   */
   struct ExceptionInvalidHex: public Exception
   {
-    explicit ExceptionInvalidHex(const uint8_t byte, std::string details):
+    /** \brief constructs error message.
+     *  \param byte    byte that could not be interpreted as a hex sign.
+     *  \param details more exception details.
+     */
+    ExceptionInvalidHex(const uint8_t byte, std::string details):
       Exception{ Strm{}<<"invalid byte '"<<int{byte}<<"' ("<<byte<<") when converting to hex: "<<std::move(details) }
     {
     }
   }; // struct ExceptionInvalidHex
 
-  Servo(ServoName name, CommDevicePtrNN dev_);
+  /** \brief creates servo object.
+   *  \param name name of the servo.
+   *  \param dev  device to use for communication.
+   */
+  Servo(ServoName name, CommDevicePtrNN dev);
 
+  /** \brief sets position to a given value.
+   *  \param pos position to set.
+   *  \return future-response object.
+   */
   Response setPos(uint8_t pos);
+  /** \brief sets minimal position to a given value.
+   *  \param pos position to set.
+   *  \return future-response object.
+   */
   Response setMinPos(uint8_t pos);
+  /** \brief sets maximal position to a given value.
+   *  \param pos position to set.
+   *  \return future-response object.
+   */
   Response setMaxPos(uint8_t pos);
+  /** \brief sets default position to a given value.
+   *  \param pos position to set.
+   *  \return future-response object.
+   */
   Response setDefaultPos(uint8_t pos);
 
 private:

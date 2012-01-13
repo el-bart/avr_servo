@@ -15,19 +15,33 @@
 namespace ServoCtrl
 {
 
+/** \brief high-level representation of communication device.
+ */
 class CommDevice: private boost::noncopyable
 {
 public:
+  /** \brief exception throw on generic protocol error.
+   */
   struct ExceptionProtocolError: public Exception
   {
+    /** \brief create error message.
+     *  \param message details to be saved.
+     */
     explicit ExceptionProtocolError(std::string message):
       Exception{ Strm{}<<"protocol reported error: "<<std::move(message) }
     {
     }
   };
 
+  /** \brief create device instance.
+   *  \param devPath path to the actual device to use for communication.
+   */
   explicit CommDevice(const boost::filesystem::path &devPath);
 
+  /** \brief sends given command to the hardware driver.
+   *  \param cmd command to be send.
+   *  \return future-response object.
+   */
   Response run(std::string cmd);
 
 private:
@@ -37,6 +51,7 @@ private:
 }; // class CommDevice
 
 
+/** \brief communication device pointer. */
 typedef SharedPtrNotNull<CommDevice> CommDevicePtrNN;
 
 } // namespace ServoCtrl

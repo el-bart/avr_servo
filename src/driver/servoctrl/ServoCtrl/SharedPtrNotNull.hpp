@@ -31,8 +31,12 @@ private:
   typedef T&                  reference;
 
 public:
+  /** \brief exception thrown when tryin to assign nullptr.
+   */
   struct ExceptionNullPointer: public Exception
   {
+    /** \brief create error message.
+     */
     ExceptionNullPointer(void):
       Exception("trying to pass nullptr to SharedPtrNotNull")
     {

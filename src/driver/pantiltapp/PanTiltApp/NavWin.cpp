@@ -5,10 +5,18 @@
 
 using namespace std;
 
+/** \brief helper thread object, for doing communications.
+ */
 struct NavWin::CommThread
 {
+  /** \brief short name for lock object. */
   typedef std::unique_lock<std::mutex> Lock;
 
+  /** \brief creates communication thread.
+   *  \param dev   device to use for communications.
+   *  \param nameX name of the OX axis servo.
+   *  \param nameY name of the OY axis servo.
+   */
   CommThread(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
     srvX_{nameX, dev},
     srvY_{nameY, dev},
@@ -20,34 +28,48 @@ struct NavWin::CommThread
     setY(127);
   }
 
+  /** \brief signals thread to exit.
+   */
   void quit(void)
   {
     Lock lock{m_};
     quit_=true;
   }
 
+  /** \brief sets OX servo to a given position.
+   *  \param x position to set.
+   */
   void setX(uint8_t x)
   {
     Lock lock{m_};
     posX_=x;
   }
+  /** \brief gets currently set OX servo position.
+   */
   uint8_t getX(void) const
   {
     Lock lock{m_};
     return posX_;
   }
 
+  /** \brief sets OY servo to a given position.
+   *  \param y position to set.
+   */
   void setY(uint8_t y)
   {
     Lock lock{m_};
     posY_=y;
   }
+  /** \brief gets currently set OY servo position.
+   */
   uint8_t getY(void) const
   {
     Lock lock{m_};
     return posY_;
   }
 
+  /** \brief main thread's loop.
+   */
   void run(void)
   {
     while(!quitNow())
@@ -99,16 +121,16 @@ private:
 
   mutable std::mutex m_;
 
-  ServoCtrl::Servo srvX_;
-  ServoCtrl::Servo srvY_;
+  ServoCtrl::Servo srvX_;   ///< OX axis servo.
+  ServoCtrl::Servo srvY_;   ///< OY axis servo.
 
-  uint8_t posXsent_;
-  uint8_t posYsent_;
+  uint8_t posXsent_;        ///< last-sent position OX.
+  uint8_t posYsent_;        ///< last-sent position OY.
 
-  uint8_t posX_;
-  uint8_t posY_;
+  uint8_t posX_;            ///< requested OX position.
+  uint8_t posY_;            ///< requested OY position.
 
-  bool quit_;
+  bool quit_;               ///< exit-indicator flag.
 }; // struct NavWin::CommThread
 
 

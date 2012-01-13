@@ -9,11 +9,18 @@
 namespace ServoCtrl
 {
 
+/** \brief representaiton of a servo name.
+ */
 class ServoName
 {
 public:
+  /** \brief exception thrown on invlaid name.
+   */
   struct ExceptionInvalidServo: public Exception
   {
+    /** \brief construct error message.
+     *  \param name name that was not accepted as a servo name.
+     */
     explicit ExceptionInvalidServo(const char name):
       Exception{ Strm{}<<"invalid servo name '"<<name<<"'" }
     {
@@ -21,20 +28,31 @@ public:
   }; // struct ExceptionInvalidServo
 
 
+  /** \brief creates servo name object.
+   *  \param name name to assign.
+   */
   explicit ServoName(const char name):
     name_{ check(name) }
   {
   }
 
+  /** \brief gets servo name.
+   */
   char getName(void) const
   {
     return name_;
   }
 
+  /** \brief gets first possible servo name.
+   *  \return first name that can be used for servo.
+   */
   static constexpr char first(void)
   {
     return 'a';
   }
+  /** \brief gets last servo name.
+   *  \return last name that can be used for servo.
+   */
   static constexpr char last(void)
   {
     return 'q';

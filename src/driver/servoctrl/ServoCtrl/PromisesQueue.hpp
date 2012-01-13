@@ -13,22 +13,32 @@
 #include "ServoCtrl/ServoName.hpp"
 #include "ServoCtrl/Exception.hpp"
 
-// TODO: doxygen
 
 namespace ServoCtrl
 {
 
+/** \brief queue of response promisses.
+ */
 class PromisesQueue: private boost::noncopyable
 {
 public:
+  /** \brief queue's element.
+   */
   struct Element
   {
-    ServoName         s_;
-    TimerRT           t_;
-    Response::Promise p_;
+    ServoName         s_;   ///< name of the servo, response should arrive for.
+    TimerRT           t_;   ///< timer, counting since creation of this object.
+    Response::Promise p_;   ///< promise object.
   }; // struct Element
 
+  /** \brief adds element to the queue.
+   *  \param s servo to wait for response.
+   *  \return future object, for the response.
+   */
   Response::Future push(ServoName s);
+  /** \brief gets element to be processed.
+   *  \return element to process.
+   */
   Element pop(void);
 
 private:

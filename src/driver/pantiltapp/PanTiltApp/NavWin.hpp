@@ -10,13 +10,22 @@
 #include "ServoCtrl/ServoName.hpp"
 #include "ServoCtrl/Servo.hpp"
 
+/** \brief navigation window for moving two servos.
+ */
 class NavWin: public Gtk::Window
 {
 public:
+  /** \brief create window instance.
+   *  \param dev   device to use for communications.
+   *  \param nameX name of the OX axis servo.
+   *  \param nameY name of the OY axis servo.
+   */
   NavWin(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY);
+  /** \brief destroy window.
+   */
   ~NavWin(void);
 
-protected:
+private:
   struct CommThread;
 
   virtual bool on_motion_notify_event(GdkEventMotion* event);

@@ -4,21 +4,30 @@
 /* public header */
 
 #include <thread>
-//#include <boost/noncopyable.hpp>
 
 #include "ServoCtrl/PromisesQueue.hpp"
 #include "ServoCtrl/SerialPort.hpp"
-//#include "ServoCtrl/Exception.hpp"
 
 namespace ServoCtrl
 {
 
+/** \brief thread reading data from given read-device.
+ */
 class ReadThread
 {
 public:
+  /** \brief creates reader thread object.
+   *  \param rd device to read from.
+   */
   explicit ReadThread(SerialPortPtrNN rd);
+  /** \brief stops thread and frees resources.
+   */
   ~ReadThread(void);
 
+  /** \brief adds new request to the processing queue.
+   *  \param s name of the servo responseis expected for.
+   *  \return response object (future).
+   */
   Response enqueue(ServoName s);
 
 private:
