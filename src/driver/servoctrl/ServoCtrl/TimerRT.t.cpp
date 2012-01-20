@@ -17,7 +17,7 @@ struct TestClass
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
-factory tf("ServoCtrol/TimerRT");
+factory tf("ServoCtrl/TimerRT");
 }
 
 namespace tut
