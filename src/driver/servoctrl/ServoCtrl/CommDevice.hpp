@@ -10,7 +10,6 @@
 #include "ServoCtrl/SerialPort.hpp"
 #include "ServoCtrl/ReadThread.hpp"
 #include "ServoCtrl/ServoName.hpp"
-#include "ServoCtrl/Exception.hpp"
 
 namespace ServoCtrl
 {
@@ -20,19 +19,6 @@ namespace ServoCtrl
 class CommDevice: private boost::noncopyable
 {
 public:
-  /** \brief exception throw on generic protocol error.
-   */
-  struct ExceptionProtocolError: public Exception
-  {
-    /** \brief create error message.
-     *  \param message details to be saved.
-     */
-    explicit ExceptionProtocolError(std::string message):
-      Exception{ Strm{}<<"protocol reported error: "<<std::move(message) }
-    {
-    }
-  };
-
   /** \brief create device instance.
    *  \param devPath path to the actual device to use for communication.
    */

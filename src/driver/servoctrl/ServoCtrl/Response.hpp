@@ -5,10 +5,10 @@
 
 #include <string>
 #include <future>
+#include <exception>
 
 #include "ServoCtrl/Exception.hpp"
 
-// TODO: tests
 
 namespace ServoCtrl
 {
@@ -18,6 +18,16 @@ namespace ServoCtrl
 class Response
 {
 public:
+  /** \brief exception throw on generic protocol error.
+   */
+  struct ExceptionProtocolError: public Exception
+  {
+    /** \brief create error message.
+     *  \param message details to be saved.
+     */
+    explicit ExceptionProtocolError(std::string message);
+  };
+
   /** \brief future object - short name. */
   typedef std::future<std::string>  Future;
   /** \brief promise object - short name. */
@@ -37,8 +47,25 @@ public:
    */
   bool error(void);
 
+  /** \brief gets exception pointer, if risen as a response.
+   *  \return pointer to exception, if it was risen, nullptr otherwise.
+   */
+  std::exception_ptr getError(void);
+
+  /** \brief returns error message, when exception was risen.
+   *  \return message with error details.
+   *
+   *  when no excepiton was risien or protocol error occured, proper message is
+   *  used as an error message.
+   */
+  std::string getErrorMessage(void);
+
 private:
-  Future fut_;
+  void process(void);
+
+  bool               isSet_;
+  Future             fut_;
+  std::exception_ptr ex_;
 }; // class Response
 
 } // namespace ServoCtrl

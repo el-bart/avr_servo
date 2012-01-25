@@ -1,3 +1,4 @@
+#include <string>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 
@@ -5,6 +6,7 @@
 
 using namespace std;
 using namespace ServoCtrl;
+
 
 int main(int argc, char **argv)
 {
@@ -59,7 +61,7 @@ int main(int argc, char **argv)
           continue;
         // error...
         const char sn{ ServoName::first() + (it-rets.begin()) };
-        cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo "<<sn<<endl;
+        cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo "<<sn<<": "<<it->getErrorMessage()<<endl;
         if(eoe)
         {
           cerr<<argv[0]<<": exiting of first error, as requested..."<<endl;
