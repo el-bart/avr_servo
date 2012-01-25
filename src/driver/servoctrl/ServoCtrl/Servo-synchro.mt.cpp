@@ -36,16 +36,17 @@ int main(int argc, char **argv)
     std::vector<Response> rets;
     rets.reserve( servos.size() );
 
+    // select proper value to be set
+    pos+=dp;
+    if(pos>200)
+      dp=-1;
+    if(pos<50)
+      dp=+1;
+
     // set values to servos
     for(auto it=servos.begin(); it!=servos.end(); ++it)
     {
-      pos+=dp;
-      if(pos>200)
-        dp=-1;
-      if(pos<50)
-        dp=+1;
-
-      cout<<"sending pos "<<int{pos}<<endl;
+      cout<<"sending servo "<<it->getName().getName()<<" to pos "<<int{pos}<<endl;
       rets.push_back( it->setPos(pos) );
     } // for(servo)
 
@@ -57,7 +58,8 @@ int main(int argc, char **argv)
         if( it->ok() )
           continue;
         // error...
-        cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo no. "<<it-rets.begin()<<endl;
+        const char sn{ ServoName::first() + (it-rets.begin()) };
+        cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo "<<sn<<endl;
         if(eoe)
         {
           cerr<<argv[0]<<": exiting of first error, as requested..."<<endl;
@@ -65,6 +67,9 @@ int main(int argc, char **argv)
         }
       } // for(responses)
     } // if(!fast)
+
+    // split calls
+    cout<<"-------------"<<endl;
   } // while(true)
 
   return 0;

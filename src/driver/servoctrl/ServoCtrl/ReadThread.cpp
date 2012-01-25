@@ -46,7 +46,7 @@ void ReadThread::threadBody(void)
       try
       {
         // TODO: compute deadline basing on t_
-        std::string ret=rd_->readLine(40);
+        std::string ret=rd_->readLine(2*20);
         // fulfill promise
         e.p_.set_value( std::move(ret) );
       }

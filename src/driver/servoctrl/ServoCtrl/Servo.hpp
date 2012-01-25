@@ -56,6 +56,13 @@ public:
    *  \return future-response object.
    */
   Response setDefaultPos(uint8_t pos);
+  /** \brief gets servo name.
+   *  \return name of the servo this class controlls.
+   */
+  ServoName getName(void) const
+  {
+    return name_;
+  }
 
 private:
   Response send(char cmd, uint8_t pos);
