@@ -51,7 +51,7 @@ void testObj::test<2>(void)
   ensure("invalid response", r.ok() );
 }
 
-// test timeout when no thing arrives
+// test timeout when nothing arrives
 template<>
 template<>
 void testObj::test<3>(void)

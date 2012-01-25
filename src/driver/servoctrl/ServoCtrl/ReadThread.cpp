@@ -1,4 +1,7 @@
+#include <cassert>
+
 #include "ServoCtrl/ReadThread.hpp"
+
 
 namespace ServoCtrl
 {
@@ -45,8 +48,12 @@ void ReadThread::threadBody(void)
       PromisesQueue::Element e=q_.pop();
       try
       {
-        // TODO: compute deadline basing on t_
-        std::string ret=rd_->readLine(2*20);
+        // maximal timeout must be truncated, when some time already passed since sending
+        const unsigned int maxTimeout=4*20;                 // TODO: hardcoded value
+        const unsigned int elapsed   =e.t_.elapsed()*1000;  // [s]->[ms]
+        const unsigned int timeout   =(maxTimeout<=elapsed)?1:(maxTimeout-elapsed);
+        assert(timeout<=maxTimeout);
+        std::string ret=rd_->readLine(timeout);
         // fulfill promise
         e.p_.set_value( std::move(ret) );
       }
