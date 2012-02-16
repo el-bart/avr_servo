@@ -1,8 +1,8 @@
 * add command queue on the device.
 * add moving with different speeds.
 * add more I/O operations (no computations for the chrono table though!).
-* implement asynchronous communication in the driver using future/promise mechanism.
-* add "HELLO" command, to initialize protocol communication and clear the buffers.
+* add "HELLO" command (giving protocol version in the response).
+* add "RESET" command.
 
 consider:
 * add "BURST" command to set all servos to a given poistions.
