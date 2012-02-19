@@ -3,6 +3,7 @@
 * add more I/O operations (no computations for the chrono table though!).
 * add "HELLO" command (giving protocol version in the response).
 * add "RESET" command.
+* consider making SMD version of the device.
 
 consider:
 * add "BURST" command to set all servos to a given poistions.
