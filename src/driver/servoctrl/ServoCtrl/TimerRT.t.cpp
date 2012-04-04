@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <cmath>
+#include <unistd.h>
 
 #include "ServoCtrl/TimerRT.hpp"
 

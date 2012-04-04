@@ -62,6 +62,14 @@ public:
     ptr_=std::move(other.ptr_);
     assert( ptr_.get()!=nullptr );
   }
+  /** \brief copy c-tor.
+   *  \param other object to move from.
+   */
+  SharedPtrNotNull(const this_type &other)
+  {
+    ptr_=other.ptr_;
+    assert( ptr_.get()!=nullptr );
+  }
   /** \brief conversion c-tor (from related pointers).
    *  \param other object to copy from.
    */
@@ -98,12 +106,35 @@ public:
     assert( ptr_.get()!=nullptr );
     return ptr_;
   }
+  /** \brief move-assignment of other instance.
+   *  \param other object to assign from.
+   *  \return reference to this object.
+   */
+  this_type& operator=(this_type &&other)
+  {
+    if( other.get()!=this->get() )
+    {
+      this_type tmp( std::move(other) );
+      tmp.swap(*this);
+    }
+    return *this;
+  }
   /** \brief assignment of other instance.
    *  \param other object to assign from.
-   *  \return const-reference to this object.
+   *  \return reference to this object.
+   */
+  this_type& operator=(const this_type &other)
+  {
+    if( other.get()!=this->get() )
+      ptr_=other.shared_ptr();
+    return *this;
+  }
+  /** \brief assignment of other instance.
+   *  \param other object to assign from.
+   *  \return reference to this object.
    */
   template<typename U>
-  const SharedPtrNotNull<const element_type> operator=(const SharedPtrNotNull<U> &other)
+  this_type& operator=(const SharedPtrNotNull<U> &other)
   {
     if( other.get()!=this->get() )
       ptr_=other.shared_ptr();
