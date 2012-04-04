@@ -10,7 +10,7 @@ export MODE:=default
 export PROFILE:=release
 
 # set default toolchain
-export TC:=gcc
+export TC:=gcc47
 
 # enable distcc
 #export WITH_DISTCC:=1
@@ -22,7 +22,7 @@ export WITH_CCACHE:=1
 export FEATURES:=
 
 # project-specific flags
-TMP:=-std=c++0x
+TMP:=-std=c++11
 export USER_OPT_FLAGS:=$(TMP)
 export USER_DBG_FLAGS:=$(TMP)
 export USER_PRF_FLAGS:=$(TMP)
