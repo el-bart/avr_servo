@@ -38,7 +38,7 @@ uint8_t fromHex(const char h)
     return h-'0';
   if('a'<=h && h<='f')
     return 10+(h-'a');
-  throw Servo::ExceptionInvalidHex{h, "unexpected char"};
+  throw Servo::ExceptionInvalidHex{static_cast<uint8_t>(h), "unexpected char"};
 } // fromHex()
 
 char toHex(const uint8_t num)
@@ -68,7 +68,7 @@ char computeChecksum(const char servoName, const char mode, const char posH, con
 Response Servo::send(char cmd, uint8_t pos)
 {
   // TODO: fix this: 
-  const uint8_t posNum[2]={ uint8_t{(pos&0xF0)>>4}, uint8_t{(pos&0x0F)>>0} };
+  const uint8_t posNum[2]={ static_cast<uint8_t>((pos&0xF0)>>4), static_cast<uint8_t>((pos&0x0F)>>0) };
   // create command
   char buf[1+1+2+1+1+1];
   buf[0]=name_.getName();

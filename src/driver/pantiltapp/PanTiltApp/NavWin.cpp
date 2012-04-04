@@ -138,7 +138,7 @@ private:
 NavWin::NavWin(ServoCtrl::CommDevicePtrNN dev, ServoCtrl::ServoName nameX, ServoCtrl::ServoName nameY):
   pressed_{false},
   thImpl_{ new CommThread{dev, nameX, nameY} },
-  th_{ [&thImpl_]{ thImpl_->run(); } }
+  th_{ [&]{ thImpl_->run(); } }
 {
   set_title("mouse position event");
   add_events( Gdk::POINTER_MOTION_MASK | Gdk::POINTER_MOTION_HINT_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK );

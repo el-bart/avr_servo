@@ -60,7 +60,7 @@ int main(int argc, char **argv)
         if( it->ok() )
           continue;
         // error...
-        const char sn{ ServoName::first() + (it-rets.begin()) };
+        const char sn=static_cast<char>( ServoName::first() + (it-rets.begin()) );
         cerr<<argv[0]<<": @"<<int{pos}<<": cannot set required position for servo "<<sn<<": "<<it->getErrorMessage()<<endl;
         if(eoe)
         {
