@@ -1,2 +1,1 @@
-avr_servo
-=========
+doc/readme.txt

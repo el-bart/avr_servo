@@ -1,3 +1,10 @@
+-- v2.0.2 --
+* fixed errors and warning when building with gcc-4.7.
+
+-- v2.0.1 --
+* update project's homepage link.
+
+
 -- v2.0.0 --
 * non-blocking communication on PC side, with future-promise mechanism.
 * error messages passing interface has been forwarded.
