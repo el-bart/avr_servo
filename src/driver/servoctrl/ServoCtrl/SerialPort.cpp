@@ -66,7 +66,7 @@ SerialPort::SerialPort(const boost::filesystem::path &devPath, const int dir):
 
 void SerialPort::writeLine(std::string line)
 {
-  // if string does not end iwth new line, add it
+  // if string does not end with new line, add it
   if( line.length()==0 || !isEOL( *line.rbegin() ) )
     line+="\n";
   // now send the data
